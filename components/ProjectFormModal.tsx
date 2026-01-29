@@ -128,7 +128,7 @@ export default function ProjectFormModal({
                                                     setFormData({ ...formData, name: e.target.value })
                                                 }
                                                 className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-red transition-colors"
-                                                placeholder="Enter project name"
+                                                placeholder="Enter your name"
                                             />
                                         </div>
 
