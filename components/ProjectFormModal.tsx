@@ -147,11 +147,11 @@ export default function ProjectFormModal({
                                                 }
                                                 className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-red transition-colors"
                                             >
-                                                <option value="" disabled>
+                                                <option value="" disabled className="bg-black text-white">
                                                     Select Department
                                                 </option>
                                                 {DEPARTMENTS.map((dept) => (
-                                                    <option key={dept.value} value={dept.value}>
+                                                    <option key={dept.value} value={dept.value} className="bg-black text-white">
                                                         {dept.label}
                                                     </option>
                                                 ))}
