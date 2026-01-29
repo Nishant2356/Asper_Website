@@ -59,7 +59,7 @@ export default function ProjectsPage() {
                         {
                             step: "03",
                             title: "Submit & Review",
-                            desc: "Once submitted, your project will be reviewed by the admin. You can track status here."
+                            desc: "Once submitted, your project will be reviewed by the admin."
                         }
                     ].map((item, i) => (
                         <motion.div

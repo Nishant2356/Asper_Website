@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { X, Upload, Check } from "lucide-react";
+import { X, Upload, Check, FileText } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CldUploadWidget } from "next-cloudinary";
 
@@ -198,10 +198,14 @@ export default function ProjectFormModal({
 
                                         <div>
                                             <label className="block text-sm font-medium text-gray-400 mb-2">
-                                                Project Images
+                                                Project Assets
                                             </label>
                                             <CldUploadWidget
-                                                uploadPreset="asper_uploads" // You might need to change this prompt user or default
+                                                uploadPreset="asper_uploads"
+                                                options={{
+                                                    resourceType: "auto",
+                                                    clientAllowedFormats: ["png", "jpg", "jpeg", "webp", "pdf"],
+                                                }}
                                                 onSuccess={(result: any) => {
                                                     if (result.info?.secure_url) {
                                                         setImageLinks((prev) => [
@@ -218,25 +222,35 @@ export default function ProjectFormModal({
                                                     >
                                                         <Upload className="text-gray-400 mb-2" />
                                                         <p className="text-sm text-gray-400">
-                                                            Click to upload images
+                                                            Click to upload images or PDFs
                                                         </p>
                                                     </div>
                                                 )}
                                             </CldUploadWidget>
                                             {imageLinks.length > 0 && (
                                                 <div className="mt-4 flex gap-2 overflow-x-auto pb-2">
-                                                    {imageLinks.map((link, idx) => (
-                                                        <div
-                                                            key={idx}
-                                                            className="relative w-20 h-20 flex-shrink-0 bg-white/5 rounded-md overflow-hidden"
-                                                        >
-                                                            <img
-                                                                src={link}
-                                                                alt="preview"
-                                                                className="w-full h-full object-cover"
-                                                            />
-                                                        </div>
-                                                    ))}
+                                                    {imageLinks.map((link, idx) => {
+                                                        const isPdf = link.toLowerCase().endsWith(".pdf");
+                                                        return (
+                                                            <div
+                                                                key={idx}
+                                                                className="relative w-20 h-20 flex-shrink-0 bg-white/5 rounded-md overflow-hidden border border-white/10"
+                                                            >
+                                                                {isPdf ? (
+                                                                    <div className="w-full h-full flex items-center justify-center flex-col gap-1 p-1">
+                                                                        <FileText className="text-neon-red" size={24} />
+                                                                        <span className="text-[10px] text-gray-400 font-mono">PDF</span>
+                                                                    </div>
+                                                                ) : (
+                                                                    <img
+                                                                        src={link}
+                                                                        alt="preview"
+                                                                        className="w-full h-full object-cover"
+                                                                    />
+                                                                )}
+                                                            </div>
+                                                        );
+                                                    })}
                                                 </div>
                                             )}
                                         </div>

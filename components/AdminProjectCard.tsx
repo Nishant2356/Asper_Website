@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Github, Globe, MessageSquare, ImageIcon, ChevronDown, ChevronUp } from "lucide-react";
+import { Check, Github, Globe, MessageSquare, ImageIcon, ChevronDown, ChevronUp, FileText } from "lucide-react";
 
 interface Project {
     id: string;
@@ -121,21 +121,32 @@ export default function AdminProjectCard({ project, onCheck, isProcessing }: Adm
                                     className="overflow-hidden"
                                 >
                                     <div className="pt-3 grid grid-cols-2 gap-2">
-                                        {project.imageLinks.map((link, idx) => (
-                                            <a
-                                                key={idx}
-                                                href={link}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="block relative aspect-video bg-black/50 rounded overflow-hidden border border-white/10 hover:border-white/30 transition-colors"
-                                            >
-                                                <img
-                                                    src={link}
-                                                    alt={`Attachment ${idx + 1}`}
-                                                    className="w-full h-full object-cover"
-                                                />
-                                            </a>
-                                        ))}
+                                        {project.imageLinks.map((link, idx) => {
+                                            const isPdf = link.toLowerCase().endsWith(".pdf");
+                                            return (
+                                                <a
+                                                    key={idx}
+                                                    href={link}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className={`block relative ${isPdf ? "aspect-auto py-4" : "aspect-video"
+                                                        } bg-white/5 rounded overflow-hidden border border-white/10 hover:border-neon-red/50 transition-colors flex flex-col items-center justify-center gap-2 group/card`}
+                                                >
+                                                    {isPdf ? (
+                                                        <>
+                                                            <FileText className="text-gray-400 group-hover/card:text-neon-red transition-colors" size={32} />
+                                                            <span className="text-xs text-gray-400 font-mono">View PDF</span>
+                                                        </>
+                                                    ) : (
+                                                        <img
+                                                            src={link}
+                                                            alt={`Attachment ${idx + 1}`}
+                                                            className="w-full h-full object-cover"
+                                                        />
+                                                    )}
+                                                </a>
+                                            );
+                                        })}
                                     </div>
                                 </motion.div>
                             )}
