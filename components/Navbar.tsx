@@ -13,6 +13,7 @@ const navLinks = [
     { name: "Events", href: "#events" },
     { name: "Team", href: "#team" },
     { name: "Departments", href: "#departments" },
+    { name: "Projects", href: "/projects" },
 ];
 
 export default function Navbar() {
