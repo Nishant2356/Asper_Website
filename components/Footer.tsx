@@ -8,7 +8,7 @@ export default function Footer() {
             <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
                 <Link href="/" className="flex items-center gap-2 group">
                     <div className="relative w-24 h-16">
-                    <Image
+                        <Image
                             src="https://res.cloudinary.com/dujwwjdkq/image/upload/v1768587223/Gemini_Generated_Image_ie1mzaie1mzaie1m_1_kgyx27.png"
                             alt="Asper Logo"
                             fill
