@@ -116,7 +116,16 @@ export default function MemberDetailsPage() {
                             <h3 className="text-sm font-bold text-gray-500 uppercase tracking-widest mb-4">
                                 Connect
                             </h3>
-                            <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-4 flex-wrap">
+                                {member.email && (
+                                    <Link
+                                        href={`mailto:${member.email}`}
+                                        className="p-3 rounded-full bg-white/5 hover:bg-neon-red text-gray-400 hover:text-white transition-all duration-300 border border-white/10 hover:border-transparent group"
+                                        title="Email"
+                                    >
+                                        <Mail className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                                    </Link>
+                                )}
                                 {member.socials.linkedin && (
                                     <Link
                                         href={member.socials.linkedin.startsWith("http") ? member.socials.linkedin : `https://${member.socials.linkedin}`}

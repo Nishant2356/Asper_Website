@@ -6,6 +6,7 @@ export interface TeamMember {
     branch: string;
     year: string;
     image: string;
+    email?: string;
     bio?: string;
     socials: {
         linkedin?: string;
@@ -18,8 +19,9 @@ export interface TeamMember {
 export const team: TeamMember[] = [
     {
         id: 1,
+        email: "hrxit1984@gmail.com",
         name: "Harshit Navik",
-        role: "Core member",
+        role: "Core Member",
         department: "DSA, Web Development",
         branch: "CSE",
         year: "2nd",
@@ -29,6 +31,7 @@ export const team: TeamMember[] = [
     },
     {
         id: 27,
+        email: "deeptilonkar122004@gmail.com",
         name: "Deepti Lonkar",
         role: "Learner",
         department: "ML & Data Science",
@@ -40,6 +43,7 @@ export const team: TeamMember[] = [
     },
     {
         id: 2,
+        email: "mohita.patil2007@gmail.com",
         name: "Mohita Patil",
         role: "Learner",
         department: "DSA",
@@ -53,6 +57,7 @@ export const team: TeamMember[] = [
     },
     {
         id: 3,
+        email: "jiyajeet954@gmail.com",
         name: "Sneha Tiwari",
         role: "Learner",
         department: "DSA, Web Development",
@@ -66,6 +71,7 @@ export const team: TeamMember[] = [
     },
     {
         id: 4,
+        email: "vivekyadavorchhajhs@gmail.com",
         name: "VIVEK YADAV",
         role: "Learner",
         department: "DSA, IoT",
@@ -80,8 +86,9 @@ export const team: TeamMember[] = [
     },
     {
         id: 5,
+        email: "py935900@gmail.com",
         name: "Prince Yadav",
-        role: "Core member",
+        role: "Core Member",
         department: "Media, Graphics & Video",
         branch: "Ex",
         year: "1st",
@@ -94,6 +101,7 @@ export const team: TeamMember[] = [
     },
     {
         id: 6,
+        email: "princeyadav.career@gmail.com",
         name: "Prince Yadav",
         role: "Learner",
         department: "DSA",
@@ -108,8 +116,9 @@ export const team: TeamMember[] = [
     },
     {
         id: 7,
+        email: "sumitodeliya@gmail.com",
         name: "Sumit Sharma",
-        role: "Core member",
+        role: "Core Member",
         department: "Web Development",
         branch: "IT",
         year: "2",
@@ -119,6 +128,7 @@ export const team: TeamMember[] = [
     },
     {
         id: 8,
+        email: "sinki56k@gmail.com",
         name: "Sinki BHARBHOONJA",
         role: "Learner",
         department: "DSA",
@@ -130,6 +140,7 @@ export const team: TeamMember[] = [
     },
     {
         id: 9,
+        email: "prawinkumarmahto91@gmail.com",
         name: "Prawin Kumar",
         role: "Learner",
         department: "DSA",
@@ -143,6 +154,7 @@ export const team: TeamMember[] = [
     },
     {
         id: 10,
+        email: "rohitlodhi2154@gmail.com",
         name: "Rohit Lodhi",
         role: "Head",
         department: "DevOps & Cloud",
@@ -159,6 +171,7 @@ export const team: TeamMember[] = [
     },
     {
         id: 11,
+        email: "Mohitpatidar2007123@gmail.com",
         name: "Mohit Patidar",
         role: "Learner",
         department: "IoT, ML & Data Science, Media, Graphics & Video",
@@ -175,6 +188,7 @@ export const team: TeamMember[] = [
     },
     {
         id: 12,
+        email: "aryandhola58@gmail.com",
         name: "Aryan Dhola",
         role: "Learner",
         department: "Game Development & Animation",
@@ -188,6 +202,7 @@ export const team: TeamMember[] = [
     },
     {
         id: 13,
+        email: "kashishganvir4@gmail.com",
         name: "KASHISH GANVEER",
         role: "Learner",
         department: "DSA",
@@ -201,6 +216,7 @@ export const team: TeamMember[] = [
     },
     {
         id: 14,
+        email: "neknarayanlodhi53@gmail.com",
         name: "Neknarayan",
         role: "Learner",
         department: "DSA",
@@ -215,6 +231,7 @@ export const team: TeamMember[] = [
     },
     {
         id: 15,
+        email: "astha@090gmail.com",
         name: "Astha Gurjwar",
         role: "Learner",
         department: "DSA",
@@ -228,8 +245,9 @@ export const team: TeamMember[] = [
     },
     {
         id: 16,
+        email: "cosmicbound0000@gmail.com",
         name: "Pranshu Verma",
-        role: "Core member",
+        role: "Core Member",
         department: "Corporate Relations",
         branch: "Mechanical",
         year: "1st",
@@ -241,6 +259,7 @@ export const team: TeamMember[] = [
     },
     {
         id: 17,
+        email: "malviya1822@gmail.com",
         name: "Sankalp Malviya",
         role: "Learner",
         department: "Web Development, DevOps & Cloud",
@@ -256,6 +275,7 @@ export const team: TeamMember[] = [
     },
     {
         id: 18,
+        email: "nancyjha364@gmail.com",
         name: "Nancy Jha",
         role: "Learner",
         department: "DSA, Web Development",
@@ -270,8 +290,9 @@ export const team: TeamMember[] = [
     },
     {
         id: 19,
+        email: "dwivedipranjal72@gmail.com",
         name: "Pranjal Dwivedi",
-        role: "Core member",
+        role: "Core Member",
         department: "Corporate Relations",
         branch: "Ex",
         year: "1st",
@@ -284,6 +305,7 @@ export const team: TeamMember[] = [
     },
     {
         id: 20,
+        email: "divyabichpuriya13@gmail.com",
         name: "Divya Bichpuriya",
         role: "Learner",
         department: "DevOps & Cloud, Corporate Relations",
@@ -295,6 +317,7 @@ export const team: TeamMember[] = [
     },
     {
         id: 21,
+        email: "Pari12935@gmail.com",
         name: "Pari Lakhera",
         role: "Learner",
         department: "Web Development, Game Development & Animation",
@@ -309,8 +332,9 @@ export const team: TeamMember[] = [
     },
     {
         id: 22,
+        email: "aryan07bpl@gmail.com",
         name: "Aryan Kushwaha",
-        role: "Core member",
+        role: "Core Member",
         department: "Media, Graphics & Video, Corporate Relations",
         branch: "Ex",
         year: "1st",
@@ -324,8 +348,9 @@ export const team: TeamMember[] = [
     },
     {
         id: 23,
+        email: "prateeksongara3@gmail.com",
         name: "Pratik Songara",
-        role: "Core member",
+        role: "Core Member",
         department: "Web Development",
         branch: "IT",
         year: "3rd",
@@ -340,8 +365,9 @@ export const team: TeamMember[] = [
     },
     {
         id: 24,
+        email: "agrawalishika246@gmail.com",
         name: "Ishika Agrawal",
-        role: "Core member",
+        role: "Core Member",
         department: "Web Development, Media, Graphics & Video",
         branch: "EC",
         year: "2nd",
@@ -354,6 +380,7 @@ export const team: TeamMember[] = [
     },
     {
         id: 25,
+        email: "abhnandanpathak5@gmail.com",
         name: "Abhinandan Pathak",
         role: "Learner",
         department: "DSA",
@@ -367,6 +394,7 @@ export const team: TeamMember[] = [
     },
     {
         id: 26,
+        email: "gaurichaurasiya06112006@gmail.com",
         name: "Suraj Chaurasiya",
         role: "Learner",
         department: "DSA, Web Development",
@@ -376,6 +404,23 @@ export const team: TeamMember[] = [
         bio: "I am very curious to learn something new",
         socials: {
             linkedin: "https://www.linkedin.com/in/suraj chaurasiya"
+        }
+    },
+    {
+        id: 28,
+        email: "nm2356opp@gmail.com",
+        name: "Nishant Mishra",
+        role: "Head",
+        department: "Web Development",
+        branch: "IT",
+        year: "3rd",
+        image: "/images/team/Nishant.jpg",
+        bio: "Web Lead at Asper with a strong foundation in full-stack development and Data Structures. Passionate about building scalable web products, mentoring developers, and crafting clean, user-focused digital experiences using modern web technologies.",
+        socials: {
+            //email: "nm2356opp@gmail.com",
+            linkedin: "https://www.linkedin.com/in/nishant-mishra-9a3879292?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+            instagram: "https://www.instagram.com/nishant001177?utm_source=qr&igsh=cGZreWpoamg4ZzNn",
+            github: "https://github.com/Nishant2356",
         }
     },
 ];
