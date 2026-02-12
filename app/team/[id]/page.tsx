@@ -53,7 +53,7 @@ export default function MemberDetailsPage() {
                         transition={{ duration: 0.5 }}
                         className="relative group"
                     >
-                        <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 bg-white/5 shadow-[0_0_40px_rgba(255,0,51,0.1)]">
+                        <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 bg-white/5 shadow-[0_0_40px_rgba(255,0,51,0.1)] max-w-xs md:max-w-none mx-auto md:mx-0 w-full">
                             <Image
                                 src={member.image}
                                 alt={member.name}
