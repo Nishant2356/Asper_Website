@@ -431,7 +431,7 @@ export const team: TeamMember[] = [
         branch: "IT",
         year: "3rd",
         image: "/images/team/Atisha_Jain.jpg",
-        bio: "add more like nishant bio but for cr domain ",
+        bio: "Corporate Relations Lead at Asper with a strong foundation in communication and relationship management. Passionate about building connections, fostering collaboration, and creating value for our members and partners through strategic initiatives and engaging programs.",
         socials: {
             linkedin: "https://www.linkedin.com/in/atisha-jain2004",
             instagram: "https://www.instagram.com/_atishajain?igsh=Y2NscDN0bDllNmhu",
