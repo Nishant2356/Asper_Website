@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Code, Cpu, Cloud, Gamepad2, Smartphone, PenTool, Wifi, Database, Briefcase } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const slides = [
     {
@@ -73,6 +74,7 @@ const slides = [
 
 export default function Hero() {
     const [currentSlide, setCurrentSlide] = useState(0);
+    const router = useRouter();
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -163,6 +165,7 @@ export default function Hero() {
                         className="mt-8"
                     >
                         <button
+                            onClick={() => router.push("/contact")}
                             className="px-8 py-4 bg-neon-red text-white font-bold rounded text-lg shadow-[0_0_30px_rgba(255,0,51,0.4)] hover:shadow-[0_0_50px_rgba(255,0,51,0.6)] transition-all flex items-center gap-3 group font-heading hover:scale-105 active:scale-95"
                         >
                             JOIN THE REVOLUTION
