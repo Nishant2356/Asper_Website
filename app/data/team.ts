@@ -417,7 +417,6 @@ export const team: TeamMember[] = [
         image: "/images/team/Nishant.jpg",
         bio: "Web Lead at Asper with a strong foundation in full-stack development and Data Structures. Passionate about building scalable web products, mentoring developers, and crafting clean, user-focused digital experiences using modern web technologies.",
         socials: {
-            //email: "nm2356opp@gmail.com",
             linkedin: "https://www.linkedin.com/in/nishant-mishra-9a3879292?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
             instagram: "https://www.instagram.com/nishant001177?utm_source=qr&igsh=cGZreWpoamg4ZzNn",
             github: "https://github.com/Nishant2356",
@@ -432,11 +431,44 @@ export const team: TeamMember[] = [
         branch: "IT",
         year: "3rd",
         image: "/images/team/Atisha_Jain.jpg",
-        bio: "",
+        bio: "add more like nishant bio but for cr domain ",
         socials: {
             linkedin: "https://www.linkedin.com/in/atisha-jain2004",
             instagram: "https://www.instagram.com/_atishajain?igsh=Y2NscDN0bDllNmhu",
             github: "https://github.com/atisha-jain2004"
+        }
+    },
+    {
+        id: 30,
+        email: "bhargavasaransh037@gmail.com",
+        name: "Saransh Bhargava",
+        role: "Head",
+        department: "DSA",
+        branch: "IT",
+        year: "3rd",
+        image: "/images/team/Saransh.jpg",
+        bio: "MERN Developer | Java DSA | IT Engineering @ UIT RGPV",
+        socials: {
+            linkedin: "https://www.linkedin.com/in/saransh-bharagava",
+            instagram: "https://www.instagram.com/saransh1906/",
+            github: "https://github.com/saransh-bhargava",
+            twitter: "https://x.com/Saransh1906",
+        }
+    },
+    {
+        id: 31,
+        email: "keshavgehlot188@gmail.com",
+        name: "Keshav Gehlot",
+        role: "Head",
+        department: "Management",
+        branch: "IT",
+        year: "3rd",
+        image: "/images/team/Keshav.jpg",
+        bio: "Keen to learn, good with people.",
+        socials: {
+            linkedin: "https://www.linkedin.com/in/keshav-gehlot-1a2b4a28b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+            // instagram: "https://www.instagram.com/nishant001177?utm_source=qr&igsh=cGZreWpoamg4ZzNn",
+            // github: "https://github.com/Nishant2356",
         }
     }
 ];
