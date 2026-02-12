@@ -71,16 +71,16 @@ export default function ContactPage() {
 
                         <form className="space-y-6 relative z-10">
                             <div className="grid md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label className="text-sm font-bold text-gray-400 uppercase tracking-wide">Name</label>
+                                <div className="space-y-2 flex flex-col">
+                                    <label className="text-sm font-bold text-gray-400 uppercase tracking-wide pl-1">Name</label>
                                     <input
                                         type="text"
                                         placeholder="John Doe"
                                         className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-neon-red/50 focus:outline-none transition-colors"
                                     />
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="text-sm font-bold text-gray-400 uppercase tracking-wide">Email</label>
+                                <div className="space-y-2 flex flex-col">
+                                    <label className="text-sm font-bold text-gray-400 uppercase tracking-wide pl-1">Email</label>
                                     <input
                                         type="email"
                                         placeholder="john@example.com"
@@ -89,8 +89,8 @@ export default function ContactPage() {
                                 </div>
                             </div>
 
-                            <div className="space-y-2">
-                                <label className="text-sm font-bold text-gray-400 uppercase tracking-wide">Subject</label>
+                            <div className="space-y-2 flex flex-col">
+                                <label className="text-sm font-bold text-gray-400 uppercase tracking-wide pl-1">Subject</label>
                                 <input
                                     type="text"
                                     placeholder="Collaboration Request"
@@ -98,8 +98,8 @@ export default function ContactPage() {
                                 />
                             </div>
 
-                            <div className="space-y-2">
-                                <label className="text-sm font-bold text-gray-400 uppercase tracking-wide">Message</label>
+                            <div className="space-y-2 flex flex-col">
+                                <label className="text-sm font-bold text-gray-400 uppercase tracking-wide pl-1">Message</label>
                                 <textarea
                                     rows={4}
                                     placeholder="Tell us about your project..."
