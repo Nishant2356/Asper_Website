@@ -75,7 +75,7 @@ export default function ContactPage() {
                                     <label className="text-sm font-bold text-gray-400 uppercase tracking-wide pl-1">Name</label>
                                     <input
                                         type="text"
-                                        placeholder="John Doe"
+                                        placeholder="Rahul Sharma"
                                         className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-neon-red/50 focus:outline-none transition-colors"
                                     />
                                 </div>
@@ -83,7 +83,7 @@ export default function ContactPage() {
                                     <label className="text-sm font-bold text-gray-400 uppercase tracking-wide pl-1">Email</label>
                                     <input
                                         type="email"
-                                        placeholder="john@example.com"
+                                        placeholder="rahul@example.com"
                                         className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:border-neon-red/50 focus:outline-none transition-colors"
                                     />
                                 </div>
