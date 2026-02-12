@@ -6,39 +6,14 @@ import EventCard from "@/components/EventCard";
 import Footer from "@/components/Footer";
 import FAQ from "@/components/FAQ";
 import Link from "next/link";
+import TeamCarousel from "@/components/TeamCarousel";
+import { events } from "@/app/data/events";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-const events = [
-  {
-    id: 1,
-    title: "Hackathon 2026",
-    date: "March 15, 2026",
-    description: "24-hour coding marathon to solve real-world problems. Win exciting prizes!",
-    image: "/assets/web_dev_cinematics.png",
-  },
-  {
-    id: 2,
-    title: "AI Workshop",
-    date: "April 10, 2026",
-    description: "Hands-on session on Neural Networks and Deep Learning with industry experts.",
-    image: "/assets/ml_ds_cinematics.png",
-  },
-  {
-    id: 3,
-    title: "Orientation Session",
-    date: "Feb 20, 2026",
-    description: "Welcome to ASPER! Meet the team and learn about our domains.",
-    image: "/assets/game_dev_cinematics.png",
-  },
-];
 
-const team = [
-  { id: 1, name: "Alex Johnson", role: "President", image: "/assets/logo.png" },
-  { id: 2, name: "Sarah Lee", role: "Tech Lead", image: "/assets/logo.png" },
-  { id: 3, name: "Mike Chen", role: "Events Head", image: "/assets/logo.png" },
-  { id: 4, name: "Emily Davis", role: "Creative Lead", image: "/assets/logo.png" },
-];
+
+
 
 export default function Home() {
   return (
@@ -140,38 +115,36 @@ export default function Home() {
       </section>
 
       {/* Team/Community Section */}
-      <section id="team" className="py-24 px-6 bg-black/50 border-y border-white/5">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-black text-white text-center mb-16">MEET THE <br /><span className="text-neon-red">CORE TEAM</span></h2>
+      <section id="team" className="py-24 bg-black/50 border-y border-white/5 overflow-hidden">
+        <div className="px-6 text-center max-w-7xl mx-auto mb-12">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-5xl font-black mb-6 uppercase tracking-widest font-heading"
+          >
+            Meet the <span className="text-neon-red">Team</span>
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-xl text-gray-400 max-w-2xl mx-auto"
+          >
+            The passionate individuals driving the Asper community forward.
+          </motion.p>
+        </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {team.map((member, index) => (
-              <motion.div
-                key={member.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="group text-center"
-              >
-                <div className="w-full aspect-square bg-gray-800 rounded-2xl mb-4 overflow-hidden border border-white/10 group-hover:border-neon-red/50 transition-all relative">
-                  {member.image && (
-                    <Image
-                      src={member.image}
-                      alt={member.name}
-                      fill
-                      className="object-cover"
-                    />
-                  )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-4 z-10">
-                    <span className="text-neon-red font-bold text-sm uppercase tracking-wider">{member.role}</span>
-                  </div>
-                </div>
-                <h3 className="text-xl font-bold text-white group-hover:text-neon-red transition-colors">{member.name}</h3>
-                <p className="text-gray-500 text-sm hidden md:block">{member.role}</p>
-              </motion.div>
-            ))}
-          </div>
+        <TeamCarousel />
+
+        <div className="mt-12 text-center px-6">
+          <Link
+            href="/team"
+            className="inline-flex items-center justify-center px-8 py-3 rounded-full border border-white/10 bg-white/5 text-white font-bold uppercase tracking-widest hover:bg-neon-red hover:border-neon-red transition-all duration-300"
+          >
+            View Full Team
+          </Link>
         </div>
       </section>
 

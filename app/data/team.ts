@@ -19,7 +19,7 @@ export const team: TeamMember[] = [
     {
         id: 1,
         name: "Harshit Navik",
-        role: "Learner",
+        role: "Core member",
         department: "DSA, Web Development",
         branch: "CSE",
         year: "2nd",
