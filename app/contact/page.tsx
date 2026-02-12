@@ -3,7 +3,8 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
-import { Mail, MapPin, Phone, Send } from "lucide-react";
+import { Mail, MapPin, Send } from "lucide-react";
+import { asper } from "../data/asper";
 
 export default function ContactPage() {
     return (
@@ -37,19 +38,11 @@ export default function ContactPage() {
                                 </div>
                                 <div>
                                     <h3 className="text-xl font-bold text-white mb-1">Email</h3>
-                                    <p className="text-gray-400">contact@asper-club.com</p>
+                                    <p className="text-gray-400">{asper.email}</p>
                                 </div>
                             </div>
 
-                            <div className="flex items-start gap-4">
-                                <div className="p-3 bg-white/5 rounded-lg border border-white/10 text-neon-red">
-                                    <Phone size={24} />
-                                </div>
-                                <div>
-                                    <h3 className="text-xl font-bold text-white mb-1">Phone</h3>
-                                    <p className="text-gray-400">+91 98765 43210</p>
-                                </div>
-                            </div>
+
 
                             <div className="flex items-start gap-4">
                                 <div className="p-3 bg-white/5 rounded-lg border border-white/10 text-neon-red">

@@ -2,6 +2,8 @@ import { Github, Linkedin, Instagram, Rocket } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { asper } from "@/app/data/asper";
+
 export default function Footer() {
     return (
         <footer className="bg-black py-12 border-t border-white/10">
@@ -22,9 +24,9 @@ export default function Footer() {
                 </p>
 
                 <div className="flex items-center gap-6">
-                    <Link href="#" className="text-gray-400 hover:text-neon-red transition-colors"><Instagram size={20} /></Link>
-                    <Link href="#" className="text-gray-400 hover:text-neon-red transition-colors"><Linkedin size={20} /></Link>
-                    <Link href="#" className="text-gray-400 hover:text-neon-red transition-colors"><Github size={20} /></Link>
+                    <Link href={asper.instagram} target="_blank" className="text-gray-400 hover:text-neon-red transition-colors"><Instagram size={20} /></Link>
+                    <Link href={asper.linkedin} target="_blank" className="text-gray-400 hover:text-neon-red transition-colors"><Linkedin size={20} /></Link>
+                    <Link href={asper.github} target="_blank" className="text-gray-400 hover:text-neon-red transition-colors"><Github size={20} /></Link>
                 </div>
             </div>
         </footer>
