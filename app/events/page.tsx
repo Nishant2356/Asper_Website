@@ -15,7 +15,6 @@ export default function EventsPage() {
     return (
         <main className="bg-deep-black min-h-screen text-white">
             <Navbar />
-
             <section className="pt-40 pb-20 px-6 max-w-7xl mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -136,7 +135,6 @@ export default function EventsPage() {
                     ))}
                 </div>
             </section>
-
             <Footer />
         </main>
     );

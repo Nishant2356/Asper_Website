@@ -176,7 +176,7 @@ export default function EventDetailsPage() {
                                     disabled
                                     className="w-full py-4 bg-white/10 text-gray-500 rounded-xl font-bold cursor-not-allowed flex items-center justify-center gap-2"
                                 >
-                                    REGISTRATION CLOSED
+                                    REGISTRATION SOON
                                 </button>
                             )}
                         </div>
