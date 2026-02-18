@@ -122,7 +122,7 @@ export const team: TeamMember[] = [
         department: "Web Development",
         branch: "IT",
         year: "2",
-        image: "/images/team/SumitSharma.jpg",
+        image: "/images/team/Sumit_Sharma.jpg",
         bio: "",
         socials: {}
     },
