@@ -67,7 +67,7 @@ export default function AboutPage() {
                         transition={{ delay: 0.2, duration: 0.8 }}
                         className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto leading-relaxed"
                     >
-                        ASPER is the elite technical community of the IT Department, UIT RGPV.
+                        ASPER is the elite technical community of the Students of UIT RGPV.
                         We don't just write code; we engineer the future.
                     </motion.p>
                 </div>
@@ -157,12 +157,11 @@ export default function AboutPage() {
                         </h2>
                         <div className="space-y-6 text-lg text-gray-400 leading-relaxed">
                             <p>
-                                As the official technical club of the Information Technology Department, our mission is simple:
-                                <span className="text-white font-bold"> To bridge the gap between academic theory and industrial application.</span>
+                                The ASPER mission is to enable students by providing a platform for technical development and innovation. At ASPER, we believe in learning by doing. That is why we concentrate on providing practical exposure through immersion activities, workshops, and projects
+                                <span className="text-white font-bold"> Our aim is to develop future leaders by inculcating discipline, team spirit, and problem-solving skills.</span>
                             </p>
                             <p>
-                                We foster a culture where experimentation is encouraged, failure is a stepping stone, and innovation is the norm.
-                                Whether it's cloud computing, AI, or blockchain, we provide the platform to master it.
+                                Our final aim is to ensure that each and every member of our organization graduates not only with a degree but also as industry-ready professionals with confidence in their communication and technical skills.
                             </p>
                         </div>
                     </motion.div>
