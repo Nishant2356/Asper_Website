@@ -470,5 +470,37 @@ export const team: TeamMember[] = [
             // instagram: "https://www.instagram.com/nishant001177?utm_source=qr&igsh=cGZreWpoamg4ZzNn",
             // github: "https://github.com/Nishant2356",
         }
-    }
+    },
+    {
+        id: 32,
+        email: "harshitmahajan010@gmail.com",
+        name: "Harshit Mahajan",
+        role: "Head",
+        department: "IOT",
+        branch: "IT",
+        year: "3rd",
+        image: "/images/team/Harshit_Mahajan.jpg",
+        bio: "IoT Head at ASPER Club | B.Tech IT | Passionate about robotics, embedded systems, and AI-driven automation, with hands-on experience in Arduino, ESP32, and real-world hardware integration. Focused on building innovative IoT solutions and leading projects that bridge hardware, software, and intelligent systems.",
+        socials: {
+            linkedin: "https://www.linkedin.com/in/harshit-mahajan-26a829280?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+            instagram: "https://www.instagram.com/_harshit_010?igsh=ajdibXkyaGFydHU1",
+            github: "https://github.com/Harshit-git010",
+            twitter: "https://x.com/Harshit03848650",
+        }
+    },
+    {
+        id: 33,
+        email: "priyansheemanker@gmail.com",
+        name: "Priyanshee Manker",
+        role: "Head",
+        department: "Media (Graphic & Video)",
+        branch: "IT",
+        year: "3rd",
+        image: "/images/team/Priyanshee_Manker.jpg",
+        bio: "B.Tech IT student | Tech enthusiast | Creative mind | Passionate about learning new technologies, creating content, and growing through consistency. Always exploring, improving, and building better every day ✨",
+        socials: {
+            linkedin: "https://www.linkedin.com/in/priyanshee-manker-7ab9b4292?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+            instagram: "https://www.instagram.com/priyanshee_29?igsh=cWhmaTJ0eWUwY2R5"
+        }
+    },
 ];
