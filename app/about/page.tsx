@@ -157,7 +157,7 @@ export default function AboutPage() {
                         </h2>
                         <div className="space-y-6 text-lg text-gray-400 leading-relaxed">
                             <p>
-                                The ASPER mission is to enable students by providing a platform for technical development and innovation. At ASPER, we believe in learning by doing. That is why we concentrate on providing practical exposure through immersion activities, workshops, and projects
+                                The ASPER mission is to enable students by providing a platform for technical development and innovation. At ASPER, we believe in learning by doing. That is why we concentrate on providing practical exposure through immersion activities, workshops, and projects.
                                 <span className="text-white font-bold"> Our aim is to develop future leaders by inculcating discipline, team spirit, and problem-solving skills.</span>
                             </p>
                             <p>

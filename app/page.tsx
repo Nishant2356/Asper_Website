@@ -11,6 +11,9 @@ import { events } from "@/app/data/events";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import CardComponent from '../components/CardComponent';
+import { visionPoints } from "./data/vision";
+import { missionPoints } from "./data/mission";
 
 
 export default function Home() {
@@ -61,23 +64,11 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="relative"
           >
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="relative rounded-2xl overflow-hidden border border-white/10 group hover:border-neon-red/50 transition-all shadow-2xl">
-                {/* using standard img to respect natural aspect ratio of user assets */}
-                <img
-                  src="/assets/about_asper/about_image_1.jpg"
-                  alt="Asper Community Event"
-                  className="w-full h-auto object-contain block group-hover:scale-105 transition-transform duration-700"
-                />
-              </div>
-              <div className="relative rounded-2xl overflow-hidden border border-white/10 group hover:border-neon-red/50 transition-all shadow-2xl">
-                {/* using standard img to respect natural aspect ratio of user assets */}
-                <img
-                  src="/assets/about_asper/about_image_2.jpg"
-                  alt="Asper Team"
-                  className="w-full h-auto object-contain block group-hover:scale-105 transition-transform duration-700"
-                />
-              </div>
+
+
+            <div className="flex flex-col md:flex-row items-stretch justify-center gap-6 w-full mt-12 lg:mt-0">
+              <CardComponent title="Vision" points={visionPoints} />
+              <CardComponent title="Mission" points={missionPoints} />
             </div>
 
             {/* Background Glow */}
