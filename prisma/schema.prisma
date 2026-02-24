@@ -26,6 +26,8 @@ model Project {
   liveLink    String?
   imageLinks  String[]
   doubts      String?    @db.Text
+  marks       String     @default("")
+  feedback    String?    @db.Text
   checked     Boolean    @default(false)
   accepted    Boolean    @default(false)
   createdAt   DateTime   @default(now())

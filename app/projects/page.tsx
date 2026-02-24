@@ -17,6 +17,8 @@ interface Project {
     liveLink?: string;
     imageLinks: string[];
     doubts?: string;
+    marks: string;
+    feedback?: string;
     checked: boolean;
     accepted: boolean;
     createdAt: string;
@@ -42,6 +44,7 @@ export default function ProjectsPage() {
             const res = await fetch(`/api/projects?userId=${userId}`);
             if (res.ok) {
                 const data = await res.json();
+                console.log(data)
                 setProjects(data);
             }
         } catch (error) {

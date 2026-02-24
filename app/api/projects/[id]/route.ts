@@ -8,11 +8,13 @@ export async function PATCH(
     try {
         const { id } = await params;
         const body = await request.json();
-        const { checked, accepted } = body;
+        const { checked, accepted, marks, feedback } = body;
 
         const data: any = {};
         if (checked !== undefined) data.checked = checked;
         if (accepted !== undefined) data.accepted = accepted;
+        if (marks !== undefined) data.marks = String(marks);
+        if (feedback !== undefined) data.feedback = String(feedback);
 
         const project = await prisma.project.update({
             where: { id },

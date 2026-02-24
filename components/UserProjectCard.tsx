@@ -12,6 +12,8 @@ interface Project {
     liveLink?: string;
     imageLinks: string[];
     doubts?: string;
+    marks: string;
+    feedback?: string;
     checked: boolean;
     accepted: boolean;
     createdAt: string;
@@ -60,8 +62,20 @@ export default function UserProjectCard({ project }: UserProjectCardProps) {
                             {new Date(project.createdAt).toLocaleDateString()}
                         </p>
                     </div>
-                    <div className={`px-3 py-1 rounded-full text-xs font-bold ${statusColor}`}>
-                        {statusText}
+                    <div className="flex flex-col items-end gap-2">
+                        <div className={`px-3 py-1 rounded-full text-xs font-bold ${statusColor}`}>
+                            {statusText}
+                        </div>
+                        {project.checked && project.marks && project.marks !== "" && (
+                            <motion.div
+                                initial={{ opacity: 0, x: 20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                className="bg-gradient-to-r from-neon-red/20 to-black border border-neon-red/50 text-white text-xs font-mono px-4 py-1.5 rounded-full shadow-[0_0_10px_rgba(255,0,51,0.3)] flex items-center gap-2"
+                            >
+                                <span className="text-gray-400">SCORE</span>
+                                <span className="font-bold text-neon-red text-sm">{project.marks}</span>
+                            </motion.div>
+                        )}
                     </div>
                 </div>
 
@@ -110,6 +124,14 @@ export default function UserProjectCard({ project }: UserProjectCardProps) {
                             <span>Question/Doubts</span>
                         </div>
                         <p className="text-sm text-gray-300 italic">"{project.doubts}"</p>
+                    </div>
+                )}
+
+                {project.feedback && (
+                    <div className="bg-neon-red/5 p-4 rounded-lg mb-6 border border-neon-red/20 relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-1 h-full bg-neon-red"></div>
+                        <h4 className="text-neon-red font-bold text-sm mb-1 uppercase tracking-wider">Admin Feedback</h4>
+                        <p className="text-sm text-gray-300 whitespace-pre-wrap">{project.feedback}</p>
                     </div>
                 )}
 

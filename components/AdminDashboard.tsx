@@ -15,6 +15,8 @@ interface Project {
     liveLink?: string;
     imageLinks: string[];
     doubts?: string;
+    marks: string;
+    feedback?: string;
     checked: boolean;
     accepted: boolean;
     createdAt: string;
@@ -58,19 +60,33 @@ export default function AdminDashboard() {
         fetchProjects();
     }, []);
 
-    const handleUpdateStatus = async (id: string, accepted: boolean) => {
+    const handleUpdateStatus = async (id: string, accepted: boolean, marks?: string, feedback?: string) => {
         setProcessingId(id);
         try {
+            const bodyData: any = { checked: true, accepted };
+            if (marks !== undefined) {
+                bodyData.marks = marks;
+            }
+            if (feedback !== undefined) {
+                bodyData.feedback = feedback;
+            }
+
             const res = await fetch(`/api/projects/${id}`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ checked: true, accepted }),
+                body: JSON.stringify(bodyData),
             });
 
             if (res.ok) {
                 setProjects((prev) =>
                     prev.map((p) =>
-                        p.id === id ? { ...p, checked: true, accepted } : p
+                        p.id === id ? {
+                            ...p,
+                            checked: true,
+                            accepted,
+                            marks: marks !== undefined ? marks : p.marks,
+                            feedback: feedback !== undefined ? feedback : p.feedback
+                        } : p
                     )
                 );
             }
