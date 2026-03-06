@@ -118,9 +118,9 @@ export default function Hero() {
                         transition={{ duration: 0.8 }}
                         className="text-5xl md:text-8xl font-black text-white tracking-tighter mb-8 leading-none font-heading"
                     >
-                        <span className="block mb-2">SHAPING THE</span>
+                        <span className="block mb-2">WE PLAN IT</span>
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon-red via-red-500 to-neon-red bg-[length:200%_auto] animate-text">
-                            DIGITAL FRONTIER
+                            WE HOST IT
                         </span>
                     </motion.h1>
 
@@ -165,10 +165,10 @@ export default function Hero() {
                         className="mt-8"
                     >
                         <button
-                            onClick={() => router.push("/contact")}
+                            onClick={() => router.push("/signup")}
                             className="px-8 py-4 bg-neon-red text-white font-bold rounded text-lg shadow-[0_0_30px_rgba(255,0,51,0.4)] hover:shadow-[0_0_50px_rgba(255,0,51,0.6)] transition-all flex items-center gap-3 group font-heading hover:scale-105 active:scale-95"
                         >
-                            JOIN THE REVOLUTION
+                            BE PART OF THE ACTION
                             <ArrowRight className="group-hover:translate-x-1 transition-transform" />
                         </button>
                     </motion.div>

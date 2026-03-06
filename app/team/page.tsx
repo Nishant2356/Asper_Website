@@ -103,10 +103,10 @@ const TeamCard = ({ member, index }: { member: TeamMember; index: number }) => {
                 </h3>
                 {/* <p className="text-sm font-medium text-gray-300 mb-1">
                     {member.role}
-                </p>
-                <p className="text-sm font-bold text-gray-400 mt-1 uppercase tracking-wider">
-                    {member.department}
                 </p> */}
+                {member.department && member.role == "Head" && <p className="text-sm font-bold text-gray-400 mt-1 uppercase tracking-wider">
+                    {member.department}
+                </p>}
 
                 <div
                     className="md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300"

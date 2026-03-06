@@ -42,17 +42,73 @@ enum Role {
 }
 
 model User {
-  id        String     @id @default(cuid())
-  name      String
-  email     String     @unique
-  password  String
-  role      Role       @default(MEMBER)
-  domain    Department[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  projects  Project[]
-  resetToken String?   @unique
+  id               String         @id @default(cuid())
+  name             String
+  email            String         @unique
+  password         String
+  role             Role           @default(MEMBER)
+  domain           Department[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  projects         Project[]
+  resetToken       String?        @unique
   resetTokenExpiry DateTime?
+  quizAttempts     QuizAttempt[]
+  createdQuizzes   Quiz[]         @relation("QuizCreator")
+}
+
+enum QuizStatus {
+  DRAFT
+  ACTIVE
+  INACTIVE
+}
+
+enum QuestionType {
+  MCQ
+  DYNAMIC
+}
+
+model Quiz {
+  id            String         @id @default(cuid())
+  title         String
+  description   String?        @db.Text
+  department    Department
+  status        QuizStatus     @default(DRAFT)
+  timeLimit     Int?           // In minutes
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  createdBy     String
+  user          User           @relation("QuizCreator", fields: [createdBy], references: [id])
+  questions     Question[]
+  attempts      QuizAttempt[]
+}
+
+model Question {
+  id            String       @id @default(cuid())
+  quizId        String
+  quiz          Quiz         @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  type          QuestionType @default(MCQ)
+  text          String       @db.Text
+  options       String[]
+  correctAnswer String?      @db.Text
+  marks         Int          @default(1)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model QuizAttempt {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  quizId      String
+  quiz        Quiz      @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  answers     String    @db.Text // JSON string of questionId -> answer
+  score       Float?
+  feedback    String?   @db.Text // LLM grading feedback
+  status      String    @default("IN_PROGRESS") // IN_PROGRESS, SUBMITTED, GRADED
+  timeLeft    Int?      // Remaining time in seconds
+  createdAt   DateTime  @default(now())
+  submittedAt DateTime?
 }
 
 model Message {

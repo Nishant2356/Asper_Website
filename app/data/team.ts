@@ -29,18 +29,18 @@ export const team: TeamMember[] = [
         bio: "I’m Harshit Navik. I’m a motivated learner with a strong interest in computer science and problem-solving.",
         socials: {}
     },
-    {
-        id: 27,
-        email: "deeptilonkar122004@gmail.com",
-        name: "Deepti Lonkar",
-        role: "Learner",
-        department: "ML & Data Science",
-        branch: "IT",
-        year: "1st",
-        image: "/images/team/DeeptiLonkar.jpg",
-        bio: "Engineering student with a strong foundation in computer science and Python. Skilled in analytical thinking and problem-solving. Focused on continuous learning and building a career in technology.",
-        socials: {}
-    },
+    // {
+    //     id: 27,
+    //     email: "deeptilonkar122004@gmail.com",
+    //     name: "Deepti Lonkar",
+    //     role: "Learner",
+    //     department: "ML & Data Science",
+    //     branch: "IT",
+    //     year: "1st",
+    //     image: "/images/team/DeeptiLonkar.jpg",
+    //     bio: "Engineering student with a strong foundation in computer science and Python. Skilled in analytical thinking and problem-solving. Focused on continuous learning and building a career in technology.",
+    //     socials: {}
+    // },
     {
         id: 2,
         email: "mohita.patil2007@gmail.com",
@@ -303,18 +303,18 @@ export const team: TeamMember[] = [
             instagram: "https://www.instagram.com/oyee_pranjal14/"
         }
     },
-    {
-        id: 20,
-        email: "divyabichpuriya13@gmail.com",
-        name: "Divya Bichpuriya",
-        role: "Learner",
-        department: "DevOps & Cloud, Corporate Relations",
-        branch: "IT",
-        year: "1st",
-        image: "/images/team/Divya.jpg",
-        bio: "",
-        socials: {}
-    },
+    // {
+    //     id: 20,
+    //     email: "divyabichpuriya13@gmail.com",
+    //     name: "Divya Bichpuriya",
+    //     role: "Learner",
+    //     department: "DevOps & Cloud, Corporate Relations",
+    //     branch: "IT",
+    //     year: "1st",
+    //     image: "/images/team/Divya.jpg",
+    //     bio: "",
+    //     socials: {}
+    // },
     {
         id: 21,
         email: "Pari12935@gmail.com",
@@ -501,6 +501,36 @@ export const team: TeamMember[] = [
         socials: {
             linkedin: "https://www.linkedin.com/in/priyanshee-manker-7ab9b4292?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
             instagram: "https://www.instagram.com/priyanshee_29?igsh=cWhmaTJ0eWUwY2R5"
+        }
+    },
+    {
+        id: 34,
+        email: "mahalaxmigupta96@gmail.com",
+        name: "Rajni Gupta",
+        role: "Learner",
+        department: "DSA, Game development and Animation",
+        branch: "EC",
+        year: "1st",
+        image: "/images/team/Rajni_Gupta.jpeg",
+        bio: "Curious learner, improving my skills , growing step by step , learning from every experience  ",
+        socials: {
+            linkedin: "https://www.linkedin.com/in/rajni-gupta-5528553ab?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+            instagram: "https://www.instagram.com/rajnigupta6287?igsh=dWdxbXB4d2VsbmI1"
+        }
+    },
+    {
+        id: 35,
+        email: "sanskritishrivastava619@gmail.com",
+        name: "Sanskriti Shrivastava",
+        role: "Learner",
+        department: "DSA, Web Development",
+        branch: "CSE",
+        year: "1st",
+        image: "/images/team/Sanskriti_Shrivastava.jpeg",
+        bio: "Hi there ! I am a first year student from UIT RGPV Currently I am learning DSA and Web development ",
+        socials: {
+            linkedin: "https://www.linkedin.com/in/sanskriti-shrivastava-412aa4381?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+            instagram: "https://www.instagram.com/sanskriti36039?igsh=emY1cDduYmd1eDJ4"
         }
     },
 ];
