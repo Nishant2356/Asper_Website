@@ -86,7 +86,7 @@ const TeamCard = ({ member, index }: { member: TeamMember; index: number }) => {
                     "
                 />
 
-                <div
+                {/* <div
                     className="
                         absolute inset-0 
                         bg-gradient-to-t from-black/90 via-black/40 to-transparent 
@@ -94,19 +94,19 @@ const TeamCard = ({ member, index }: { member: TeamMember; index: number }) => {
                         md:opacity-0 md:group-hover:opacity-100 
                         transition-opacity duration-300
                     "
-                />
+                /> */}
             </div>
 
             <div className="absolute bottom-0 left-0 right-0 p-5 text-white bg-gradient-to-t from-black via-black/80 to-transparent md:bg-none">
                 <h3 className="text-xl font-bold leading-tight mb-1 group-hover:text-neon-red transition-colors">
                     {member.name}
                 </h3>
-                <p className="text-sm font-medium text-gray-300 mb-1">
+                {/* <p className="text-sm font-medium text-gray-300 mb-1">
                     {member.role}
                 </p>
                 <p className="text-sm font-bold text-gray-400 mt-1 uppercase tracking-wider">
                     {member.department}
-                </p>
+                </p> */}
 
                 <div
                     className="md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300"

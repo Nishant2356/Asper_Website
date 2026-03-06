@@ -65,7 +65,6 @@ export default function Home() {
             className="relative"
           >
 
-
             <div className="flex flex-col md:flex-row items-stretch justify-center gap-6 w-full mt-12 lg:mt-0">
               <CardComponent title="Vision" points={visionPoints} />
               <CardComponent title="Mission" points={missionPoints} />

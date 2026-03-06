@@ -93,3 +93,6 @@ Vibe: It needs to be "cinematic" and "badass" to match your personal taste and t
 
 
 chat the other pages are looking exactly similar to the reference pages that i have provided i dont want it to look exactly alike as this this is another important club in our college and it will look its copy so i want to make the pages somewhat slightly different with all the details and quality intact for team contact and about page also make the events page as well
+
+
+chat i want you to add another filed in the project model named marks in string i will be giving marks to them out of ten that i will manually give like this 9/10 but at initially when not checked it will have the value as not checked something like that
