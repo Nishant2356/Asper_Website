@@ -17,6 +17,7 @@ const quizSchema = z.object({
         "ML_DATA_SCIENCE",
         "MEDIA_GRAPHICS_VIDEO",
         "CORPORATE_RELATIONS",
+        "PHOTOGRAPHY_VIDEO_EDITING",
     ]),
     status: z.enum(["DRAFT", "ACTIVE", "INACTIVE"]).default("DRAFT"),
     timeLimit: z.number().int().optional(),
