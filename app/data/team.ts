@@ -541,8 +541,14 @@ export const team: TeamMember[] = [
         department: "President",
         branch: "IT",
         year: "4th",
-        image: "/images/team/Mayank_Mishra.jpeg",
-        bio: "President of Asper. Leading the community forward with vision and execution.",
+        image: "/images/team/Mayank_Mishra1.jpeg",
+        bio: `As the President of ASPER, I led the initiative to restart and strengthen the community, with a vision of creating a collaborative platform where students can learn, innovate, and grow in emerging technologies.
+
+I am a final- year Information Technology student at UIT RGPV, Bhopal and the Department Topper of the IT Department. My technical interests include Artificial Intelligence & Machine Learning, Data Science, Cloud Computing, and Data Structures & Algorithms(DSA) with Java.
+
+I have received placement offers from reputed organizations, including TCS, reflecting my strong foundation in problem - solving and modern technologies.
+
+Through ASPER, I aim to build a culture of practical learning, technical excellence, and industry readiness among students.`,
         socials: {
             linkedin: "https://www.linkedin.com/in/mayank-mishra-a20359255",
             instagram: "https://www.instagram.com/mayankkk.mishra/"
