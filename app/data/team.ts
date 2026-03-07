@@ -535,7 +535,7 @@ export const team: TeamMember[] = [
     },
     {
         id: 36,
-        email: "mayankmishra@example.com",
+        email: "mayank96982@gmail.com",
         name: "Mayank Mishra",
         role: "President",
         department: "President",
@@ -544,7 +544,7 @@ export const team: TeamMember[] = [
         image: "/images/team/Mayank_Mishra.jpeg",
         bio: "President of Asper. Leading the community forward with vision and execution.",
         socials: {
-            linkedin: "",
+            linkedin: "https://www.linkedin.com/in/mayank-mishra-a20359255",
             instagram: "https://www.instagram.com/mayankkk.mishra/"
         }
     },
