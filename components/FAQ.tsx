@@ -7,7 +7,7 @@ import { Plus, Minus } from "lucide-react";
 const faqs = [
     {
         question: "How can I join ASPER?",
-        answer: "Recruitment drives are held annually. Keep an eye on our social media handles and the 'Join Us' section of this website for announcements.",
+        answer: "Recruitment drives are held timely. Keep an eye on our social media handles and the 'Join Us' section of this website for announcements.",
     },
     {
         question: "Is there a membership fee?",
