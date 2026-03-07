@@ -19,7 +19,7 @@ const faqs = [
     },
     {
         question: "What domains does ASPER cover?",
-        answer: "We have 9 active domains including Web Dev, ML/AI, Game Dev, Cloud, Android, IoT, DSA, Graphic Design, and Corporate Relations.",
+        answer: "We have 10 active domains including Web Dev, ML/AI, Game Dev, Cloud, Android, IoT, DSA, Graphic Design, Photography & Video Editing and Corporate Relations.",
     },
 ];
 

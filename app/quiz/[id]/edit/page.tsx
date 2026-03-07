@@ -7,7 +7,7 @@ import { Plus, Trash2, Save, Loader2, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 type QuestionType = "MCQ" | "DYNAMIC";
-type Department = "DSA" | "WEB_DEVELOPMENT" | "IOT" | "GAME_DEVELOPMENT_ANIMATION" | "DEVOPS_CLOUD" | "ML_DATA_SCIENCE" | "MEDIA_GRAPHICS_VIDEO" | "CORPORATE_RELATIONS";
+type Department = "DSA" | "WEB_DEVELOPMENT" | "IOT" | "GAME_DEVELOPMENT_ANIMATION" | "DEVOPS_CLOUD" | "ML_DATA_SCIENCE" | "MEDIA_GRAPHICS_VIDEO" | "CORPORATE_RELATIONS" | "PHOTOGRAPHY_VIDEO_EDITING";
 
 const DEPARTMENTS = [
     { value: "ALL", label: "All Departments" },
@@ -19,6 +19,7 @@ const DEPARTMENTS = [
     { value: "ML_DATA_SCIENCE", label: "Machine Learning & Data Science" },
     { value: "MEDIA_GRAPHICS_VIDEO", label: "Media (Graphics & Video)" },
     { value: "CORPORATE_RELATIONS", label: "Corporate Relations" },
+    { value: "PHOTOGRAPHY_VIDEO_EDITING", label: "Photography & Video Editing" },
 ];
 
 interface QuestionInput {

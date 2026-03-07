@@ -19,6 +19,7 @@ const DEPARTMENTS = [
     { value: "ML_DATA_SCIENCE", label: "Machine Learning & Data Science" },
     { value: "MEDIA_GRAPHICS_VIDEO", label: "Media (Graphics & Video)" },
     { value: "CORPORATE_RELATIONS", label: "Corporate Relations" },
+    { value: "PHOTOGRAPHY_VIDEO_EDITING", label: "Photography & Video Editing" },
 ];
 
 export default function ProjectFormModal({

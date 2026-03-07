@@ -101,12 +101,19 @@ const TeamCard = ({ member, index }: { member: TeamMember; index: number }) => {
                 <h3 className="text-xl font-bold leading-tight mb-1 group-hover:text-neon-red transition-colors">
                     {member.name}
                 </h3>
-                {/* <p className="text-sm font-medium text-gray-300 mb-1">
-                    {member.role}
-                </p> */}
-                {member.department && member.role == "Head" && <p className="text-sm font-bold text-gray-400 mt-1 uppercase tracking-wider">
-                    {member.department}
-                </p>}
+                {/* Show the department for heads */}
+                {member.department && member.role === "Head" && (
+                    <p className="text-sm font-bold text-gray-400 mt-1 uppercase tracking-wider">
+                        {member.department}
+                    </p>
+                )}
+
+                {/* Show the role specifically for Community head / President / Founder */}
+                {(member.role === "Community Head" || member.role === "President" || member.role === "Founder") && (
+                    <p className="text-sm font-bold text-neon-red mt-1 uppercase tracking-widest">
+                        {member.role}
+                    </p>
+                )}
 
                 <div
                     className="md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300"
@@ -134,14 +141,23 @@ const sortByDept = (a: TeamMember, b: TeamMember) => {
     return getSortPriority(a.department) - getSortPriority(b.department);
 };
 
-const heads = team.filter((m) => m.role.toLowerCase().includes("head")).sort(sortByDept);
-const core = team.filter((m) => m.role.toLowerCase().includes("core")).sort(sortByDept);
-const learners = team.filter((m) => m.role.toLowerCase().includes("learner"));
+const communityHead = team.find((m) =>
+    m.role.toLowerCase() === "community head" ||
+    m.department.toLowerCase() === "community head" ||
+    m.role.toLowerCase() === "founder" ||
+    m.role.toLowerCase() === "president" ||
+    m.department.toLowerCase() === "lead"
+);
+
+const heads = team.filter((m) => m.role.toLowerCase().includes("head") && m.id !== communityHead?.id).sort(sortByDept);
+const core = team.filter((m) => m.role.toLowerCase().includes("core") && m.id !== communityHead?.id).sort(sortByDept);
+const learners = team.filter((m) => m.role.toLowerCase().includes("learner") && m.id !== communityHead?.id);
 const others = team.filter(
     (m) =>
         !m.role.toLowerCase().includes("head") &&
         !m.role.toLowerCase().includes("core") &&
-        !m.role.toLowerCase().includes("learner")
+        !m.role.toLowerCase().includes("learner") &&
+        m.id !== communityHead?.id
 );
 const learnersAndOthers = [...learners, ...others].sort(sortByDept);
 
@@ -194,6 +210,15 @@ export default function TeamPage() {
                     Meet the leaders, creators, and innovators driving ASPER forward.
                 </motion.p>
             </section>
+
+            {/* Community Head Section */}
+            {communityHead && (
+                <section className="py-10 px-6 max-w-7xl mx-auto flex flex-col items-center">
+                    <div className="w-[85%] sm:w-[50%] lg:w-[40%]">
+                        <TeamCard member={communityHead} index={0} />
+                    </div>
+                </section>
+            )}
 
             <TeamSection title="Leads" members={heads} />
             <TeamSection title="Core Members" members={core} />

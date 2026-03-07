@@ -533,4 +533,19 @@ export const team: TeamMember[] = [
             instagram: "https://www.instagram.com/sanskriti36039?igsh=emY1cDduYmd1eDJ4"
         }
     },
+    {
+        id: 36,
+        email: "mayankmishra@example.com",
+        name: "Mayank Mishra",
+        role: "President",
+        department: "President",
+        branch: "IT",
+        year: "4th",
+        image: "/images/team/Mayank_Mishra.jpeg",
+        bio: "President of Asper. Leading the community forward with vision and execution.",
+        socials: {
+            linkedin: "",
+            instagram: "https://www.instagram.com/mayankkk.mishra/"
+        }
+    },
 ];

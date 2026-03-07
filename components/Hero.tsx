@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Code, Cpu, Cloud, Gamepad2, Smartphone, PenTool, Wifi, Database, Briefcase } from "lucide-react";
+import { ArrowRight, Code, Cpu, Cloud, Gamepad2, Smartphone, PenTool, Wifi, Database, Briefcase, Camera } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -69,6 +69,13 @@ const slides = [
         icon: Briefcase,
         image: "/assets/corporate_cinematics.png",
         description: "Bridging the gap between the student community and the professional industry.",
+    },
+    {
+        id: 10,
+        domain: "Photography & Video Editing",
+        icon: Camera,
+        image: "/assets/photography_cinematics.png", // Will need to be added by user later
+        description: "Capturing moments and crafting compelling visual narratives.",
     },
 ];
 
