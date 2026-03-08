@@ -636,7 +636,7 @@ Through ASPER, I aim to build a culture of practical learning, technical excelle
         email: "kumarrahulra558@gmail.com",
         name: "Rahul Ahirwar",
         role: "Co-Head",
-        department: "Media (Graphic & Video)",
+        department: "Photography & Video Editing",
         branch: "IT",
         year: "2nd",
         image: "/images/team/Rahul_Ahirwar.jpeg",
