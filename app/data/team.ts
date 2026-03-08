@@ -124,7 +124,11 @@ export const team: TeamMember[] = [
         year: "2",
         image: "/images/team/Sumit_Sharma.jpg",
         bio: "",
-        socials: {}
+        socials: {
+            linkedin: "https://www.linkedin.com/in/sumit-sharma-87252132b?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3Bps11epJVTTWj2Zy%2BVT1emQ%3D%3D",
+            instagram: "https://www.instagram.com/sumitsharma2168/",
+            github: "https://github.com/sumitsharma1824"
+        }
     },
     // {
     //     id: 8,
@@ -556,6 +560,7 @@ Through ASPER, I aim to build a culture of practical learning, technical excelle
     },
 
     {
+
         id: 37,
         email: "krishna.sharmaaa8@gmail.com",
         name: "Balkrishna Sharma",
@@ -1002,6 +1007,497 @@ Through ASPER, I aim to build a culture of practical learning, technical excelle
             instagram: "",
             github: ""
         }
-    }
+    },
+
+  {id: 37,
+  email: "krishna.sharmaaa8@gmail.com",
+  name: "Balkrishna Sharma",
+  role: "Learner",
+  department: "Game development and Animation",
+  branch: "EC",
+  year: "1st",
+  image: "/images/team/Balkrishna_Sharma.jpg",
+  bio: "",
+  socials: {
+    linkedin: "",
+    instagram: "https://instagram.com/_kriishnaa._08"
+  }},
+{
+  id: 38,
+  email: "khushiiiiiiii151@gmail.com",
+  name: "Khushi Yadav",
+  role: "Head",
+  department: "Media (Graphic & Video)",
+  branch: "IT",
+  year: "2nd",
+  image: "/images/team/Khushi_Yadav.jpg",
+  bio: "Graphic Design Co-Head of ASPER, creating impactful visuals while ensuring creativity and consistent branding.",
+  socials: {
+    linkedin: "https://www.linkedin.com/in/khushi-yadav-a3b737332",
+    instagram: ""
+  }
+},
+{
+  id: 39,
+  email: "yuvrajain2007@gmail.com",
+  name: "Yuvraj Jain",
+  role: "Core member",
+  department: "IOT",
+  branch: "EC",
+  year: "1st",
+  image: "/images/team/Yuvraj_Jain.webp",
+  bio: "Electronics and Communication Engineering student interested in IoT and building a strong tech career.",
+  socials: {
+    linkedin: "https://www.linkedin.com/in/yuvraj-jain-484a90377",
+    instagram: "https://www.instagram.com/yuwraj_jain",
+    github: "https://github.com/Yuvraj-Jain2007"
+  }
+},
+{
+  id: 40,
+  email: "satyamsharma3019@gmail.com",
+  name: "Satyam Sharma",
+  role: "Learner",
+  department: "DSA, Web development",
+  branch: "CSE",
+  year: "1st",
+  image: "/images/team/Satyam_Sharma.jpeg",
+  bio: "",
+  socials: {
+    linkedin: "",
+    instagram: ""
+  }
+},
+{
+  id: 41,
+  email: "prashantdubeyrewa@gmail.com",
+  name: "Prashant Dubey",
+  role: "Core member",
+  department: "IOT, Corporate Relation",
+  branch: "EC",
+  year: "1st",
+  image: "/images/team/Prashant_Dubey.jpg",
+  bio: "",
+  socials: {
+    linkedin: "https://www.linkedin.com/in/prashantdubey385",
+    instagram: ""
+  }
+},
+{
+  id: 42,
+  email: "kumarrahulra558@gmail.com",
+  name: "Rahul Ahirwar",
+  role: "Head",
+  department: "Media (Graphic & Video)",
+  branch: "IT",
+  year: "2nd",
+  image: "/images/team/Rahul_Ahirwar.jpeg",
+  bio: "",
+  socials: {
+    linkedin: "https://linkedin.com/in/rahul-ahirwar-1a295a340",
+    instagram: "https://www.instagram.com/rgpvianrahul"
+  }
+},
+{
+  id: 43,
+  email: "sadiyaans73@gmail.com",
+  name: "Sadiya Khatoon",
+  role: "Learner",
+  department: "Machine Learning & DS, Media (Graphic & Video)",
+  branch: "Mechanical",
+  year: "1st",
+  image: "/images/team/Sadiya_Khatoon.jpg",
+  bio: "Curious learner who enjoys exploring new things and working with people while gaining new experiences.",
+  socials: {
+    linkedin: "https://www.linkedin.com/in/sadiya-ansari-299a44378",
+    instagram: "https://www.instagram.com/sadi.x08"
+  }
+},
+{
+  id: 44,
+  email: "prakhargoutam1@gmail.com",
+  name: "Prakhar Goutam",
+  role: "Learner",
+  department: "DSA",
+  branch: "IT",
+  year: "1st",
+  image: "/images/team/Prakhar_Goutam.jpeg",
+  bio: "DSA || C++ || Web Development",
+  socials: {
+    linkedin: "https://www.linkedin.com/in/prakhar-goutam-67b373381",
+    instagram: "",
+    github: "https://github.com/Prakhar-Goutam"
+  }
+},
+{
+  id: 45,
+  email: "ankitaprajapat632@gmail.com",
+  name: "Ankita Prajapat",
+  role: "Core member",
+  department: "Web development, Media (Graphic & Video)",
+  branch: "EC",
+  year: "2nd",
+  image: "/images/team/Ankita_Prajapat.jpg",
+  bio: "Passionate learner interested in Web Development and Graphic Design.",
+  socials: {
+    linkedin: "",
+    instagram: "",
+    github: "https://github.com/ankitaprajapat632-cmyk"
+  }
+},
+{
+  id: 46,
+  email: "shraddhasahu032005@gmail.com",
+  name: "Shraddha Sahu",
+  role: "Learner",
+  department: "Devops & Cloud, Machine Learning & DS",
+  branch: "CSE",
+  year: "1st",
+  image: "/images/team/Shraddha_Sahu.jpg",
+  bio: "",
+  socials: {
+    linkedin: "",
+    instagram: ""
+  }
+},
+{
+  id: 47,
+  email: "raishmansuri039@gmail.com",
+  name: "Sahil Mansuri",
+  role: "Learner",
+  department: "DSA",
+  branch: "IT",
+  year: "1st",
+  image: "/images/team/Sahil_Mansuri.jpg",
+  bio: "IT student at UIT RGPV Bhopal learning C++ and Data Structures.",
+  socials: {
+    linkedin: "https://www.linkedin.com/in/sahil-mansuri-486aaa387",
+    instagram: "",
+    github: "https://github.com/sahilmns"
+  }
+},
+{
+  id: 48,
+  email: "khaninsha6338@gmail.com",
+  name: "Insha Khan",
+  role: "Learner",
+  department: "Media (Graphic & Video)",
+  branch: "EX",
+  year: "1st",
+  image: "/images/team/Insha_Khan.jpg",
+  bio: "Passionate Graphic Designer who enjoys creating clean and impactful designs.",
+  socials: {
+    linkedin: "",
+    instagram: ""
+  }
+},
+{
+  id: 49,
+  email: "rakshakush0@gmail.com",
+  name: "Raksha Kushwaha",
+  role: "Core member",
+  department: "Media (Graphic & Video)",
+  branch: "EX",
+  year: "1st",
+  image: "/images/team/Raksha_Kushwaha.jpg",
+  bio: "",
+  socials: {
+    linkedin: "",
+    instagram: "https://www.instagram.com/rakshakush._08"
+  }
+},
+{
+  id: 50,
+  email: "khushimangal770@gmail.com",
+  name: "Khushi Mangal",
+  role: "Learner",
+  department: "Devops & Cloud, Corporate Relation",
+  branch: "CSE",
+  year: "1st",
+  image: "/images/team/Khushi_Mangal.png",
+  bio: "First year CSE student learning C++, web development and improving communication skills.",
+  socials: {
+    linkedin: "https://www.linkedin.com/in/khushi-mangal-6b7049380",
+    instagram: "https://www.instagram.com/khushi.side_"
+  }
+},
+{
+  id: 51,
+  email: "shreeyanshasati0@gmail.com",
+  name: "Shreeyansh Asati",
+  role: "Core member",
+  department: "Machine Learning & DS",
+  branch: "IT",
+  year: "2nd",
+  image: "/images/team/Shreeyansh_Asati.jpg",
+  bio: "Interested in Artificial Intelligence, Data Science, and Machine Learning with focus on building real world projects.",
+  socials: {
+    linkedin: "https://www.linkedin.com/in/shreeyansh-asati-18shreey",
+    instagram: "https://www.instagram.com/shreeyansh.py",
+    github: "https://github.com/SHREEYANSHGIT"
+  }
+},
+{
+  id: 52,
+  email: "rkyrakeshjmg@gmail.com",
+  name: "Rakesh Yadav",
+  role: "Learner",
+  department: "Machine Learning & DS",
+  branch: "SOIT",
+  year: "1st",
+  image: "/images/team/Rakesh_Yadav.webp",
+  bio: "AI/ML learner with knowledge of Python, NumPy, Pandas and data visualization.",
+  socials: {
+    linkedin: "https://www.linkedin.com/in/rakesh-yadav-917318324",
+    instagram: "",
+    github: "https://github.com/Rakesh451-ai"
+  }
+},
+{
+  id: 53,
+  email: "manthajdhote@gmail.com",
+  name: "Manthaj Dhote",
+  role: "Learner",
+  department: "Corporate Relation",
+  branch: "Civil",
+  year: "1st",
+  image: "/images/team/Manthaj_Dhote.jpg",
+  bio: "Passionate about building meaningful connections and collaborations through Corporate Relations.",
+  socials: {
+    linkedin: "https://www.linkedin.com/in/manthaj-dhote-37345434b",
+    instagram: "https://www.instagram.com/hey.manthaj"
+  }
+},
+{
+  id: 54,
+  email: "shivanimeena9584@gmail.com",
+  name: "Shivani Meena",
+  role: "Learner",
+  department: "Machine Learning & DS, Photography & Video Editing",
+  branch: "CSE",
+  year: "1st",
+  image: "/images/team/Shivani_Meena.jpg",
+  bio: "First year student at UIT RGPV Bhopal.",
+  socials: {
+    linkedin: "",
+    instagram: ""
+  }
+},
+{
+  id: 55,
+  email: "raviprakratiarya28@gmail.com",
+  name: "Prakrati Arya",
+  role: "Learner",
+  department: "Devops & Cloud, Machine Learning & DS",
+  branch: "CSE",
+  year: "1st",
+  image: "/images/team/Prakrati_Arya.jpg",
+  bio: "Turning questions into code and exploring AI and meaningful technology.",
+  socials: {
+    linkedin: "https://www.linkedin.com/in/prakrati-arya-3a686736a",
+    instagram: "",
+    github: "https://github.com/ITSprakrati"
+  }
+},
+{
+  id: 56,
+  email: "sharmaprachi.2324@gmail.com",
+  name: "Prachi Sharma",
+  role: "Learner",
+  department: "Media (Graphic & Video)",
+  branch: "CSE",
+  year: "1st",
+  image: "/images/team/Prachi_Sharma.jpg",
+  bio: "",
+  socials: {
+    linkedin: "https://www.linkedin.com/in/prachi-sharma-62a754398",
+    instagram: "https://www.instagram.com/prachi24_sharma"
+  }
+},
+{
+  id: 57,
+  email: "mayankbhumarkar213@gmail.com",
+  name: "Mayank Bhumarkar",
+  role: "Learner",
+  department: "IOT",
+  branch: "IT",
+  year: "2nd",
+  image: "/images/team/Mayank_Bhumarkar.jpg",
+  bio: "",
+  socials: {
+    linkedin: "",
+    instagram: ""
+  }
+},
+{
+  id: 58,
+  email: "jitendra.0101it241021@gmail.com",
+  name: "Jitendra Kumar",
+  role: "Learner",
+  department: "Machine Learning & DS, Photography & Video Editing",
+  branch: "IT",
+  year: "2nd",
+  image: "/images/team/Jitendra_Kumar.png",
+  bio: "",
+  socials: {
+    linkedin: "https://www.linkedin.com/in/jitendra-kumar-5b2796375",
+    instagram: "https://www.instagram.com/hey.jitendraaa"
+  }
+},
+{
+  id: 59,
+  email: "shvmshivankar@gmail.com",
+  name: "Shivam Shivankar",
+  role: "Learner",
+  department: "Devops & Cloud",
+  branch: "IT",
+  year: "2nd",
+  image: "/images/team/Shivam_Shivankar.jpg",
+  bio: "Beginner with basic skills but a creative mindset and many ideas.",
+  socials: {
+    linkedin: "https://www.linkedin.com/in/shivam-shivankar-50b6163a2",
+    instagram: "https://www.instagram.com/_shivam_shivankar"
+  }
+},
+{
+  id: 60,
+  email: "singhom1911in@gmail.com",
+  name: "Om Singh",
+  role: "Core member",
+  department: "Web development",
+  branch: "IT",
+  year: "3rd",
+  image: "/images/team/Om_Singh.png",
+  bio: "Enjoys building scalable web applications using JavaScript, Node.js, React and MongoDB.",
+  socials: {
+    linkedin: "https://www.linkedin.com/in/om-singh-610a69342",
+    instagram: "https://www.instagram.com/om_singhin",
+    github: "https://github.com/omsingh-blip"
+  }
+},
+{
+  id: 61,
+  email: "B.goswami9009@gmail.com",
+  name: "Badal Goswami",
+  role: "Head",
+  department: "Corporate Relation",
+  branch: "IT",
+  year: "2nd",
+  image: "/images/team/Badal_Goswami.jpg",
+  bio: "Co-Head of Corporate Relations at ASPER focused on collaborations and student-industry engagement.",
+  socials: {
+    linkedin: "https://www.linkedin.com/in/badal-goswami-200884333",
+    instagram: "https://www.instagram.com/bro_goswami_09",
+    github: "https://github.com/its-BEAST-12"
+  }
+},
+{
+  id: 62,
+  email: "a_s_chauhan@outlook.com",
+  name: "Aditya Singh Chauhan",
+  role: "Learner",
+  department: "Devops & Cloud, Machine Learning & DS",
+  branch: "CSE",
+  year: "1st",
+  image: "/images/team/Aditya_Singh_Chauhan.webp",
+  bio: "",
+  socials: {
+    linkedin: "https://www.linkedin.com/in/asc-net",
+    instagram: "",
+    github: "http://github.com/asc-17"
+  }
+},
+{
+  id: 63,
+  email: "palakkhare597@gmail.com",
+  name: "Palak Khare",
+  role: "Learner",
+  department: "DSA, Machine Learning & DS",
+  branch: "IT",
+  year: "2nd",
+  image: "/images/team/Palak_Khare.jpg",
+  bio: "Interested in computer science, DSA and improving skills in C++ and Python.",
+  socials: {
+    linkedin: "https://www.linkedin.com/in/palak-khare-55832a369",
+    instagram: "https://www.instagram.com/palakkhare7507",
+    github: "https://github.com/palakkhare597"
+  }
+},
+{
+  id: 64,
+  email: "Anushka71081@gmail.com",
+  name: "Anushka Jain",
+  role: "Learner",
+  department: "Machine Learning & DS, Corporate Relation",
+  branch: "CSE",
+  year: "1st",
+  image: "/images/team/Anushka_Jain.jpg",
+  bio: "Passionate learner exploring AI, Machine Learning and programming.",
+  socials: {
+    linkedin: "https://www.linkedin.com/in/anushka-jain-a0242a372",
+    instagram: "https://www.instagram.com/anushkajaiin__",
+    github: "https://github.com/Anushka140306"
+  }
+},{
+  id: 65,
+  email: "vidhij253@gmail.com",
+  name: "Vidhi Jain",
+  role: "Learner",
+  department: "Machine Learning & DS, Corporate Relation",
+  branch: "EX",
+  year: "1st",
+  image: "/images/team/Vidhi_Jain.jpg",
+  bio: "Motivated and enthusiastic student eager to learn new skills and explore opportunities. Enjoys working with people and contributing positively to projects.",
+  socials: {
+    linkedin: "https://www.linkedin.com/in/vidhi-jain-17028338b",
+    instagram: "https://www.instagram.com/_vidhi_1007"
+  }
+},
+{
+  id: 66,
+  email: "pranshuverma.contact@gmail.com",
+  name: "Pranshu Verma",
+  role: "Core member",
+  department: "Corporate Relation",
+  branch: "Mechanical",
+  year: "1st",
+  image: "/images/team/Pranshu_Verma.jpg",
+  bio: "Corporate Relations Core Member at ASPER with interests in operations, management, geopolitics, defence, storytelling and public speaking.",
+  socials: {
+    linkedin: "https://www.linkedin.com/in/pranshu06",
+    instagram: "https://www.instagram.com/pranshu_v06",
+    twitter: "https://x.com/pranshu_v06"
+  }
+},
+{
+  id: 67,
+  email: "divyabichpuriya13@gmail.com",
+  name: "Divya Bichpuriya",
+  role: "Learner",
+  department: "Devops & Cloud, Corporate Relation",
+  branch: "IT",
+  year: "1st",
+  image: "/images/team/Divya_.jpg",
+  bio: "Learner in the Corporate Relations and DevOps & Cloud domains at ASPER Club. Interested in cloud computing, automation, and modern development practices.",
+  socials: {
+    linkedin: "https://www.linkedin.com/in/divya-b-01867b3a6",
+    instagram: ""
+  }
+},
+{
+  id: 68,
+  email: "dangianushka44@gmail.com",
+  name: "Anushka Dangi",
+  role: "Core member",
+  department: "Media (Graphic & Video)",
+  branch: "EC",
+  year: "2nd",
+  image: "/images/team/Anushka_Dangi.jpg",
+  bio: "B.Tech student at UIT RGPV pursuing Electronics and Communication Engineering and currently in second year.",
+  socials: {
+    linkedin: "",
+    instagram: "https://www.instagram.com/anushkaa_dangi"
+  }
+}
 
 ];
