@@ -78,7 +78,7 @@ export default function MemberDetailsPage() {
                     >
                         <div className="mb-2">
                             <span className="inline-block px-3 py-1 rounded-full bg-neon-red/10 text-neon-red border border-neon-red/20 text-sm font-bold uppercase tracking-wider mb-4">
-                                {member.role}
+                                {member.role == "Head" || member.role == "Co-Head" || member.role == "President" ? member.role : "Member"}
                             </span>
                         </div>
 

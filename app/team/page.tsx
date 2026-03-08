@@ -101,8 +101,8 @@ const TeamCard = ({ member, index }: { member: TeamMember; index: number }) => {
                 <h3 className="text-xl font-bold leading-tight mb-1 group-hover:text-neon-red transition-colors">
                     {member.name}
                 </h3>
-                {/* Show the department for heads */}
-                {member.department && member.role === "Head" && (
+                {/* Show the department for heads and co-heads */}
+                {member.department && (member.role === "Head" || member.role === "Co-Head") && (
                     <p className="text-sm font-bold text-gray-400 mt-1 uppercase tracking-wider">
                         {member.department}
                     </p>
