@@ -17,7 +17,7 @@ export const events: Event[] = [
     {
         id: 1,
         title: "Cloud Workshop",
-        date: "March 12, 2026",
+        date: "---",
         time: "---",
         location: "Main Auditorium Hall",
         description: "Join our Cloud Computing Workshop for hands-on experience with modern cloud technologies.",
