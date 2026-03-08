@@ -5,22 +5,10 @@ import { useRouter, useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Plus, Trash2, Save, Loader2, ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { DEPARTMENTS } from "@/app/data/departments";
 
 type QuestionType = "MCQ" | "DYNAMIC";
 type Department = "DSA" | "WEB_DEVELOPMENT" | "IOT" | "GAME_DEVELOPMENT_ANIMATION" | "DEVOPS_CLOUD" | "ML_DATA_SCIENCE" | "MEDIA_GRAPHICS_VIDEO" | "CORPORATE_RELATIONS" | "PHOTOGRAPHY_VIDEO_EDITING";
-
-const DEPARTMENTS = [
-    { value: "ALL", label: "All Departments" },
-    { value: "DSA", label: "DSA" },
-    { value: "WEB_DEVELOPMENT", label: "Web Development" },
-    { value: "IOT", label: "IOT" },
-    { value: "GAME_DEVELOPMENT_ANIMATION", label: "Game Development & Animation" },
-    { value: "DEVOPS_CLOUD", label: "Devops & Cloud" },
-    { value: "ML_DATA_SCIENCE", label: "Machine Learning & Data Science" },
-    { value: "MEDIA_GRAPHICS_VIDEO", label: "Media (Graphics & Video)" },
-    { value: "CORPORATE_RELATIONS", label: "Corporate Relations" },
-    { value: "PHOTOGRAPHY_VIDEO_EDITING", label: "Photography & Video Editing" },
-];
 
 interface QuestionInput {
     id?: string;

@@ -6,6 +6,7 @@ import { Filter, LogOut } from "lucide-react";
 import AdminProjectCard from "@/components/AdminProjectCard";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { DEPARTMENTS } from "@/app/data/departments";
 
 interface Project {
     id: string;
@@ -21,19 +22,6 @@ interface Project {
     accepted: boolean;
     createdAt: string;
 }
-
-const DEPARTMENTS = [
-    { value: "ALL", label: "All Departments" },
-    { value: "DSA", label: "DSA" },
-    { value: "WEB_DEVELOPMENT", label: "Web Development" },
-    { value: "IOT", label: "IOT" },
-    { value: "GAME_DEVELOPMENT_ANIMATION", label: "Game Development & Animation" },
-    { value: "DEVOPS_CLOUD", label: "Devops & Cloud" },
-    { value: "ML_DATA_SCIENCE", label: "Machine Learning & Data Science" },
-    { value: "MEDIA_GRAPHICS_VIDEO", label: "Media (Graphics & Video)" },
-    { value: "CORPORATE_RELATIONS", label: "Corporate Relations" },
-    { value: "PHOTOGRAPHY_VIDEO_EDITING", label: "Photography & Video Editing" },
-];
 
 export default function AdminDashboard() {
     const [projects, setProjects] = useState<Project[]>([]);
