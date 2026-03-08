@@ -84,27 +84,27 @@ export const team: TeamMember[] = [
             instagram: "https://www.instagram.com/vivek_yadavvvv?igsh=MTRwaDZpYjluY2dndQ=="
         }
     },
-    {
-        id: 5,
-        email: "py935900@gmail.com",
-        name: "Prince Yadav",
-        role: "Core Member",
-        department: "Media, Graphics & Video",
-        branch: "Ex",
-        year: "1st",
-        image: "/images/team/PrinceYadav.png",
-        bio: "B.Tech student in Electrical and Electronics Engineering at UIT RGPV, Bhopal. Passionate about Designing and Creative stuff and learning new skills.",
-        socials: {
-            linkedin: "https://www.linkedin.com/in/prince-yadav-a93183382?utm_source=share_via&utm_content=profile&utm_medium=member_android",
-            instagram: "https://www.instagram.com/prince_yadav__013?igsh=NW9xeGw0ejZtYXVt"
-        }
-    },
+    // {
+    //     id: 5,
+    //     email: "py935900@gmail.com",
+    //     name: "Prince Yadav",
+    //     role: "Core Member",
+    //     department: "Media, Graphics & Video",
+    //     branch: "Ex",
+    //     year: "1st",
+    //     image: "/images/team/PrinceYadav.png",
+    //     bio: "B.Tech student in Electrical and Electronics Engineering at UIT RGPV, Bhopal. Passionate about Designing and Creative stuff and learning new skills.",
+    //     socials: {
+    //         linkedin: "https://www.linkedin.com/in/prince-yadav-a93183382?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+    //         instagram: "https://www.instagram.com/prince_yadav__013?igsh=NW9xeGw0ejZtYXVt"
+    //     }
+    // },
     {
         id: 6,
         email: "princeyadav.career@gmail.com",
         name: "Prince Yadav",
         role: "Learner",
-        department: "DSA",
+        department: "DSA, Media, Graphics & Video",
         branch: "Ex",
         year: "1st",
         image: "/images/team/PrinceYadav.png",
@@ -126,18 +126,18 @@ export const team: TeamMember[] = [
         bio: "",
         socials: {}
     },
-    {
-        id: 8,
-        email: "sinki56k@gmail.com",
-        name: "Sinki BHARBHOONJA",
-        role: "Learner",
-        department: "DSA",
-        branch: "Mechanical",
-        year: "1st",
-        image: "/images/team/sinkikumari.jpg",
-        bio: "Sinki | Tech Club\nInterested in DSA, Programming & Problem Solving",
-        socials: {}
-    },
+    // {
+    //     id: 8,
+    //     email: "sinki56k@gmail.com",
+    //     name: "Sinki BHARBHOONJA",
+    //     role: "Learner",
+    //     department: "DSA",
+    //     branch: "Mechanical",
+    //     year: "1st",
+    //     image: "/images/team/sinkikumari.jpg",
+    //     bio: "Sinki | Tech Club\nInterested in DSA, Programming & Problem Solving",
+    //     socials: {}
+    // },
     {
         id: 9,
         email: "prawinkumarmahto91@gmail.com",
