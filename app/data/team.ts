@@ -152,23 +152,23 @@ export const team: TeamMember[] = [
             linkedin: "https://www.linkedin.com/in/prawin-kumar-a1a6b1382?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
         }
     },
-    {
-        id: 10,
-        email: "rohitlodhi2154@gmail.com",
-        name: "Rohit Lodhi",
-        role: "Head",
-        department: "DevOps & Cloud",
-        branch: "IT",
-        year: "3rd",
-        image: "/images/team/RoxsirGroup.jpg",
-        bio: "Full stack vibe engineer",
-        socials: {
-            linkedin: "www.linkedin.com/in/rohitlodhiii",
-            instagram: "https://www.instagram.com/rohitlodhiii",
-            twitter: "https://x.com/Rohitlodhiii/",
-            github: "https://github.com/Rohitlodhii"
-        }
-    },
+    // {
+    //     id: 10,
+    //     email: "rohitlodhi2154@gmail.com",
+    //     name: "Rohit Lodhi",
+    //     role: "Head",
+    //     department: "DevOps & Cloud",
+    //     branch: "IT",
+    //     year: "3rd",
+    //     image: "/images/team/RoxsirGroup.jpg",
+    //     bio: "Full stack vibe engineer",
+    //     socials: {
+    //         linkedin: "www.linkedin.com/in/rohitlodhiii",
+    //         instagram: "https://www.instagram.com/rohitlodhiii",
+    //         twitter: "https://x.com/Rohitlodhiii/",
+    //         github: "https://github.com/Rohitlodhii"
+    //     }
+    // },
     {
         id: 11,
         email: "Mohitpatidar2007123@gmail.com",

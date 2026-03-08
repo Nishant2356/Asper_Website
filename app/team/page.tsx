@@ -150,8 +150,8 @@ const communityHead = team.find((m) =>
 );
 
 const heads = team.filter((m) => m.role.toLowerCase().includes("head") && m.id !== communityHead?.id).sort(sortByDept);
-const core = team.filter((m) => m.role.toLowerCase().includes("core") && m.id !== communityHead?.id).sort(sortByDept);
-const learners = team.filter((m) => m.role.toLowerCase().includes("learner") && m.id !== communityHead?.id);
+const members = team.filter((m) => m.role.toLowerCase().includes("core") || m.role.toLowerCase().includes("learner") && m.id !== communityHead?.id).sort(sortByDept);
+// const learners = team.filter((m) => m.role.toLowerCase().includes("learner") && m.id !== communityHead?.id);
 const others = team.filter(
     (m) =>
         !m.role.toLowerCase().includes("head") &&
@@ -159,7 +159,7 @@ const others = team.filter(
         !m.role.toLowerCase().includes("learner") &&
         m.id !== communityHead?.id
 );
-const learnersAndOthers = [...learners, ...others].sort(sortByDept);
+const membersAndOthers = [...members, ...others].sort(sortByDept);
 
 const TeamSection = ({ title, members }: { title: string; members: TeamMember[] }) => {
     if (members.length === 0) return null;
@@ -221,8 +221,8 @@ export default function TeamPage() {
             )}
 
             <TeamSection title="Leads" members={heads} />
-            <TeamSection title="Core Members" members={core} />
-            <TeamSection title="Learners" members={learnersAndOthers} />
+            <TeamSection title="Members" members={membersAndOthers} />
+            {/* <TeamSection title="Learners" members={} /> */}
 
             <Footer />
         </main>

@@ -42,13 +42,13 @@ export default function Home() {
               <span className="text-gray-700">THE FUTURE</span>
             </h2>
             <p className="text-gray-400 text-lg leading-relaxed mb-8">
-              ASPER is the official IT Department club of UIT RGPV. Entirely led and maintained by students, we are a dynamic community of creators, organizers, and tech enthusiasts. We bridge the gap between classroom theory and real-world execution. From the initial brainstorming sessions to the fi nal day of execution, if there is an idea to be built or a major initiative to launch, we are the team planning the blueprint and hosting the experience.
+              ASPER is the official club of UIT RGPV. Entirely led and maintained by students, we are a dynamic community of creators, organizers, and tech enthusiasts. We bridge the gap between classroom theory and real-world execution. From the initial brainstorming sessions to the fi nal day of execution, if there is an idea to be built or a major initiative to launch, we are the team planning the blueprint and hosting the experience.
             </p>
 
             <div className="grid grid-cols-2 gap-6">
               <div className="p-5 bg-white/5 border border-white/10 rounded-lg hover:border-neon-red/50 transition-colors">
                 <h4 className="text-neon-red font-bold text-3xl mb-1">UIT RGPV</h4>
-                <p className="text-gray-500 text-sm font-medium">Official IT Club</p>
+                <p className="text-gray-500 text-sm font-medium">Official UIT Club</p>
               </div>
               <div className="p-5 bg-white/5 border border-white/10 rounded-lg hover:border-neon-red/50 transition-colors">
                 <h4 className="text-neon-red font-bold text-3xl mb-1">100+</h4>
