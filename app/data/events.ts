@@ -29,7 +29,8 @@ export const events: Event[] = [
     details: `Join our Hackathon 2026 and experience a thrilling week of innovation, creativity, and collaboration. 
 Participants will work in teams to design and develop impactful technology solutions, solve real-world challenges, 
 and showcase their coding, design, and problem-solving skills. This event provides an opportunity to learn, 
-network with fellow developers, and push your technical limits while building something amazing.`,
+network with fellow developers, and push your technical limits while building something amazing.This hackathon will be conducted completely in online mode, allowing participants to collaborate and build projects from anywhere. 
+Please note that this event is exclusively for ASPER club members**, and participation is not open to external applicants.`,
 
     registerLink: undefined,
 
