@@ -38,3 +38,38 @@ export async function GET(
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
 }
+
+export async function DELETE(
+    req: NextRequest,
+    { params }: { params: Promise<{ attemptId: string }> }
+) {
+    try {
+        const session = await auth();
+        if (!session || !session.user) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        if (session.user.role !== "ADMIN") {
+            return NextResponse.json({ error: "Forbidden. Admin access required." }, { status: 403 });
+        }
+
+        const { attemptId } = await params;
+
+        const attempt = await prisma.quizAttempt.findUnique({
+            where: { id: attemptId },
+        });
+
+        if (!attempt) {
+            return NextResponse.json({ error: "Attempt not found" }, { status: 404 });
+        }
+
+        await prisma.quizAttempt.delete({
+            where: { id: attemptId },
+        });
+
+        return NextResponse.json({ success: true, message: "Attempt deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting attempt:", error);
+        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    }
+}

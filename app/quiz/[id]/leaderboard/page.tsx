@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, ArrowLeft, Trophy, Medal } from "lucide-react";
+import { Loader2, ArrowLeft, Trophy, Medal, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { Quiz } from "@prisma/client";
 
@@ -24,31 +24,53 @@ export default function QuizLeaderboardPage({ params }: { params: Promise<{ id: 
     const [quiz, setQuiz] = useState<Quiz | null>(null);
     const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
     const [loading, setLoading] = useState(true);
+    const [deletingId, setDeletingId] = useState<string | null>(null);
+
+    const fetchLeaderboard = async () => {
+        try {
+            const res = await fetch(`/api/quiz/${quizId}/leaderboard`);
+            if (!res.ok) {
+                throw new Error("Failed to fetch leaderboard");
+            }
+            const data = await res.json();
+            setQuiz(data.quiz);
+            setLeaderboard(data.leaderboard);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        async function fetchLeaderboard() {
-            try {
-                // We'll fetch the quiz details and the leaderboard in one go from a new endpoint
-                const res = await fetch(`/api/quiz/${quizId}/leaderboard`);
-                if (!res.ok) {
-                    throw new Error("Failed to fetch leaderboard");
-                }
-                const data = await res.json();
-                setQuiz(data.quiz);
-                setLeaderboard(data.leaderboard);
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setLoading(false);
-            }
-        }
-
         if (status === "authenticated") {
             fetchLeaderboard();
         } else if (status === "unauthenticated") {
             router.push("/login");
         }
     }, [quizId, status, router]);
+
+    const handleDelete = async (attemptId: string) => {
+        if (!confirm("Are you sure you want to delete this attempt? This action cannot be undone.")) return;
+        setDeletingId(attemptId);
+        try {
+            const res = await fetch(`/api/quiz/attempt/${attemptId}`, {
+                method: "DELETE",
+            });
+            if (res.ok) {
+                // Refresh leaderboard to recalculate ranks and remove the deleted entry
+                await fetchLeaderboard();
+            } else {
+                const data = await res.json();
+                alert(`Failed to delete attempt: ${data.error || 'Unknown error'}`);
+            }
+        } catch (error) {
+            console.error("Error deleting attempt:", error);
+            alert("An error occurred while deleting the attempt.");
+        } finally {
+            setDeletingId(null);
+        }
+    };
 
     if (loading || status === "loading") {
         return (
@@ -72,6 +94,7 @@ export default function QuizLeaderboardPage({ params }: { params: Promise<{ id: 
     }
 
     const currentUserEntry = leaderboard.find(entry => entry.userId === session?.user?.id);
+    const isAdmin = session?.user?.role === "ADMIN";
 
     return (
         <div className="max-w-4xl mx-auto py-12">
@@ -115,12 +138,13 @@ export default function QuizLeaderboardPage({ params }: { params: Promise<{ id: 
                                 <th className="p-4 font-bold text-gray-400 uppercase text-xs tracking-wider">Participant</th>
                                 <th className="p-4 font-bold text-gray-400 uppercase text-xs tracking-wider text-right">Score</th>
                                 <th className="p-4 font-bold text-gray-400 uppercase text-xs tracking-wider text-right hidden sm:table-cell">Submitted</th>
+                                {isAdmin && <th className="p-4 font-bold text-gray-400 uppercase text-xs tracking-wider text-right w-24">Actions</th>}
                             </tr>
                         </thead>
                         <tbody>
                             {leaderboard.length === 0 ? (
                                 <tr>
-                                    <td colSpan={4} className="p-8 text-center text-gray-500 italic">No one has completed this quiz yet.</td>
+                                    <td colSpan={isAdmin ? 5 : 4} className="p-8 text-center text-gray-500 italic">No one has completed this quiz yet.</td>
                                 </tr>
                             ) : (
                                 leaderboard.map((entry) => (
@@ -146,6 +170,22 @@ export default function QuizLeaderboardPage({ params }: { params: Promise<{ id: 
                                         <td className="p-4 text-right text-sm text-gray-500 hidden sm:table-cell">
                                             {new Date(entry.submittedAt).toLocaleDateString()}
                                         </td>
+                                        {isAdmin && (
+                                            <td className="p-4 text-right">
+                                                <button
+                                                    onClick={() => handleDelete(entry.id)}
+                                                    disabled={deletingId === entry.id}
+                                                    className="p-2 text-red-500/70 hover:text-red-500 hover:bg-red-500/10 rounded transition-colors disabled:opacity-50 inline-flex items-center justify-center group"
+                                                    title="Delete attempt"
+                                                >
+                                                    {deletingId === entry.id ? (
+                                                        <Loader2 size={16} className="animate-spin" />
+                                                    ) : (
+                                                        <Trash2 size={16} className="group-hover:scale-110 transition-transform" />
+                                                    )}
+                                                </button>
+                                            </td>
+                                        )}
                                     </tr>
                                 ))
                             )}
