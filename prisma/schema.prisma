@@ -7,6 +7,92 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Project {
+  id         String     @id @default(cuid())
+  name       String
+  department Department
+  githubLink String?
+  liveLink   String?
+  imageLinks String[]
+  doubts     String?
+  marks      String     @default("")
+  feedback   String?
+  checked    Boolean    @default(false)
+  accepted   Boolean    @default(false)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  userId     String
+  user       User       @relation(fields: [userId], references: [id])
+}
+
+model User {
+  id               String        @id @default(cuid())
+  name             String
+  email            String        @unique
+  password         String
+  role             Role          @default(MEMBER)
+  domain           Department[]
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  resetToken       String?       @unique
+  resetTokenExpiry DateTime?
+  projects         Project[]
+  createdQuizzes   Quiz[]        @relation("QuizCreator")
+  quizAttempts     QuizAttempt[]
+}
+
+model Quiz {
+  id          String        @id @default(cuid())
+  title       String
+  description String?
+  department  Department
+  status      QuizStatus    @default(DRAFT)
+  timeLimit   Int?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  createdBy   String
+  questions   Question[]
+  user        User          @relation("QuizCreator", fields: [createdBy], references: [id])
+  attempts    QuizAttempt[]
+}
+
+model Question {
+  id            String       @id @default(cuid())
+  quizId        String
+  type          QuestionType @default(MCQ)
+  text          String
+  options       String[]
+  correctAnswer String?
+  marks         Int          @default(1)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  quiz          Quiz         @relation(fields: [quizId], references: [id], onDelete: Cascade)
+}
+
+model QuizAttempt {
+  id          String    @id @default(cuid())
+  userId      String
+  quizId      String
+  answers     String
+  score       Float?
+  feedback    String?
+  status      String    @default("IN_PROGRESS")
+  timeLeft    Int?
+  createdAt   DateTime  @default(now())
+  submittedAt DateTime?
+  quiz        Quiz      @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  createdAt DateTime @default(now())
+}
+
 enum Department {
   DSA
   WEB_DEVELOPMENT
@@ -19,43 +105,9 @@ enum Department {
   PHOTOGRAPHY_VIDEO_EDITING
 }
 
-model Project {
-  id          String     @id @default(cuid())
-  name        String
-  department  Department
-  githubLink  String?
-  liveLink    String?
-  imageLinks  String[]
-  doubts      String?    @db.Text
-  marks       String     @default("")
-  feedback    String?    @db.Text
-  checked     Boolean    @default(false)
-  accepted    Boolean    @default(false)
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-  userId      String
-  user        User       @relation(fields: [userId], references: [id])
-}
-
 enum Role {
   MEMBER
   ADMIN
-}
-
-model User {
-  id               String         @id @default(cuid())
-  name             String
-  email            String         @unique
-  password         String
-  role             Role           @default(MEMBER)
-  domain           Department[]
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime       @updatedAt
-  projects         Project[]
-  resetToken       String?        @unique
-  resetTokenExpiry DateTime?
-  quizAttempts     QuizAttempt[]
-  createdQuizzes   Quiz[]         @relation("QuizCreator")
 }
 
 enum QuizStatus {
@@ -67,56 +119,4 @@ enum QuizStatus {
 enum QuestionType {
   MCQ
   DYNAMIC
-}
-
-model Quiz {
-  id            String         @id @default(cuid())
-  title         String
-  description   String?        @db.Text
-  department    Department
-  status        QuizStatus     @default(DRAFT)
-  timeLimit     Int?           // In minutes
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  createdBy     String
-  user          User           @relation("QuizCreator", fields: [createdBy], references: [id])
-  questions     Question[]
-  attempts      QuizAttempt[]
-}
-
-model Question {
-  id            String       @id @default(cuid())
-  quizId        String
-  quiz          Quiz         @relation(fields: [quizId], references: [id], onDelete: Cascade)
-  type          QuestionType @default(MCQ)
-  text          String       @db.Text
-  options       String[]
-  correctAnswer String?      @db.Text
-  marks         Int          @default(1)
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-}
-
-model QuizAttempt {
-  id          String    @id @default(cuid())
-  userId      String
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  quizId      String
-  quiz        Quiz      @relation(fields: [quizId], references: [id], onDelete: Cascade)
-  answers     String    @db.Text // JSON string of questionId -> answer
-  score       Float?
-  feedback    String?   @db.Text // LLM grading feedback
-  status      String    @default("IN_PROGRESS") // IN_PROGRESS, SUBMITTED, GRADED
-  timeLeft    Int?      // Remaining time in seconds
-  createdAt   DateTime  @default(now())
-  submittedAt DateTime?
-}
-
-model Message {
-  id        String   @id @default(cuid())
-  name      String
-  email     String
-  subject   String
-  message   String
-  createdAt DateTime @default(now())
 }

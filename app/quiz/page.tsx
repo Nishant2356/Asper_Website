@@ -131,6 +131,12 @@ export default function QuizListPage() {
                             {isAdmin && (
                                 <div className="flex justify-end gap-2 mt-4 pt-4 border-t border-white/10">
                                     <Link
+                                        href={`/quiz/${quiz.id}/leaderboard`}
+                                        className="text-xs px-3 py-1.5 bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 rounded transition-colors"
+                                    >
+                                        Leaderboard
+                                    </Link>
+                                    <Link
                                         href={`/quiz/${quiz.id}/edit`}
                                         className="text-xs px-3 py-1.5 bg-white/10 hover:bg-white/20 rounded text-white transition-colors"
                                     >
