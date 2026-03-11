@@ -136,18 +136,18 @@ export const team: TeamMember[] = [
       github: "https://github.com/sumitsharma1824",
     },
   },
-  {
-      id: 8,
-      email: "sinki56k@gmail.com",
-      name: "Sinki Bharbhoonja",
-      role: "Learner",
-      department: "DSA",
-      branch: "Mechanical",
-      year: "1st",
-      image: "/images/team/sinkikumari.jpg",
-      bio: "Sinki | Tech Club\nInterested in DSA, Programming & Problem Solving",
-      socials: {}
-  },
+  // {
+  //     id: 8,
+  //     email: "sinki56k@gmail.com",
+  //     name: "Sinki Bharbhoonja",
+  //     role: "Learner",
+  //     department: "DSA",
+  //     branch: "Mechanical",
+  //     year: "1st",
+  //     image: "/images/team/sinkikumari.jpg",
+  //     bio: "Sinki | Tech Club\nInterested in DSA, Programming & Problem Solving",
+  //     socials: {}
+  // },
   {
     id: 9,
     email: "prawinkumarmahto91@gmail.com",
