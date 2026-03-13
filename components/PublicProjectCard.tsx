@@ -58,7 +58,7 @@ export default function PublicProjectCard({ project, index = 0 }: PublicProjectC
                     </div>
 
                     {/* Marks badge — only shown if marks is non-empty */}
-                    {project.marks && project.marks.trim() !== "" && (
+                    {/* {project.marks && project.marks.trim() !== "" && (
                         <motion.div
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
@@ -67,7 +67,7 @@ export default function PublicProjectCard({ project, index = 0 }: PublicProjectC
                             <span className="text-gray-400 text-[10px] uppercase tracking-wider">Score</span>
                             <span className="font-bold text-neon-red">{project.marks}</span>
                         </motion.div>
-                    )}
+                    )} */}
                 </div>
 
                 {/* Links */}
