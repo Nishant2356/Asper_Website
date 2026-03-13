@@ -73,7 +73,17 @@ export default function ProjectsPage() {
             const query = (dept && dept !== "ALL") ? `?department=${dept}` : "";
             const res = await fetch(`/api/projects/public${query}`);
             if (res.ok) {
-                const data = await res.json();
+                const data: PublicProject[] = await res.json();
+                // Sort by DEPARTMENTS array order, then newest date as tiebreaker
+                const deptOrder = DEPARTMENTS.map((d) => d.value);
+                data.sort((a, b) => {
+                    const indexA = deptOrder.indexOf(a.department);
+                    const indexB = deptOrder.indexOf(b.department);
+                    const orderA = indexA === -1 ? 999 : indexA;
+                    const orderB = indexB === -1 ? 999 : indexB;
+                    if (orderA !== orderB) return orderA - orderB;
+                    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+                });
                 setPublicProjects(data);
             }
         } catch (error) {
