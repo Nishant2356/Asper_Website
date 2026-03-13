@@ -517,7 +517,7 @@ export const team: TeamMember[] = [
     email: "priyansheemanker@gmail.com",
     name: "Priyanshee Manker",
     role: "Head",
-    department: "Media (Graphic & Video)",
+    department: "Graphic Design",
     branch: "IT",
     year: "3rd",
     image: "/images/team/Priyanshee_Manker.jpg",
@@ -605,7 +605,7 @@ Through ASPER, I aim to build a culture of practical learning, technical excelle
     email: "khushiiiiiiii151@gmail.com",
     name: "Khushi Yadav",
     role: "Co-Head",
-    department: "Media (Graphic & Video)",
+    department: "Graphic Design",
     branch: "IT",
     year: "2nd",
     image: "/images/team/Khushi_Yadav.jpg",
@@ -1065,116 +1065,116 @@ Through ASPER, I aim to build a culture of practical learning, technical excelle
     },
   },
   {
-id: 68,
-email: "vidhij253@gmail.com",
-name: "Vidhi Jain",
-role: "Learner",
-department: "Machine Learning & DS, Corporate Relation",
-branch: "EX",
-year: "1st",
-image: "/images/team/Vidhi_Jain.jpg",
-bio: "I am a motivated and enthusiastic student eager to learn new skills and explore opportunities. I enjoy working with people, taking initiative, and contributing positively to every project I join.",
-socials: {
-linkedin: "https://www.linkedin.com/in/vidhi-jain-17028338b",
-instagram: "https://www.instagram.com/_vidhi_1007"
-}
-},
+    id: 68,
+    email: "vidhij253@gmail.com",
+    name: "Vidhi Jain",
+    role: "Learner",
+    department: "Machine Learning & DS, Corporate Relation",
+    branch: "EX",
+    year: "1st",
+    image: "/images/team/Vidhi_Jain.jpg",
+    bio: "I am a motivated and enthusiastic student eager to learn new skills and explore opportunities. I enjoy working with people, taking initiative, and contributing positively to every project I join.",
+    socials: {
+      linkedin: "https://www.linkedin.com/in/vidhi-jain-17028338b",
+      instagram: "https://www.instagram.com/_vidhi_1007"
+    }
+  },
 
-{
-id: 69,
-email: "rishita.vishway297@gmail.com",
-name: "Rishita Vishway",
-role: "Core member",
-department: "Media (Graphic & Video)",
-branch: "EX",
-year: "1st",
-image: "/images/team/Rishita_Vishway.jpg",
-bio: "Electrical and Electronics Engineering student at UIT RGPV with a strong interest in design and visual storytelling.",
-socials: {
-linkedin: "https://www.linkedin.com/in/rishita-vishway",
-instagram: "https://www.instagram.com/rishita.vishway"
-}
-},
+  {
+    id: 69,
+    email: "rishita.vishway297@gmail.com",
+    name: "Rishita Vishway",
+    role: "Core member",
+    department: "Media (Graphic & Video)",
+    branch: "EX",
+    year: "1st",
+    image: "/images/team/Rishita_Vishway.jpg",
+    bio: "Electrical and Electronics Engineering student at UIT RGPV with a strong interest in design and visual storytelling.",
+    socials: {
+      linkedin: "https://www.linkedin.com/in/rishita-vishway",
+      instagram: "https://www.instagram.com/rishita.vishway"
+    }
+  },
 
-{
-id: 70,
-email: "mayankp2710@gmail.com",
-name: "Mayank Parmar",
-role: "Learner",
-department: "IOT",
-branch: "EC",
-year: "1st",
-image: "/images/team/Mayank_Parmar.jpg",
-bio: "Passionate about the things I truly want to pursue and always eager to explore new opportunities.",
-socials: {
-linkedin: "https://www.linkedin.com/in/mayank-parmar-80256437a",
-instagram: "https://www.instagram.com/mayank42302"
-}
-},
+  {
+    id: 70,
+    email: "mayankp2710@gmail.com",
+    name: "Mayank Parmar",
+    role: "Learner",
+    department: "IOT",
+    branch: "EC",
+    year: "1st",
+    image: "/images/team/Mayank_Parmar.jpg",
+    bio: "Passionate about the things I truly want to pursue and always eager to explore new opportunities.",
+    socials: {
+      linkedin: "https://www.linkedin.com/in/mayank-parmar-80256437a",
+      instagram: "https://www.instagram.com/mayank42302"
+    }
+  },
 
-{
-id: 71,
-email: "mansusingh809@gmail.com",
-name: "Mansu Singh",
-role: "Learner",
-department: "IOT, Corporate Relation",
-branch: "EC",
-year: "2nd",
-image: "/images/team/Mansu_Singh.jpg",
-bio: "ECE student at UIT RGPV exploring electronics, AI, and VLSI fundamentals.",
-socials: {
-linkedin: "https://www.linkedin.com/in/mansu-singh-aa8286371",
-instagram: "https://www.instagram.com/_mansu_singh_"
-}
-},
+  {
+    id: 71,
+    email: "mansusingh809@gmail.com",
+    name: "Mansu Singh",
+    role: "Learner",
+    department: "IOT, Corporate Relation",
+    branch: "EC",
+    year: "2nd",
+    image: "/images/team/Mansu_Singh.jpg",
+    bio: "ECE student at UIT RGPV exploring electronics, AI, and VLSI fundamentals.",
+    socials: {
+      linkedin: "https://www.linkedin.com/in/mansu-singh-aa8286371",
+      instagram: "https://www.instagram.com/_mansu_singh_"
+    }
+  },
 
-{
-id: 72,
-email: "somiya.123devda@gmail.com",
-name: "Somya Devda",
-role: "Learner",
-department: "Devops & Cloud, Machine Learning & DS",
-branch: "SOIT",
-year: "1st",
-image: "/images/team/Somya_Devda.jpg",
-bio: "Ambitious, curious, and motivated learner exploring cloud computing and machine learning technologies.",
-socials: {
-linkedin: "https://www.linkedin.com/in/somya-devda-4190a5380",
-github: "https://github.com/devsomya28"
-}
-},
+  {
+    id: 72,
+    email: "somiya.123devda@gmail.com",
+    name: "Somya Devda",
+    role: "Learner",
+    department: "Devops & Cloud, Machine Learning & DS",
+    branch: "SOIT",
+    year: "1st",
+    image: "/images/team/Somya_Devda.jpg",
+    bio: "Ambitious, curious, and motivated learner exploring cloud computing and machine learning technologies.",
+    socials: {
+      linkedin: "https://www.linkedin.com/in/somya-devda-4190a5380",
+      github: "https://github.com/devsomya28"
+    }
+  },
 
-{
-id: 73,
-email: "thakurdheeraj244@gmail.com",
-name: "Dheeraj Singh Chauhan",
-role: "Learner",
-department: "Devops & Cloud, Machine Learning & DS",
-branch: "CSE",
-year: "1st",
-image: "/images/team/Dheeraj_Singh_Chauhan.jpg",
-bio: "Learner passionate about cloud technologies, machine learning, and continuous skill development.",
-socials: {
-linkedin: "https://www.linkedin.com/in/dheeraj-chauhan-29206821a",
-instagram: "https://www.instagram.com/dheeraj___chauhan___",
-twitter: "https://x.com/yours_dheeraj",
-github: "https://github.com/Dheeraj-Chauhan244"
-}
-},
+  {
+    id: 73,
+    email: "thakurdheeraj244@gmail.com",
+    name: "Dheeraj Singh Chauhan",
+    role: "Learner",
+    department: "Devops & Cloud, Machine Learning & DS",
+    branch: "CSE",
+    year: "1st",
+    image: "/images/team/Dheeraj_Singh_Chauhan.jpg",
+    bio: "Learner passionate about cloud technologies, machine learning, and continuous skill development.",
+    socials: {
+      linkedin: "https://www.linkedin.com/in/dheeraj-chauhan-29206821a",
+      instagram: "https://www.instagram.com/dheeraj___chauhan___",
+      twitter: "https://x.com/yours_dheeraj",
+      github: "https://github.com/Dheeraj-Chauhan244"
+    }
+  },
 
-{
-id: 74,
-email: "officialareeba2809@gmail.com",
-name: "Areeba Khan",
-role: "Core member",
-department: "Machine Learning & DS, Corporate Relation",
-branch: "CSE",
-year: "1st",
-image: "/images/team/Areeba_Khan.jpeg",
-bio: "Passionate about engineering in the specialisation of machine learning.",
-socials: {
-linkedin: "https://www.linkedin.com/in/areeba-khan-978a1b395",
-instagram: "https://www.instagram.com/areeba_khan_2809"
-}
-}
+  {
+    id: 74,
+    email: "officialareeba2809@gmail.com",
+    name: "Areeba Khan",
+    role: "Core member",
+    department: "Machine Learning & DS, Corporate Relation",
+    branch: "CSE",
+    year: "1st",
+    image: "/images/team/Areeba_Khan.jpeg",
+    bio: "Passionate about engineering in the specialisation of machine learning.",
+    socials: {
+      linkedin: "https://www.linkedin.com/in/areeba-khan-978a1b395",
+      instagram: "https://www.instagram.com/areeba_khan_2809"
+    }
+  }
 ];
