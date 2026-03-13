@@ -19,7 +19,12 @@ export async function GET(
         // Fetch the quiz to ensure it exists and the user has access to it
         const quiz = await prisma.quiz.findUnique({
             where: { id: quizId },
-            select: { id: true, title: true, department: true }
+            select: {
+                id: true,
+                title: true,
+                department: true,
+                questions: { select: { marks: true } }
+            }
         });
 
         if (!quiz) {
@@ -29,6 +34,8 @@ export async function GET(
         if (session.user.role !== "ADMIN" && !session.user.domain?.includes(quiz.department as any)) {
             return NextResponse.json({ error: "Forbidden" }, { status: 403 });
         }
+
+        const totalMarks = quiz.questions.reduce((sum, q) => sum + q.marks, 0);
 
         // Fetch all attempts for this quiz that have a score
         const attempts = await prisma.quizAttempt.findMany({
@@ -55,7 +62,7 @@ export async function GET(
             rank: index + 1
         }));
 
-        return NextResponse.json({ quiz, leaderboard });
+        return NextResponse.json({ quiz: { id: quiz.id, title: quiz.title, department: quiz.department, totalMarks }, leaderboard });
     } catch (error) {
         console.error("Error fetching leaderboard:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

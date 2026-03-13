@@ -3,9 +3,15 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState, use } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, ArrowLeft, Trophy, Medal, Trash2 } from "lucide-react";
+import { Loader2, ArrowLeft, Trophy, Medal, Trash2, Star } from "lucide-react";
 import Link from "next/link";
-import { Quiz } from "@prisma/client";
+
+interface QuizInfo {
+    id: string;
+    title: string;
+    department: string;
+    totalMarks: number;
+}
 
 interface LeaderboardEntry {
     id: string; // Attempt ID
@@ -21,7 +27,7 @@ export default function QuizLeaderboardPage({ params }: { params: Promise<{ id: 
     const { data: session, status } = useSession();
     const { id: quizId } = use(params);
 
-    const [quiz, setQuiz] = useState<Quiz | null>(null);
+    const [quiz, setQuiz] = useState<QuizInfo | null>(null);
     const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
     const [loading, setLoading] = useState(true);
     const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -109,6 +115,13 @@ export default function QuizLeaderboardPage({ params }: { params: Promise<{ id: 
                     </h1>
                     <p className="text-gray-400 mt-1">Ranking for: <span className="text-neon-red font-bold">{quiz.title}</span></p>
                 </div>
+            </div>
+
+            {/* Total Marks Banner */}
+            <div className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-5 py-3 mb-6 w-fit">
+                <Star className="text-yellow-400" size={18} />
+                <span className="text-gray-400 text-sm uppercase tracking-widest font-bold">Total Marks</span>
+                <span className="text-white font-mono font-black text-lg">{quiz.totalMarks}</span>
             </div>
 
             {currentUserEntry && (
