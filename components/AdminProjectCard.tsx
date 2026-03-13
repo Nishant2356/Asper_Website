@@ -3,6 +3,10 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Github, Globe, MessageSquare, ImageIcon, ChevronDown, ChevronUp, FileText, X, RotateCcw, Trash2 } from "lucide-react";
+import { DEPARTMENTS } from "@/app/data/departments";
+
+const getDeptLabel = (value: string) =>
+    (DEPARTMENTS.find((d) => d.value === value)?.label ?? value.replace(/_/g, " ")).toUpperCase();
 
 interface Project {
     id: string;
@@ -81,7 +85,7 @@ export default function AdminProjectCard({ project, onUpdateStatus, onUndo, onDe
                 <div className="flex justify-between items-start mb-4">
                     <div>
                         <span className="text-xs font-mono text-neon-red bg-neon-red/10 px-2 py-1 rounded mb-2 inline-block">
-                            {project.department.replace(/_/g, " ")}
+                            {getDeptLabel(project.department)}
                         </span>
                         <h3 className="text-xl font-bold text-white mb-1">{project.name}</h3>
                         <p className="text-xs text-gray-500">

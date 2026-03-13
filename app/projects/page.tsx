@@ -3,13 +3,16 @@
 import { useState, useEffect } from "react";
 import ProjectFormModal from "@/components/ProjectFormModal";
 import UserProjectCard from "@/components/UserProjectCard";
-import { Plus } from "lucide-react";
+import PublicProjectCard, { PublicProject } from "@/components/PublicProjectCard";
+import { Plus, Layers, Filter } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import Link from "next/link";
+import { DEPARTMENTS } from "../data/departments";
 
-interface Project {
+interface MemberProject {
     id: string;
     name: string;
     department: string;
@@ -27,150 +30,215 @@ interface Project {
 export default function ProjectsPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { data: session, status } = useSession();
-    const router = useRouter();
-    const [projects, setProjects] = useState<Project[]>([]);
-    const [loading, setLoading] = useState(true);
 
+    // Member's own submissions
+    const [myProjects, setMyProjects] = useState<MemberProject[]>([]);
+    const [myLoading, setMyLoading] = useState(false);
+
+    // Public showcase
+    const [publicProjects, setPublicProjects] = useState<PublicProject[]>([]);
+    const [publicLoading, setPublicLoading] = useState(true);
+    const [selectedDept, setSelectedDept] = useState("ALL");
+
+    // Fetch member's own projects when authenticated
     useEffect(() => {
-        if (status === "unauthenticated") {
-            router.push("/login");
-        } else if (status === "authenticated" && session?.user?.id) {
-            fetchProjects(session.user.id);
+        if (status === "authenticated" && session?.user?.id) {
+            fetchMyProjects(session.user.id);
         }
-    }, [status, session, router]);
+    }, [status, session]);
 
-    const fetchProjects = async (userId: string) => {
+    // Fetch public projects whenever department filter changes
+    useEffect(() => {
+        fetchPublicProjects(selectedDept);
+    }, [selectedDept]);
+
+    const fetchMyProjects = async (userId: string) => {
+        setMyLoading(true);
         try {
             const res = await fetch(`/api/projects?userId=${userId}`);
             if (res.ok) {
                 const data = await res.json();
-                console.log(data)
-                setProjects(data);
+                setMyProjects(data);
             }
         } catch (error) {
-            console.error("Failed to fetch projects", error);
+            console.error("Failed to fetch own projects", error);
         } finally {
-            setLoading(false);
+            setMyLoading(false);
         }
     };
 
-    if (status === "loading") {
-        return (
-            <div className="min-h-screen bg-deep-black flex justify-center items-center">
-                <div className="w-8 h-8 border-4 border-neon-red border-t-transparent rounded-full animate-spin" />
-            </div>
-        );
-    }
+    const fetchPublicProjects = async (dept: string) => {
+        setPublicLoading(true);
+        try {
+            const query = (dept && dept !== "ALL") ? `?department=${dept}` : "";
+            const res = await fetch(`/api/projects/public${query}`);
+            if (res.ok) {
+                const data = await res.json();
+                setPublicProjects(data);
+            }
+        } catch (error) {
+            console.error("Failed to fetch public projects", error);
+        } finally {
+            setPublicLoading(false);
+        }
+    };
 
     return (
-        <div className="min-h-screen bg-deep-black">
+        <div className="min-h-screen bg-deep-black flex flex-col">
             <Navbar />
-            <div className="pt-24 pb-12 px-6">
-                <div className="max-w-7xl mx-auto">
-                    {/* Header Section */}
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-16 border-b border-white/10 pb-12">
-                        <div>
-                            <motion.h1
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500 mb-4"
-                            >
-                                Project Submission
-                            </motion.h1>
-                            <motion.p
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.1 }}
-                                className="text-gray-400 text-lg max-w-2xl"
-                            >
-                                Submit your assigned projects here. Ensure all details are correct and assets are uploaded before final submission.
-                            </motion.p>
-                        </div>
 
-                        <motion.button
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.2 }}
-                            onClick={() => setIsModalOpen(true)}
-                            className="group flex items-center gap-2 bg-neon-red text-white px-8 py-4 rounded-lg font-bold hover:bg-red-600 transition-all hover:shadow-[0_0_20px_rgba(255,0,51,0.4)]"
+            <div className="pt-24 pb-16 px-6 flex-1">
+                <div className="max-w-7xl mx-auto">
+
+                    {/* ─── PAGE HEADER ─────────────────────────────────────────── */}
+                    <div className="border-b border-white/10 pb-12 mb-16">
+                        <motion.span
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="text-neon-red font-bold tracking-widest uppercase text-sm mb-2 block"
                         >
-                            <Plus className="group-hover:rotate-90 transition-transform duration-300" />
-                            SUBMIT PROJECT
-                        </motion.button>
+                            Built by Asper
+                        </motion.span>
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+                            <div>
+                                <motion.h1
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.05 }}
+                                    className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500 mb-3"
+                                >
+                                    Member Projects
+                                </motion.h1>
+                                <motion.p
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.1 }}
+                                    className="text-gray-400 text-lg max-w-2xl"
+                                >
+                                    Explore what the Asper community has built — from web apps to AI models, IoT experiments and beyond.
+                                </motion.p>
+                            </div>
+
+                            {/* Submit button — only visible when logged in */}
+                            {status === "authenticated" && (
+                                <motion.button
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ delay: 0.15 }}
+                                    onClick={() => setIsModalOpen(true)}
+                                    className="group flex-shrink-0 flex items-center gap-2 bg-neon-red text-white px-8 py-4 rounded-lg font-bold hover:bg-red-600 transition-all hover:shadow-[0_0_20px_rgba(255,0,51,0.4)]"
+                                >
+                                    <Plus className="group-hover:rotate-90 transition-transform duration-300" />
+                                    SUBMIT PROJECT
+                                </motion.button>
+                            )}
+                        </div>
                     </div>
 
-                    {/* Your Submissions Section */}
-                    <div className="mb-16">
-                        <h2 className="text-2xl font-bold text-white mb-6">Your Submissions</h2>
+                    {/* ─── MY SUBMISSIONS (logged‑in members only) ─────────────── */}
+                    {status === "authenticated" && (
+                        <div className="mb-16">
+                            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                                <Layers size={22} className="text-neon-red" />
+                                Your Submissions
+                            </h2>
 
-                        {loading ? (
-                            <div className="flex justify-center py-10">
+                            {myLoading ? (
+                                <div className="flex justify-center py-10">
+                                    <div className="w-8 h-8 border-4 border-neon-red border-t-transparent rounded-full animate-spin" />
+                                </div>
+                            ) : myProjects.length === 0 ? (
+                                <div className="bg-white/5 border border-white/10 rounded-xl p-8 text-center">
+                                    <p className="text-gray-400 mb-4">You haven't submitted any projects yet.</p>
+                                    <button
+                                        onClick={() => setIsModalOpen(true)}
+                                        className="text-neon-red hover:underline font-medium"
+                                    >
+                                        Submit your first project →
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    <AnimatePresence>
+                                        {myProjects.map((project) => (
+                                            <UserProjectCard key={project.id} project={project} />
+                                        ))}
+                                    </AnimatePresence>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* ─── PUBLIC SHOWCASE ─────────────────────────────────────── */}
+                    <div>
+                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+                            <h2 className="text-2xl font-bold text-white">
+                                {status === "authenticated" ? "All Projects" : "Browse All Projects"}
+                            </h2>
+
+                            {/* Department dropdown — matches admin style */}
+                            <div className="flex items-center gap-2 bg-white/5 px-3 py-2 rounded-lg border border-white/10">
+                                <Filter className="text-gray-400 flex-shrink-0" size={16} />
+                                <select
+                                    value={selectedDept}
+                                    onChange={(e) => setSelectedDept(e.target.value)}
+                                    className="bg-transparent text-white border-none focus:ring-0 cursor-pointer text-sm pr-4"
+                                >
+                                    {DEPARTMENTS.map((dept) => (
+                                        <option key={dept.value} value={dept.value} className="bg-black">
+                                            {dept.label}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+
+                        {publicLoading ? (
+                            <div className="flex justify-center py-20">
                                 <div className="w-8 h-8 border-4 border-neon-red border-t-transparent rounded-full animate-spin" />
                             </div>
-                        ) : projects.length === 0 ? (
-                            <div className="bg-white/5 border border-white/10 rounded-xl p-8 text-center">
-                                <p className="text-gray-400 mb-4">You haven't submitted your project yet.</p>
-                                <button
-                                    onClick={() => setIsModalOpen(true)}
-                                    className="text-neon-red hover:underline"
-                                >
-                                    Submit your project
-                                </button>
+                        ) : publicProjects.length === 0 ? (
+                            <div className="bg-white/5 border border-white/10 rounded-xl p-12 text-center">
+                                <p className="text-gray-500 text-lg mb-2">No projects found.</p>
+                                <p className="text-gray-600 text-sm">
+                                    {selectedDept && selectedDept !== "ALL"
+                                        ? "Try a different domain filter."
+                                        : "Be the first to submit a project!"}
+                                </p>
+                                {status !== "authenticated" && (
+                                    <Link
+                                        href="/login"
+                                        className="mt-4 inline-block text-neon-red hover:underline font-medium text-sm"
+                                    >
+                                        Log in to submit →
+                                    </Link>
+                                )}
                             </div>
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 <AnimatePresence>
-                                    {projects.map((project) => (
-                                        <UserProjectCard key={project.id} project={project} />
+                                    {publicProjects.map((project, i) => (
+                                        <PublicProjectCard key={project.id} project={project} index={i} />
                                     ))}
                                 </AnimatePresence>
                             </div>
                         )}
                     </div>
 
-                    {/* Instructions Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-                        {[
-                            {
-                                step: "01",
-                                title: "Prepare Your Assets",
-                                desc: "Gather your project links (GitHub, Live URL) and image assets. Make sure images are high quality."
-                            },
-                            {
-                                step: "02",
-                                title: "Fill Details",
-                                desc: "Select your department and provide all necessary information in the submission form."
-                            },
-                            {
-                                step: "03",
-                                title: "Submit & Review",
-                                desc: "Once submitted, your project will be reviewed by the admin."
-                            }
-                        ].map((item, i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.3 + (i * 0.1) }}
-                                className="bg-white/5 border border-white/10 p-8 rounded-2xl hover:border-neon-red/30 transition-colors"
-                            >
-                                <span className="text-neon-red font-mono text-xl mb-4 block">{item.step}</span>
-                                <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
-                                <p className="text-gray-400 leading-relaxed">{item.desc}</p>
-                            </motion.div>
-                        ))}
-                    </div>
-
-                    {/* Modal */}
-                    <ProjectFormModal
-                        isOpen={isModalOpen}
-                        onClose={() => {
-                            setIsModalOpen(false);
-                            if (session?.user?.id) fetchProjects(session.user.id); // Refresh list on close
-                        }}
-                    />
+                    {/* ─── SUBMISSION MODAL ────────────────────────────────────── */}
+                    {status === "authenticated" && (
+                        <ProjectFormModal
+                            isOpen={isModalOpen}
+                            onClose={() => {
+                                setIsModalOpen(false);
+                                if (session?.user?.id) fetchMyProjects(session.user.id);
+                            }}
+                        />
+                    )}
                 </div>
             </div>
+
+            <Footer />
         </div>
     );
 }

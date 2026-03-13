@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import EventCard from "@/components/EventCard";
@@ -14,10 +15,22 @@ import { useRouter } from "next/navigation";
 import CardComponent from '../components/CardComponent';
 import { visionPoints } from "./data/vision";
 import { missionPoints } from "./data/mission";
+import PublicProjectCard, { PublicProject } from "@/components/PublicProjectCard";
 
 
 export default function Home() {
   const router = useRouter();
+  const [featuredProjects, setFeaturedProjects] = useState<PublicProject[]>([]);
+
+  useEffect(() => {
+    fetch("/api/projects/public?featured=true")
+      .then((r) => r.json())
+      .then((data) => {
+        if (Array.isArray(data)) setFeaturedProjects(data);
+      })
+      .catch(() => { });
+  }, []);
+
   return (
     <main className="bg-deep-black min-h-screen">
       <Navbar />
@@ -102,6 +115,39 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* Featured Projects Section */}
+      {featuredProjects.length > 0 && (
+        <section id="projects" className="py-24 px-6 max-w-7xl mx-auto border-b border-white/5">
+          <div className="flex items-end justify-between mb-12">
+            <div>
+              <span className="text-neon-red font-bold tracking-widest uppercase text-sm mb-2 block">Built by Asper</span>
+              <h2 className="text-4xl md:text-5xl font-black text-white">FEATURED <span className="text-gray-500">PROJECTS</span></h2>
+            </div>
+            <Link
+              href="/projects"
+              className="hidden md:flex items-center gap-2 text-white hover:text-neon-red transition-colors font-bold"
+            >
+              View All <span className="text-xl">→</span>
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {featuredProjects.map((project, i) => (
+              <PublicProjectCard key={project.id} project={project} index={i} />
+            ))}
+          </div>
+
+          <div className="mt-10 text-center md:hidden">
+            <Link
+              href="/projects"
+              className="inline-flex items-center justify-center px-8 py-3 rounded-full border border-white/10 bg-white/5 text-white font-bold uppercase tracking-widest hover:bg-neon-red hover:border-neon-red transition-all duration-300"
+            >
+              View All Projects
+            </Link>
+          </div>
+        </section>
+      )}
 
       {/* Team/Community Section */}
       <section id="team" className="py-24 bg-black/50 border-y border-white/5 overflow-hidden">
