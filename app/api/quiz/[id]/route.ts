@@ -113,7 +113,7 @@ export async function PATCH(
                     data: {
                         questions: {
                             create: body.questions.map((q: any) => ({
-                                type: q.type,
+                                type: q.type as any,
                                 text: q.text,
                                 options: q.options || [],
                                 correctAnswer: q.correctAnswer,

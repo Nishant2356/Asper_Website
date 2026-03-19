@@ -23,7 +23,7 @@ const quizSchema = z.object({
     timeLimit: z.number().int().optional(),
     questions: z.array(
         z.object({
-            type: z.enum(["MCQ", "DYNAMIC"]),
+            type: z.enum(["MCQ", "DYNAMIC", "TRUE_FALSE"]),
             text: z.string(),
             options: z.array(z.string()).optional(),
             correctAnswer: z.string().optional(),
@@ -106,7 +106,7 @@ export async function POST(req: NextRequest) {
                 createdBy: session.user.id,
                 questions: {
                     create: data.questions.map((q) => ({
-                        type: q.type,
+                        type: q.type as any,
                         text: q.text,
                         options: q.options || [],
                         correctAnswer: q.correctAnswer,

@@ -4,14 +4,29 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState, use, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2, Clock, CheckCircle2 } from "lucide-react";
-import { Quiz, Question } from "@prisma/client";
+
+interface QuizQuestion {
+    id: string;
+    type: "MCQ" | "DYNAMIC" | "TRUE_FALSE";
+    text: string;
+    options: string[];
+    marks: number;
+}
+
+interface QuizData {
+    id: string;
+    title: string;
+    description?: string;
+    timeLimit?: number;
+    questions: QuizQuestion[];
+}
 
 export default function ParticipateQuizPage({ params }: { params: Promise<{ id: string }> }) {
     const router = useRouter();
     const { data: session, status } = useSession();
     const { id: quizId } = use(params);
 
-    const [quiz, setQuiz] = useState<(Quiz & { questions: Partial<Question>[] }) | null>(null);
+    const [quiz, setQuiz] = useState<QuizData | null>(null);
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -206,6 +221,24 @@ export default function ParticipateQuizPage({ params }: { params: Promise<{ id: 
                                         </div>
                                         <span className="font-medium leading-tight">{opt}</span>
                                     </label>
+                                ))}
+                            </div>
+                        ) : q.type === "TRUE_FALSE" ? (
+                            <div className="flex gap-4">
+                                {["True", "False"].map((val) => (
+                                    <button
+                                        key={val}
+                                        type="button"
+                                        onClick={() => handleAnswerChange(q.id!, val)}
+                                        className={`flex-1 py-5 rounded-xl border-2 font-black text-xl tracking-wide transition-all ${answers[q.id!] === val
+                                            ? val === "True"
+                                                ? "bg-green-500/20 border-green-500 text-green-400 shadow-[0_0_20px_rgba(34,197,94,0.3)]"
+                                                : "bg-red-500/20 border-red-500 text-red-400 shadow-[0_0_20px_rgba(239,68,68,0.3)]"
+                                            : "bg-white/5 border-white/10 text-gray-400 hover:border-white/30 hover:bg-white/10"
+                                            }`}
+                                    >
+                                        {val}
+                                    </button>
                                 ))}
                             </div>
                         ) : (

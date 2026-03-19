@@ -6,7 +6,7 @@ import { useSession } from "next-auth/react";
 import { Plus, Trash2, Save, Loader2 } from "lucide-react";
 import { DEPARTMENTS } from "@/app/data/departments";
 
-type QuestionType = "MCQ" | "DYNAMIC";
+type QuestionType = "MCQ" | "DYNAMIC" | "TRUE_FALSE";
 type Department = "DSA" | "WEB_DEVELOPMENT" | "IOT" | "GAME_DEVELOPMENT_ANIMATION" | "DEVOPS_CLOUD" | "ML_DATA_SCIENCE" | "MEDIA_GRAPHICS_VIDEO" | "CORPORATE_RELATIONS" | "PHOTOGRAPHY_VIDEO_EDITING";
 
 interface QuestionInput {
@@ -37,8 +37,8 @@ export default function CreateQuizPage() {
         setQuestions([...questions, {
             type,
             text: "",
-            options: type === "MCQ" ? ["", "", "", ""] : [],
-            correctAnswer: "",
+            options: type === "MCQ" ? ["", "", "", ""] : type === "TRUE_FALSE" ? ["True", "False"] : [],
+            correctAnswer: type === "TRUE_FALSE" ? "True" : "",
             marks: 1
         }]);
     };
@@ -171,6 +171,13 @@ export default function CreateQuizPage() {
                             </button>
                             <button
                                 type="button"
+                                onClick={() => handleAddQuestion("TRUE_FALSE")}
+                                className="text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded-md flex items-center gap-1 transition-colors"
+                            >
+                                <Plus size={14} /> Add True/False
+                            </button>
+                            <button
+                                type="button"
                                 onClick={() => handleAddQuestion("DYNAMIC")}
                                 className="text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded-md flex items-center gap-1 transition-colors"
                             >
@@ -204,9 +211,9 @@ export default function CreateQuizPage() {
                                 </div>
 
                                 {q.type === "MCQ" ? (
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pl-4 border-l-2 border-white/10 mt-4 text-left"> {/* Added text-left here */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pl-4 border-l-2 border-white/10 mt-4 text-left">
                                         {q.options.map((opt, oIndex) => (
-                                            <div key={oIndex} className="flex gap-2 items-center text-left"> {/* Added text-left here */}
+                                            <div key={oIndex} className="flex gap-2 items-center text-left">
                                                 <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-xs text-gray-500 font-mono shrink-0">
                                                     {String.fromCharCode(65 + oIndex)}
                                                 </div>
@@ -219,6 +226,26 @@ export default function CreateQuizPage() {
                                                 />
                                             </div>
                                         ))}
+                                    </div>
+                                ) : q.type === "TRUE_FALSE" ? (
+                                    <div className="pl-4 border-l-2 border-white/10 mt-4">
+                                        <p className="text-xs text-gray-400 mb-3 uppercase tracking-wider">Correct Answer</p>
+                                        <div className="flex gap-4">
+                                            {["True", "False"].map((val) => (
+                                                <label key={val} className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-all ${q.correctAnswer === val
+                                                        ? "border-neon-red bg-neon-red/10 text-white"
+                                                        : "border-white/10 bg-white/5 text-gray-400 hover:border-white/30"
+                                                    }`}>
+                                                    <input
+                                                        type="radio"
+                                                        className="hidden"
+                                                        checked={q.correctAnswer === val}
+                                                        onChange={() => handleQuestionChange(qIndex, "correctAnswer", val)}
+                                                    />
+                                                    <span className="font-bold">{val}</span>
+                                                </label>
+                                            ))}
+                                        </div>
                                     </div>
                                 ) : null}
 

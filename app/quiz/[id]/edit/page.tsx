@@ -7,7 +7,7 @@ import { Plus, Trash2, Save, Loader2, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { DEPARTMENTS } from "@/app/data/departments";
 
-type QuestionType = "MCQ" | "DYNAMIC";
+type QuestionType = "MCQ" | "DYNAMIC" | "TRUE_FALSE";
 type Department = "DSA" | "WEB_DEVELOPMENT" | "IOT" | "GAME_DEVELOPMENT_ANIMATION" | "DEVOPS_CLOUD" | "ML_DATA_SCIENCE" | "MEDIA_GRAPHICS_VIDEO" | "CORPORATE_RELATIONS" | "PHOTOGRAPHY_VIDEO_EDITING";
 
 interface QuestionInput {
@@ -90,8 +90,8 @@ export default function EditQuizPage() {
         setQuestions([...questions, {
             type,
             text: "",
-            options: type === "MCQ" ? ["", "", "", ""] : [],
-            correctAnswer: "",
+            options: type === "MCQ" ? ["", "", "", ""] : type === "TRUE_FALSE" ? ["True", "False"] : [],
+            correctAnswer: type === "TRUE_FALSE" ? "True" : "",
             marks: 1
         }]);
     };
@@ -249,6 +249,13 @@ export default function EditQuizPage() {
                             </button>
                             <button
                                 type="button"
+                                onClick={() => handleAddQuestion("TRUE_FALSE")}
+                                className="text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded-md flex items-center gap-1 transition-colors"
+                            >
+                                <Plus size={14} /> Add True/False
+                            </button>
+                            <button
+                                type="button"
                                 onClick={() => handleAddQuestion("DYNAMIC")}
                                 className="text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded-md flex items-center gap-1 transition-colors"
                             >
@@ -297,6 +304,26 @@ export default function EditQuizPage() {
                                                 />
                                             </div>
                                         ))}
+                                    </div>
+                                ) : q.type === "TRUE_FALSE" ? (
+                                    <div className="pl-4 border-l-2 border-white/10 mt-4">
+                                        <p className="text-xs text-gray-400 mb-3 uppercase tracking-wider">Correct Answer</p>
+                                        <div className="flex gap-4">
+                                            {["True", "False"].map((val) => (
+                                                <label key={val} className={`flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-all ${q.correctAnswer === val
+                                                        ? "border-neon-red bg-neon-red/10 text-white"
+                                                        : "border-white/10 bg-white/5 text-gray-400 hover:border-white/30"
+                                                    }`}>
+                                                    <input
+                                                        type="radio"
+                                                        className="hidden"
+                                                        checked={q.correctAnswer === val}
+                                                        onChange={() => handleQuestionChange(qIndex, "correctAnswer", val)}
+                                                    />
+                                                    <span className="font-bold">{val}</span>
+                                                </label>
+                                            ))}
+                                        </div>
                                     </div>
                                 ) : null}
 

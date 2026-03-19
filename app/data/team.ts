@@ -582,6 +582,7 @@ Through ASPER, I aim to build a culture of practical learning, technical excelle
     socials: {
       linkedin: "https://www.linkedin.com/in/mayank-mishra-a20359255",
       instagram: "https://www.instagram.com/mayankkk.mishra/",
+      github: "https://github.com/Mayankmishra15",
     },
   },
 

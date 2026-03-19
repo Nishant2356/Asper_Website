@@ -119,4 +119,5 @@ enum QuizStatus {
 enum QuestionType {
   MCQ
   DYNAMIC
+  TRUE_FALSE
 }
