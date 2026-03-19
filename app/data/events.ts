@@ -14,13 +14,13 @@ export interface Event {
 }
 
 export const events: Event[] = [
-  
+
   {
     id: 1,
-    title: "Hackathon 2026",
-    date: "18th March - 24th March",
+    title: "ASPIREX 2026",
+    date: "26th March - 1st April",
     time: "---",
-    location: "Main Auditorium Hall",
+    location: "Online",
     description:
       "An exciting week-long hackathon where innovators collaborate to build creative tech solutions.",
     image: "/assets/hackathon_event.png",
