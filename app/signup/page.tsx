@@ -13,7 +13,7 @@ const DEPARTMENTS = [
     { value: "GAME_DEVELOPMENT_ANIMATION", label: "Game Development & Animation" },
     { value: "DEVOPS_CLOUD", label: "DevOps & Cloud" },
     { value: "ML_DATA_SCIENCE", label: "ML & Data Science" },
-    { value: "MEDIA_GRAPHICS_VIDEO", label: "Media (Graphics & Video)" },
+    { value: "MEDIA_GRAPHICS_VIDEO", label: "Graphic Design" },
     { value: "CORPORATE_RELATIONS", label: "Corporate Relations" },
     { value: "PHOTOGRAPHY_VIDEO_EDITING", label: "Photography & Video Editing" },
 ];
