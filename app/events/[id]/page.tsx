@@ -127,6 +127,26 @@ export default function EventDetailsPage() {
                                 </ul>
                             </motion.div>
                         )}
+                         {event.problemStatement && event.problemStatement.length > 0 && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                className="p-8 bg-white/5 rounded-2xl border border-white/10 hover:border-neon-red/30 transition-colors"
+                            >
+                                <h3 className="text-xl font-bold mb-6 text-white uppercase tracking-wider">Problem Statement</h3>
+                                <ul className="space-y-4">
+                                    {event.problemStatement.map((item, index) => (
+                                        <li key={index} className="flex items-start gap-4">
+                                            <span className="flex-shrink-0 w-6 h-6 rounded-full bg-neon-red/20 text-neon-red flex items-center justify-center font-bold text-xs mt-1">
+                                                {index + 1}
+                                            </span>
+                                            <span className="text-gray-300">{item}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </motion.div>
+                        )}
                     </div>
 
                     {/* Right Column: Sidebar */}

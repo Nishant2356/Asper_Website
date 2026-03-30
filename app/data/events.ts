@@ -11,6 +11,7 @@ export interface Event {
   details: string;
   registerLink?: string;
   whatToExpect?: string[];
+  problemStatement?:string[];
 }
 
 export const events: Event[] = [
@@ -40,6 +41,14 @@ Please note that this event is exclusively for ASPER club members**, and partici
       "Team Innovation",
       "Mentorship & Guidance",
       "Exciting Prizes & Recognition",
+    ],
+    problemStatement: [
+      "CI/CD Pipeline Automation System- Create a pipeline that Automatically builds, tests, deploys code Triggers on Git push Tools: Jenkins Docker  GitHub ",
+      "Develop a system that: Detects suspicious activities Alerts admin  Logs security event",
+      "Make a model for Language Identification from Audio Make your own data set , try to show all activities of Machine learning model . ",
+      "Make a model for Forecast Weather Using ARIMA Make your own data set , try to show all activites of Machine learning model . ",
+      "Participants are required to create and showcase a complete digital idenƟty for a startup/company. This challenge focuses on creativity, branding, and digital presence. ",
+      "Participants are required to design and develop a professional website for their startup/company. The website should represent your brand identity and showcase your services effectively.",
     ],
   },
 
