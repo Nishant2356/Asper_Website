@@ -24,7 +24,7 @@ export const events: Event[] = [
     location: "Online",
     description:
       "An exciting week-long hackathon where innovators collaborate to build creative tech solutions.",
-    image: "/assets/hackathon_event.png",
+    image: "/assets/hackathon_event1.png",
     featured: true,
     tag: "HACKATHON",
     details: `Join our Hackathon 2026 and experience a thrilling week of innovation, creativity, and collaboration. 
