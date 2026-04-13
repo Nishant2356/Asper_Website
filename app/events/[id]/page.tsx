@@ -192,12 +192,12 @@ export default function EventDetailsPage() {
                                     REGISTER NOW
                                 </Link>
                             ) : (
-                                <button
-                                    disabled
-                                    className="w-full py-4 bg-white/10 text-gray-500 rounded-xl font-bold cursor-not-allowed flex items-center justify-center gap-2"
-                                >
-                                    REGISTRATION SOON
-                                </button>
+                                //<button
+                                   // disabled
+                                   // className="w-full py-4 bg-white/10 text-gray-500 rounded-xl font-bold cursor-not-allowed flex items-center justify-center gap-2"
+                              //  >
+                                   // REGISTRATION OVER
+                               // </button>
                             )}
                         </div>
                     </motion.div>
