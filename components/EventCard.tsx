@@ -12,7 +12,7 @@ interface EventCardProps {
 
 export default function EventCard({ id, title, date, description, image }: EventCardProps) {
     return (
-        <Link href={`/events/${id}`} className="block group h-full">
+        <Link href={`/events/${id}`} className="block group ">
             <div className="h-full bg-white/5 border border-white/10 rounded-xl overflow-hidden hover:border-neon-red/50 transition-all duration-300 hover:shadow-[0_0_30px_-5px_rgba(255,0,51,0.3)] hover:-translate-y-2 flex flex-col">
                 {/* Image Placeholder */}
                 <div className="h-48 w-full relative shrink-0">
@@ -21,7 +21,7 @@ export default function EventCard({ id, title, date, description, image }: Event
                             src={image}
                             alt={title}
                             fill
-                            className="object-cover group-hover:scale-105 transition-transform duration-500"
+                            className="object-cover group-hover:scale-105 transition-transform duration-500  "
                         />
                     ) : (
                         <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-black" />
