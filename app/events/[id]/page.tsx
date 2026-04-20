@@ -127,7 +127,7 @@ export default function EventDetailsPage() {
                                 </ul>
                             </motion.div>
                         )}
-                         {event.problemStatement && event.problemStatement.length > 0 && (
+                        {event.problemStatement && event.problemStatement.length > 0 && (
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}
@@ -192,12 +192,12 @@ export default function EventDetailsPage() {
                                     REGISTER NOW
                                 </Link>
                             ) : (
-                                //<button
-                                   // disabled
-                                   // className="w-full py-4 bg-white/10 text-gray-500 rounded-xl font-bold cursor-not-allowed flex items-center justify-center gap-2"
-                              //  >
-                                   // REGISTRATION OVER
-                               // </button>
+                                <button
+                                    disabled
+                                    className="w-full py-4 bg-white/10 text-gray-500 rounded-xl font-bold cursor-not-allowed flex items-center justify-center gap-2"
+                                >
+                                    REGISTRATION OVER
+                                </button>
                             )}
                         </div>
                     </motion.div>
