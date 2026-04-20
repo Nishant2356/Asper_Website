@@ -1018,22 +1018,22 @@ Through ASPER, I aim to build a culture of practical learning, technical excelle
       github: "https://github.com/Anushka140306",
     },
   },
-  {
-    id: 65,
-    email: "",
-    name: "Tishir Raymond Michael",
-    role: "Head",
-    department: "Game Development & Animation",
-    branch: "CSE",
-    year: "3rd",
-    image: "/images/team/TISHIR.jpeg",
-    bio: "",
-    socials: {
-      linkedin: "",
-      instagram: "",
-      github: "",
-    },
-  },
+  // {
+  //   id: 65,
+  //   email: "",
+  //   name: "Tishir Raymond Michael",
+  //   role: "Head",
+  //   department: "Game Development & Animation",
+  //   branch: "CSE",
+  //   year: "3rd",
+  //   image: "/images/team/TISHIR.jpeg",
+  //   bio: "",
+  //   socials: {
+  //     linkedin: "",
+  //     instagram: "",
+  //     github: "",
+  //   },
+  // },
 
   {
     id: 66,

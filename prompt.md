@@ -96,3 +96,8 @@ chat the other pages are looking exactly similar to the reference pages that i h
 
 
 chat i want you to add another filed in the project model named marks in string i will be giving marks to them out of ten that i will manually give like this 9/10 but at initially when not checked it will have the value as not checked something like that
+
+ok chat for admins i want that in the quiz section when the quizes gets listed they should also have a leaderboard button in the card as well so admins can see the progress of each leaderboard without attempting the quiz this should only be visible for the admins only
+
+
+chat i want a suggestion from you i want that anyone who is coming to our website can see the projects of members so that it can be helpul for promotion of asper so tell me where can i put these them to come and see like just give me suggestions dont code
