@@ -26,19 +26,43 @@ model Project {
 }
 
 model User {
-  id               String        @id @default(cuid())
+  id               String                 @id @default(cuid())
   name             String
-  email            String        @unique
+  email            String                 @unique
   password         String
-  role             Role          @default(MEMBER)
+  role             Role                   @default(MEMBER)
   domain           Department[]
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
-  resetToken       String?       @unique
+  createdAt        DateTime               @default(now())
+  updatedAt        DateTime               @updatedAt
+  resetToken       String?                @unique
   resetTokenExpiry DateTime?
   projects         Project[]
-  createdQuizzes   Quiz[]        @relation("QuizCreator")
+  createdQuizzes   Quiz[]                 @relation("QuizCreator")
   quizAttempts     QuizAttempt[]
+
+  // ─── PROFILE FIELDS ───────────────────────────────
+  bio              String?
+  profilePhoto     String?
+  birthDate        DateTime?
+  position         String?
+  github           String?
+  linkedin         String?
+  instagram        String?
+  twitter          String?
+  profileUpdates   ProfileUpdateRequest[]
+}
+
+model ProfileUpdateRequest {
+  id         String         @id @default(cuid())
+  userId     String
+  user       User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  field      String
+  oldValue   String?
+  newValue   String
+  status     ApprovalStatus @default(PENDING)
+  createdAt  DateTime       @default(now())
+  reviewedAt DateTime?
+  reviewedBy String?
 }
 
 model Quiz {
@@ -92,6 +116,28 @@ model Message {
   message   String
   createdAt DateTime @default(now())
 }
+model Notification {
+  id        String             @id @default(cuid())
+  type      NotificationType
+  title     String
+  message   String
+  data      String?
+  status    NotificationStatus @default(UNREAD)
+  createdAt DateTime           @default(now())
+  readAt    DateTime?
+}
+
+enum NotificationType {
+  NEW_USER
+  PROFILE_UPDATE
+  PROJECT_SUBMISSION
+}
+
+enum NotificationStatus {
+  UNREAD
+  READ
+  ACTIONED
+}
 
 enum Department {
   DSA
@@ -120,4 +166,10 @@ enum QuestionType {
   MCQ
   DYNAMIC
   TRUE_FALSE
+}
+
+enum ApprovalStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }

@@ -3,7 +3,17 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X, LogOut, User } from "lucide-react";
+import {
+    Menu,
+    X,
+    LogOut,
+    User,
+    Bell,
+    Users,
+    Shield,
+    Edit,
+    ClipboardList,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import { useSession, signOut } from "next-auth/react";
@@ -21,9 +31,12 @@ const navLinks = [
 export default function Navbar() {
     const { data: session } = useSession();
     const user = session?.user;
+    const isAdmin = user?.role === "ADMIN";
     const [isOpen, setIsOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+    const [unreadCount, setUnreadCount] = useState(0);
+    const [profilePhoto, setProfilePhoto] = useState<string | null>(null);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -32,7 +45,10 @@ export default function Navbar() {
         };
 
         const handleClickOutside = (event: MouseEvent) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target as Node)
+            ) {
                 setIsUserMenuOpen(false);
             }
         };
@@ -45,10 +61,74 @@ export default function Navbar() {
         };
     }, []);
 
+    // ─── Fetch profile photo ──────────────────────────
+    useEffect(() => {
+        if (!user?.id) return;
+
+        const fetchPhoto = async () => {
+            try {
+                const res = await fetch(`/api/profile/${user.id}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.profilePhoto) {
+                        setProfilePhoto(data.profilePhoto);
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to fetch profile photo:", error);
+            }
+        };
+
+        fetchPhoto();
+    }, [user?.id]);
+
+    // ─── Fetch unread notification count ──────────────
+    useEffect(() => {
+        if (!isAdmin) return;
+
+        const fetchCount = async () => {
+            try {
+                const res = await fetch("/api/notifications", {
+                    method: "HEAD",
+                });
+                const count = res.headers.get("X-Unread-Count");
+                if (count) setUnreadCount(parseInt(count));
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchCount();
+        const interval = setInterval(fetchCount, 30000);
+        return () => clearInterval(interval);
+    }, [isAdmin]);
+
     const handleLogout = () => {
         signOut();
         setIsUserMenuOpen(false);
     };
+
+    // ─── Avatar Component ─────────────────────────────
+    const UserAvatar = ({ size = "w-10 h-10", textSize = "text-lg" }: { size?: string; textSize?: string }) => (
+        <div
+            className={`${size} rounded-full overflow-hidden border-2 border-neon-red flex items-center justify-center flex-shrink-0 relative`}
+        >
+            {profilePhoto ? (
+                <Image
+                    src={profilePhoto}
+                    alt={user?.name || "Profile"}
+                    fill
+                    className="object-cover"
+                />
+            ) : (
+                <div
+                    className={`w-full h-full bg-neon-red/10 flex items-center justify-center ${textSize} font-bold text-neon-red`}
+                >
+                    {user?.name?.[0]?.toUpperCase()}
+                </div>
+            )}
+        </div>
+    );
 
     return (
         <nav
@@ -85,44 +165,179 @@ export default function Navbar() {
                     ))}
 
                     {user ? (
-                        <div className="relative" ref={dropdownRef}>
+                        <div
+                            className="relative flex items-center gap-3"
+                            ref={dropdownRef}
+                        >
+                            {/* Admin Bell */}
+                            {isAdmin && (
+                                <Link
+                                    href="/admin/notifications"
+                                    className="relative p-2 text-gray-400 hover:text-white transition-colors"
+                                >
+                                    <Bell size={20} />
+                                    {unreadCount > 0 && (
+                                        <span className="absolute -top-1 -right-1 w-5 h-5 bg-neon-red text-white text-xs font-bold rounded-full flex items-center justify-center animate-pulse">
+                                            {unreadCount > 9
+                                                ? "9+"
+                                                : unreadCount}
+                                        </span>
+                                    )}
+                                </Link>
+                            )}
+
+                            {/* User Button with Profile Photo */}
                             <button
-                                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                                onClick={() =>
+                                    setIsUserMenuOpen(!isUserMenuOpen)
+                                }
                                 className="flex items-center gap-3 hover:bg-white/5 p-2 rounded-lg transition-colors"
                             >
                                 <div className="text-right hidden lg:block">
-                                    <p className="text-white text-sm font-bold leading-none">{user.name}</p>
-                                    <p className="text-gray-500 text-xs text-right mt-1">{user.role}</p>
+                                    <p className="text-white text-sm font-bold leading-none">
+                                        {user.name}
+                                    </p>
+                                    <p className="text-gray-500 text-xs text-right mt-1">
+                                        {user.role}
+                                    </p>
                                 </div>
-                                <div className="w-10 h-10 rounded-full bg-neon-red/10 border border-neon-red flex items-center justify-center text-neon-red font-bold text-lg">
-                                    {user.name?.[0]?.toUpperCase()}
-                                </div>
+                                <UserAvatar />
                             </button>
 
+                            {/* Dropdown */}
                             <AnimatePresence>
                                 {isUserMenuOpen && (
                                     <motion.div
-                                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                                        className="absolute right-0 mt-2 w-56 bg-deep-black border border-white/10 rounded-xl shadow-xl overflow-hidden z-50"
+                                        initial={{
+                                            opacity: 0,
+                                            y: 10,
+                                            scale: 0.95,
+                                        }}
+                                        animate={{
+                                            opacity: 1,
+                                            y: 0,
+                                            scale: 1,
+                                        }}
+                                        exit={{
+                                            opacity: 0,
+                                            y: 10,
+                                            scale: 0.95,
+                                        }}
+                                        className="absolute right-0 mt-2 w-64 bg-deep-black border border-white/10 rounded-xl shadow-xl overflow-hidden z-50 top-full"
                                     >
-                                        <div className="p-4 border-b border-white/5 lg:hidden">
-                                            <p className="text-white font-bold">{user.name}</p>
-                                            <p className="text-gray-500 text-sm">{user.email}</p>
+                                        {/* User Info with Photo */}
+                                        <div className="p-4 border-b border-white/5 flex items-center gap-3">
+                                            <UserAvatar
+                                                size="w-12 h-12"
+                                                textSize="text-xl"
+                                            />
+                                            <div>
+                                                <p className="text-white font-bold">
+                                                    {user.name}
+                                                </p>
+                                                <p className="text-gray-500 text-xs">
+                                                    {user.email}
+                                                </p>
+                                            </div>
                                         </div>
 
                                         <div className="p-2">
-                                            {user.role === "ADMIN" && (
-                                                <Link
-                                                    href="/projects/admin"
-                                                    onClick={() => setIsUserMenuOpen(false)}
-                                                    className="flex items-center gap-3 w-full px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
-                                                >
-                                                    <User size={18} />
-                                                    Admin Dashboard
-                                                </Link>
+                                            {/* My Profile */}
+                                            <Link
+                                                href={`/profile/${user.id}`}
+                                                onClick={() =>
+                                                    setIsUserMenuOpen(false)
+                                                }
+                                                className="flex items-center gap-3 w-full px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                                            >
+                                                <User size={18} />
+                                                My Profile
+                                            </Link>
+
+                                            {/* Edit Profile */}
+                                            <Link
+                                                href={`/profile/${user.id}/edit`}
+                                                onClick={() =>
+                                                    setIsUserMenuOpen(false)
+                                                }
+                                                className="flex items-center gap-3 w-full px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                                            >
+                                                <Edit size={18} />
+                                                Edit Profile
+                                            </Link>
+
+                                            {/* Admin Section */}
+                                            {isAdmin && (
+                                                <>
+                                                    <div className="my-2 mx-4 border-t border-white/5" />
+                                                    <p className="px-4 py-1 text-xs font-bold text-gray-600 uppercase tracking-widest">
+                                                        Admin
+                                                    </p>
+
+                                                    <Link
+                                                        href="/admin/members"
+                                                        onClick={() =>
+                                                            setIsUserMenuOpen(
+                                                                false
+                                                            )
+                                                        }
+                                                        className="flex items-center gap-3 w-full px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                                                    >
+                                                        <Users size={18} />
+                                                        Manage Members
+                                                    </Link>
+
+                                                    <Link
+                                                        href="/admin/notifications"
+                                                        onClick={() =>
+                                                            setIsUserMenuOpen(
+                                                                false
+                                                            )
+                                                        }
+                                                        className="flex items-center gap-3 w-full px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                                                    >
+                                                        <Bell size={18} />
+                                                        Notifications
+                                                        {unreadCount > 0 && (
+                                                            <span className="ml-auto px-2 py-0.5 bg-neon-red text-white text-xs font-bold rounded-full">
+                                                                {unreadCount}
+                                                            </span>
+                                                        )}
+                                                    </Link>
+
+                                                    <Link
+                                                        href="/profile/requests"
+                                                        onClick={() =>
+                                                            setIsUserMenuOpen(
+                                                                false
+                                                            )
+                                                        }
+                                                        className="flex items-center gap-3 w-full px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                                                    >
+                                                        <ClipboardList
+                                                            size={18}
+                                                        />
+                                                        Profile Requests
+                                                    </Link>
+
+                                                    <Link
+                                                        href="/projects/admin"
+                                                        onClick={() =>
+                                                            setIsUserMenuOpen(
+                                                                false
+                                                            )
+                                                        }
+                                                        className="flex items-center gap-3 w-full px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
+                                                    >
+                                                        <Shield size={18} />
+                                                        Project Dashboard
+                                                    </Link>
+                                                </>
                                             )}
+                                        </div>
+
+                                        {/* Logout */}
+                                        <div className="p-2 border-t border-white/5">
                                             <button
                                                 onClick={handleLogout}
                                                 className="flex items-center gap-3 w-full px-4 py-3 text-sm text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
@@ -162,7 +377,7 @@ export default function Navbar() {
                 </button>
             </div>
 
-            {/* Mobile Menu Overlay */}
+            {/* Mobile Menu */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
@@ -182,23 +397,86 @@ export default function Navbar() {
                                     {link.name}
                                 </Link>
                             ))}
+
                             {user ? (
                                 <>
                                     <div className="w-full h-px bg-white/10 my-2" />
-                                    <div className="text-center">
-                                        <p className="text-white font-bold text-lg">{user.name}</p>
-                                        <p className="text-gray-500 text-sm mb-4">{user.role}</p>
+
+                                    {/* Mobile User Info with Photo */}
+                                    <div className="flex flex-col items-center gap-3">
+                                        <UserAvatar
+                                            size="w-16 h-16"
+                                            textSize="text-2xl"
+                                        />
+                                        <div className="text-center">
+                                            <p className="text-white font-bold text-lg">
+                                                {user.name}
+                                            </p>
+                                            <p className="text-gray-500 text-sm mb-2">
+                                                {user.role}
+                                            </p>
+                                        </div>
                                     </div>
 
-                                    {user.role === "ADMIN" && (
-                                        <Link
-                                            href="/projects/admin"
-                                            onClick={() => setIsOpen(false)}
-                                            className="text-xl font-medium text-gray-300 hover:text-neon-red transition-colors"
-                                        >
-                                            Dashboard
-                                        </Link>
+                                    <Link
+                                        href={`/profile/${user.id}`}
+                                        onClick={() => setIsOpen(false)}
+                                        className="text-xl font-medium text-gray-300 hover:text-neon-red transition-colors"
+                                    >
+                                        My Profile
+                                    </Link>
+
+                                    <Link
+                                        href={`/profile/${user.id}/edit`}
+                                        onClick={() => setIsOpen(false)}
+                                        className="text-xl font-medium text-gray-300 hover:text-neon-red transition-colors"
+                                    >
+                                        Edit Profile
+                                    </Link>
+
+                                    {isAdmin && (
+                                        <>
+                                            <div className="w-full h-px bg-white/10 my-2" />
+                                            <p className="text-gray-500 text-sm uppercase tracking-widest font-bold">
+                                                Admin
+                                            </p>
+
+                                            <Link
+                                                href="/admin/members"
+                                                onClick={() => setIsOpen(false)}
+                                                className="text-xl font-medium text-gray-300 hover:text-neon-red transition-colors"
+                                            >
+                                                Manage Members
+                                            </Link>
+                                            <Link
+                                                href="/admin/notifications"
+                                                onClick={() => setIsOpen(false)}
+                                                className="text-xl font-medium text-gray-300 hover:text-neon-red transition-colors flex items-center gap-2"
+                                            >
+                                                Notifications
+                                                {unreadCount > 0 && (
+                                                    <span className="px-2 py-0.5 bg-neon-red text-white text-xs font-bold rounded-full">
+                                                        {unreadCount}
+                                                    </span>
+                                                )}
+                                            </Link>
+                                            <Link
+                                                href="/profile/requests"
+                                                onClick={() => setIsOpen(false)}
+                                                className="text-xl font-medium text-gray-300 hover:text-neon-red transition-colors"
+                                            >
+                                                Profile Requests
+                                            </Link>
+                                            <Link
+                                                href="/projects/admin"
+                                                onClick={() => setIsOpen(false)}
+                                                className="text-xl font-medium text-gray-300 hover:text-neon-red transition-colors"
+                                            >
+                                                Project Dashboard
+                                            </Link>
+                                        </>
                                     )}
+
                                     <button
                                         onClick={() => {
                                             handleLogout();
