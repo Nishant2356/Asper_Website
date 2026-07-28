@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, m } from "framer-motion";
 import {
     Loader2,
     Search,
@@ -15,6 +15,11 @@ import {
     Edit,
     Eye,
     Users,
+
+    TriangleAlert,
+    TriangleAlertIcon,
+    CircleUserRound,
+
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -26,6 +31,7 @@ interface Member {
     email: string;
     role: string;
     domain: string[];
+    status: "PENDING" | "APPROVED";
     position?: string;
     profilePhoto?: string;
     createdAt: string;
@@ -43,6 +49,7 @@ export default function AdminMembersPage() {
     const [search, setSearch] = useState("");
     const [selectedDomain, setSelectedDomain] = useState("ALL");
     const [selectedRole, setSelectedRole] = useState("ALL");
+    const [selectedstatus, setSelectedstatus] = useState("ALL");
     const [deletingId, setDeletingId] = useState<string | null>(null);
     const [showCreateModal, setShowCreateModal] = useState(false);
 
@@ -51,8 +58,10 @@ export default function AdminMembersPage() {
         else if (
             status === "authenticated" &&
             session.user.role !== "ADMIN"
-        )
+        ) {
+
             router.push("/");
+        }
     }, [status, session, router]);
 
     const fetchMembers = async () => {
@@ -63,7 +72,7 @@ export default function AdminMembersPage() {
             if (selectedDomain !== "ALL")
                 params.set("domain", selectedDomain);
             if (selectedRole !== "ALL") params.set("role", selectedRole);
-
+            if (selectedstatus !== "ALL") params.set("status", selectedstatus);
             const res = await fetch(
                 `/api/profile/admin?${params.toString()}`
             );
@@ -80,7 +89,7 @@ export default function AdminMembersPage() {
 
     useEffect(() => {
         if (status === "authenticated") fetchMembers();
-    }, [status, search, selectedDomain, selectedRole]);
+    }, [status, search, selectedDomain, selectedRole, selectedstatus]);
 
     const handleDelete = async (id: string, name: string) => {
         if (
@@ -104,7 +113,31 @@ export default function AdminMembersPage() {
             setDeletingId(null);
         }
     };
+    const handleTeamStatus = async (id: string, name: string, status: string) => {
+        if (
+            !confirm(
+                `Are you sure you want to ${status === "PENDING" ? "approve" : "reject"} ${name}'s profile?\n\n ${status === "PENDING" ? "Please verify that the profile is complete, accurate, and professional before  It can still be edited later if needed.After approval that user is part of ASPER Team " : "this action will change the member's status to PENDING. the user no longer have part of asper team "}`
+            )
+        ) 
+            return;
+        
 
+
+        try {
+            const res = await fetch(`/api/profile/${id}/status`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ status: status === "PENDING" ? "APPROVED" : "PENDING" }),
+            });
+            if (res.ok) {
+                setMembers((prev) => prev.map((m) => m.id === id ? { ...m, status: status === "PENDING" ? "APPROVED" : "PENDING" } : m));
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
     return (
         <main className="bg-deep-black min-h-screen text-white">
             <Navbar />
@@ -201,6 +234,24 @@ export default function AdminMembersPage() {
                             </option>
                         </select>
                     </div>
+                    <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-3">
+                        <select
+                            value={selectedstatus}
+                            onChange={(e) => setSelectedstatus(e.target.value)}
+                            className="bg-transparent text-white border-none focus:ring-0 py-3 pr-4 cursor-pointer text-sm"
+                        >
+                            <option value="ALL" className="bg-black">
+                                Select Status
+                            </option>
+                            <option value="PENDING" className="bg-black">
+                                Pending
+                            </option>
+                            <option value="APPROVED" className="bg-black">
+                                Approved
+                            </option>
+                        </select>
+                    </div>
+                    
                 </div>
 
                 {/* Table */}
@@ -308,24 +359,23 @@ export default function AdminMembersPage() {
                                                             ))}
                                                         {member.domain
                                                             .length > 2 && (
-                                                            <span className="text-xs px-2 py-0.5 bg-white/5 text-gray-400 rounded">
-                                                                +
-                                                                {member.domain
-                                                                    .length -
-                                                                    2}
-                                                            </span>
-                                                        )}
+                                                                <span className="text-xs px-2 py-0.5 bg-white/5 text-gray-400 rounded">
+                                                                    +
+                                                                    {member.domain
+                                                                        .length -
+                                                                        2}
+                                                                </span>
+                                                            )}
                                                     </div>
                                                 </td>
 
                                                 <td className="p-4 hidden lg:table-cell">
                                                     <span
-                                                        className={`text-xs font-bold px-2 py-1 rounded uppercase ${
-                                                            member.role ===
-                                                            "ADMIN"
+                                                        className={`text-xs font-bold px-2 py-1 rounded uppercase ${member.role ===
+                                                                "ADMIN"
                                                                 ? "bg-yellow-500/20 text-yellow-500"
                                                                 : "bg-white/10 text-gray-400"
-                                                        }`}
+                                                            }`}
                                                     >
                                                         {member.role}
                                                     </span>
@@ -379,6 +429,34 @@ export default function AdminMembersPage() {
                                                         >
                                                             <Edit size={16} />
                                                         </Link>
+                                                        {/* Team Status Button */}
+                                                        <button
+                                                            onClick={() =>
+                                                                handleTeamStatus(
+                                                                    member.id,
+                                                                    member.name,
+                                                                    member.status
+                                                                )
+                                                            }
+
+                                                            className={`p-2 ${member.status === "APPROVED" ? " bg-white/5 hover:bg-green-500/20 rounded-lg transition-colors text-gray-400 hover:text-green-400" : " bg-white/5 hover:bg-yellow-500/20 rounded-lg transition-colors text-gray-400 hover:text-yellow-400"}
+                                                                `}
+                                                            title="team status"
+                                                        >
+
+                                                            {member.status === "APPROVED" ? (
+                                                                <>
+                                                                    <span className="text-green-400 hidden md:block text-xs font-bold">APPROVED</span>
+                                                                    <CircleUserRound size={16} className="md:hidden text-green-400" />
+                                                                </>
+                                                            ) : (
+                                                                <>
+
+                                                                    <span className="text-yellow-400 hidden md:block text-xs font-bold">PENDING</span>
+                                                                    <TriangleAlertIcon size={16} className="md:hidden text-yellow-400" />
+                                                                </>
+                                                            )}
+                                                        </button>
                                                         <button
                                                             onClick={() =>
                                                                 handleDelete(
@@ -394,7 +472,7 @@ export default function AdminMembersPage() {
                                                             title="Delete"
                                                         >
                                                             {deletingId ===
-                                                            member.id ? (
+                                                                member.id ? (
                                                                 <Loader2
                                                                     size={16}
                                                                     className="animate-spin"
@@ -596,11 +674,10 @@ function CreateMemberModal({
                             ).map((dept) => (
                                 <label
                                     key={dept.value}
-                                    className={`flex items-center gap-2 px-3 py-2 rounded-lg border cursor-pointer transition-all text-sm ${
-                                        form.domain.includes(dept.value)
+                                    className={`flex items-center gap-2 px-3 py-2 rounded-lg border cursor-pointer transition-all text-sm ${form.domain.includes(dept.value)
                                             ? "border-neon-red bg-neon-red/10 text-white"
                                             : "border-white/10 bg-white/5 text-gray-400"
-                                    }`}
+                                        }`}
                                 >
                                     <input
                                         type="checkbox"
@@ -615,13 +692,13 @@ function CreateMemberModal({
                                                     dept.value
                                                 )
                                                     ? p.domain.filter(
-                                                          (d) =>
-                                                              d !== dept.value
-                                                      )
+                                                        (d) =>
+                                                            d !== dept.value
+                                                    )
                                                     : [
-                                                          ...p.domain,
-                                                          dept.value,
-                                                      ],
+                                                        ...p.domain,
+                                                        dept.value,
+                                                    ],
                                             }));
                                         }}
                                     />

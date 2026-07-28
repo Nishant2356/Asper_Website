@@ -1,15 +1,20 @@
 import type { NextAuthConfig } from "next-auth";
+import { prisma } from "./lib/prisma";
 
 export const authConfig = {
     pages: {
         signIn: "/login",
     },
+    session: {
+    strategy: "jwt",
+    maxAge: 7 * 60 * 60 * 24, // 7 days
+},
     callbacks: {
         async jwt({ token, user, trigger, session }) {
             if (user) {
+                token.id = user.id as string;
                 token.role = user.role;
                 token.domain = user.domain;
-                token.id = user.id as string;
             }
 
             if (trigger === "update" && session) {
@@ -18,12 +23,14 @@ export const authConfig = {
 
             return token;
         },
+
         async session({ session, token }) {
-            if (token && session.user) {
+            if (session.user) {
+                session.user.id = token.id as string;
                 session.user.role = token.role;
                 session.user.domain = token.domain;
-                session.user.id = token.id;
             }
+
             return session;
         },
     },

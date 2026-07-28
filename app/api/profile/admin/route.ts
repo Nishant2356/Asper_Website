@@ -22,6 +22,7 @@ const createProfileSchema = z.object({
             "PHOTOGRAPHY_VIDEO_EDITING",
         ])
     ),
+    status: z.enum(["PENDING", "APPROVED"]).default("PENDING"),
     position: z.string().optional(),
     bio: z.string().optional(),
     profilePhoto: z.string().optional(),
@@ -61,6 +62,7 @@ export async function POST(req: NextRequest) {
             domain,
             position,
             bio,
+            status,
             profilePhoto,
             birthDate,
             github,
@@ -88,6 +90,7 @@ export async function POST(req: NextRequest) {
                 domain,
                 position,
                 bio,
+                status,
                 profilePhoto,
                 birthDate: birthDate ? new Date(birthDate) : undefined,
                 github,
@@ -136,6 +139,7 @@ export async function GET(req: NextRequest) {
         const search = searchParams.get("search") || "";
         const role = searchParams.get("role");
         const domain = searchParams.get("domain");
+        const status = searchParams.get("status");
 
         const users = await prisma.user.findMany({
             where: {
@@ -160,6 +164,7 @@ export async function GET(req: NextRequest) {
                         : {},
                     role ? { role: role as any } : {},
                     domain ? { domain: { has: domain as any } } : {},
+                    status ? { status: status as any } : {},
                 ],
             },
             select: {
@@ -168,6 +173,7 @@ export async function GET(req: NextRequest) {
                 email: true,
                 role: true,
                 domain: true,
+                status: true,
                 position: true,
                 bio: true,
                 profilePhoto: true,

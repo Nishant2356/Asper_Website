@@ -69,6 +69,7 @@ export default function EditProfilePage({
                 const res = await fetch(`/api/profile/${userId}`);
                 if (!res.ok) return;
                 const data = await res.json();
+                console.log("Fetched profile data:", data);
                 setForm({
                     bio: data.bio || "",
                     profilePhoto: data.profilePhoto || "",
@@ -79,8 +80,8 @@ export default function EditProfilePage({
                     position: data.position || "",
                     birthDate: data.birthDate
                         ? new Date(data.birthDate)
-                              .toISOString()
-                              .split("T")[0]
+                            .toISOString()
+                            .split("T")[0]
                         : "",
                 });
             } catch (error) {
@@ -252,18 +253,46 @@ export default function EditProfilePage({
                                 <label className="block text-sm text-gray-400 mb-2">
                                     Position / Title
                                 </label>
-                                <input
-                                    type="text"
-                                    value={form.position}
+                              
+                                <select
+                                    value={form.position ?? ""}
                                     onChange={(e) =>
                                         setForm((prev) => ({
                                             ...prev,
                                             position: e.target.value,
                                         }))
                                     }
-                                    placeholder="e.g. Web Development Head"
-                                    className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-neon-red/50 transition-colors"
-                                />
+                                    className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-red/50 transition-colors"
+                                >
+                                    <option value="" className="bg-black">
+                                        Select Position
+                                    </option>
+                                    <option value="LEARNER" className="bg-black">
+                                        Learner
+                                    </option>
+                                    <option value="PRESIDENT" className="bg-black">President</option>
+                                    <option value="VICE_PRESIDENT" className="bg-black">Vice President</option>
+                                    <option value="SECRETARY" className="bg-black">Secretary</option>
+                                    <option value="TREASURER" className="bg-black">Treasurer</option>
+                                    <option value="CHAIR_MEMBER" className="bg-black">Chair Member</option>
+
+                                    <option value="OPEN_SOURCE_MANAGER" className="bg-black">
+                                        Open Source Manager
+                                    </option>
+                                    <option value="SOCIAL_MEDIA_MANAGER" className="bg-black">
+                                        Social Media Manager
+                                    </option>
+                                    <option value="EVENT_MANAGER" className="bg-black">
+                                        Event Manager
+                                    </option>
+
+                                    <option value="HEAD" className="bg-black">Head</option>
+                                    <option value="CO_HEAD" className="bg-black">Co-Head</option>
+
+                                    <option value="CORE_MEMBER" className="bg-black">
+                                        Core Member
+                                    </option>
+                                </select>
                             </div>
                             <div>
                                 <label className="block text-sm text-gray-400 mb-2">
@@ -328,11 +357,10 @@ export default function EditProfilePage({
                     {/* Status Message */}
                     {message && (
                         <div
-                            className={`p-4 rounded-lg border text-sm font-medium ${
-                                message.type === "success"
+                            className={`p-4 rounded-lg border text-sm font-medium ${message.type === "success"
                                     ? "bg-green-500/10 border-green-500/20 text-green-400"
                                     : "bg-red-500/10 border-red-500/20 text-red-400"
-                            }`}
+                                }`}
                         >
                             {message.text}
                         </div>

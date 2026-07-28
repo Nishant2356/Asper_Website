@@ -172,6 +172,8 @@ export async function PATCH(
         );
     }
 }
+// edit team status
+
 
 // ─── DELETE: Admin only ───────────────────────────────
 export async function DELETE(

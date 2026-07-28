@@ -39,12 +39,12 @@ model User {
   projects         Project[]
   createdQuizzes   Quiz[]                 @relation("QuizCreator")
   quizAttempts     QuizAttempt[]
-
+  status           ApprovalStatus              @default(PENDING)
   // ─── PROFILE FIELDS ───────────────────────────────
   bio              String?
   profilePhoto     String?
   birthDate        DateTime?
-  position         String?
+  position         Position   @default(LEARNER)
   github           String?
   linkedin         String?
   instagram        String?
@@ -172,4 +172,18 @@ enum ApprovalStatus {
   PENDING
   APPROVED
   REJECTED
+}
+enum Position {
+  PRESIDENT
+  VICE_PRESIDENT
+  OPEN_SOURCE_EXECUTIVE
+  CHAIR_MEMBER
+  TREASURER
+  SECRETARY
+  HEAD
+  CO_HEAD
+  SOCIAL_MEDIA_MANAGER
+  EVENT_MANAGER
+  CORE_MEMBER
+  LEARNER
 }
