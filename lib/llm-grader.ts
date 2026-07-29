@@ -1,6 +1,14 @@
 import Groq from "groq-sdk";
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+// Lazy-initialized so Next.js doesn't throw at build time
+// when GROQ_API_KEY is absent from the build environment.
+let _groq: Groq | null = null;
+function getGroq(): Groq {
+    if (!_groq) {
+        _groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+    }
+    return _groq;
+}
 
 export async function gradeDynamicAnswer(
     questionText: string,
@@ -34,7 +42,7 @@ export async function gradeDynamicAnswer(
     }
     `;
 
-        const completion = await groq.chat.completions.create({
+        const completion = await getGroq().chat.completions.create({
             messages: [
                 {
                     role: "system",
