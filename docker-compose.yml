@@ -1,0 +1,8 @@
+services:
+  app:
+    image: nishant2356/asper_website:1.0
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.docker
+    restart: unless-stopped
