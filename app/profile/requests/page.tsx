@@ -297,7 +297,7 @@ export default function ProfileRequestsPage() {
                                     exit={{ opacity: 0, x: -50 }}
                                     className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col md:flex-row md:items-center gap-6"
                                 >
-                                    <div className="flex items-center gap-4 flex-1">
+                                    <div onClick={() => router.push(`/profile/${req.user.id}`)} className="flex cursor-pointer items-center gap-4 flex-1">
                                         <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-white/10 flex-shrink-0">
                                             {req.user.profilePhoto ? (
                                                 <Image

@@ -14,7 +14,7 @@ export const authConfig = {
             if (user) {
                 token.id = user.id as string;
                 token.role = user.role;
-                token.domain = user.domain;
+                
             }
 
             if (trigger === "update" && session) {
@@ -28,7 +28,6 @@ export const authConfig = {
             if (session.user) {
                 session.user.id = token.id as string;
                 session.user.role = token.role;
-                session.user.domain = token.domain;
             }
 
             return session;

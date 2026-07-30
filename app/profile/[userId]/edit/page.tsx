@@ -23,6 +23,7 @@ interface ProfileForm {
     birthDate: string;
     college: "UIT" | "SOIT" | "OTHER";
     branch: string;
+    year: string;
     otherCollegeName: string;
 }
 interface PositionRow {
@@ -68,6 +69,7 @@ export default function EditProfilePage({
         birthDate: "",
         college: "UIT",
         branch: "",
+        year: "",
         otherCollegeName: "",
     });
     const [loading, setLoading] = useState(true);
@@ -112,6 +114,7 @@ export default function EditProfilePage({
                         : "",
                     college: data.college || "UIT",
                     branch: data.branch || "",
+                    year: data.year || "",
                     otherCollegeName: data.otherCollegeName || "",
                 });
                 setDeptAndPositions([
@@ -377,7 +380,7 @@ export default function EditProfilePage({
                             College Information
                         </h2>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div>
                                 <label className="block text-sm text-gray-400 mb-2">
                                     College
@@ -435,7 +438,42 @@ export default function EditProfilePage({
 
                                 </div>
                             )}
-                            
+                            {/* year for every college */}
+
+                            <div>
+                                <label className="block text-sm text-gray-400 mb-2">
+                                    Year
+                                </label>
+                               <select
+                                    value={form.year}
+                                    onChange={(e) =>
+                                        setForm((prev) => ({
+                                            ...prev,
+                                            year: e.target.value,
+                                        }))
+                                    }
+                                    className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-red/50 transition-colors"
+                                >
+                                    <option value="" className="bg-black">
+                                        Select Year
+                                    </option>
+                                    <option value="FIRST" className="bg-black">
+                                        1st Year
+                                    </option>
+                                    <option value="SECOND" className="bg-black">
+                                        2nd Year
+                                    </option>
+                                    <option value="THIRD" className="bg-black">
+                                        3rd Year
+                                    </option>
+                                    <option value="FOURTH" className="bg-black">
+
+                                        4th Year
+                                    </option>
+                                </select>
+
+                            </div>
+
                             {form.college === "OTHER" && (
                                 <div>
                                     <label className="block text-sm text-gray-400 mb-2">
@@ -658,46 +696,7 @@ export default function EditProfilePage({
 
 
 
-                    {/* Social Links */}
-                    < div className="bg-white/5 border border-white/10 rounded-2xl p-6" >
-                        <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4">
-                            Social Links
-                        </h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {(
-                                [
-                                    { key: "github", label: "GitHub URL" },
-                                    { key: "linkedin", label: "LinkedIn URL" },
-                                    {
-                                        key: "instagram",
-                                        label: "Instagram URL",
-                                    },
-                                    {
-                                        key: "twitter",
-                                        label: "Twitter / X URL",
-                                    },
-                                ] as const
-                            ).map(({ key, label }) => (
-                                <div key={key}>
-                                    <label className="block text-sm text-gray-400 mb-2">
-                                        {label}
-                                    </label>
-                                    <input
-                                        type="url"
-                                        value={form[key]}
-                                        onChange={(e) =>
-                                            setForm((prev) => ({
-                                                ...prev,
-                                                [key]: e.target.value,
-                                            }))
-                                        }
-                                        placeholder="https://..."
-                                        className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-neon-red/50 transition-colors"
-                                    />
-                                </div>
-                            ))}
-                        </div>
-                    </div >
+                   
 
                     {/* Status Message */}
                     {

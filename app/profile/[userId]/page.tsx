@@ -19,6 +19,8 @@ import {
     Calendar,
     Briefcase,
     ArrowLeft,
+    GraduationCap,
+    Book,
 } from "lucide-react";
 interface UserDomain {
     id: string;
@@ -35,7 +37,10 @@ interface UserProfile {
     bio?: string;
     profilePhoto?: string;
     birthDate?: string;
-    position?: string;
+    college?: string;
+    branch?: string;
+    year?: string;  
+    otherCollegeName?: string;
     github?: string;
     linkedin?: string;
     instagram?: string;
@@ -76,31 +81,31 @@ export default function ProfilePage({
         fetchProfile();
     }, [userId, router]);
     const positionOrder: Record<string, number> = {
-    PRESIDENT: 1,
-    VICE_PRESIDENT: 2,
-    CHAIR_MEMBER: 3,
-    SECRETARY: 4,
-    OPEN_SOURCE_EXECUTIVE: 5,
-    TREASURER: 6,
-    EVENT_MANAGER: 7,
-    HEAD: 8,
-    SOCIAL_MEDIA_MANAGER: 9,
-    CO_HEAD: 10,
-    CORE_MEMBER: 11,
-    LEARNER: 12,
-};
+        PRESIDENT: 1,
+        VICE_PRESIDENT: 2,
+        CHAIR_MEMBER: 3,
+        SECRETARY: 4,
+        OPEN_SOURCE_EXECUTIVE: 5,
+        TREASURER: 6,
+        EVENT_MANAGER: 7,
+        HEAD: 8,
+        SOCIAL_MEDIA_MANAGER: 9,
+        CO_HEAD: 10,
+        CORE_MEMBER: 11,
+        LEARNER: 12,
+    };
 
-const sortedDomains = [...(profile?.domains || [])].sort((a, b) => {
-    const positionDifference =
-        (positionOrder[a.position] ?? 999) -
-        (positionOrder[b.position] ?? 999);
+    const sortedDomains = [...(profile?.domains || [])].sort((a, b) => {
+        const positionDifference =
+            (positionOrder[a.position] ?? 999) -
+            (positionOrder[b.position] ?? 999);
 
-    // Same position wale members ke domains alphabetically dikhenge
-    return (
-        positionDifference ||
-        a.department.localeCompare(b.department)
-    );
-});
+        // Same position wale members ke domains alphabetically dikhenge
+        return (
+            positionDifference ||
+            a.department.localeCompare(b.department)
+        );
+    });
 
     if (loading) {
         return (
@@ -150,7 +155,7 @@ const sortedDomains = [...(profile?.domains || [])].sort((a, b) => {
                                     src={profile.profilePhoto}
                                     alt={profile.name}
                                     fill
-                                    className="object-cover object-top" 
+                                    className="object-cover"
                                 />
                             ) : (
                                 <div className="w-full h-full bg-neon-red/10 flex items-center justify-center text-6xl font-black text-neon-red">
@@ -164,15 +169,29 @@ const sortedDomains = [...(profile?.domains || [])].sort((a, b) => {
                             <h1 className="text-3xl font-black">
                                 {profile.name}
                             </h1>
-                            {profile.position && (
-                                <p className="text-neon-red font-bold uppercase tracking-widest text-sm mt-1">
-                                    {profile.position}
-                                </p>
-                            )}
+
                             <span className="inline-block mt-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-400 uppercase tracking-wider">
                                 {profile.role}
                             </span>
+                            {profile?.birthDate && (
+                                
+                                    <div>
+
+                                        <p className="text-white font-bold">
+                                            {new Date(
+                                                profile?.birthDate
+                                            ).toLocaleDateString("en-IN", {
+                                                day: "numeric",
+                                                month: "long",
+                                                year: "numeric",
+                                            })}
+                                        </p>
+                                    </div>
+
+                                
+                            )}
                         </div>
+
 
                         {/* Edit Button */}
                         {(isOwner || isAdmin) && (
@@ -241,6 +260,60 @@ const sortedDomains = [...(profile?.domains || [])].sort((a, b) => {
                         transition={{ delay: 0.1 }}
                         className="space-y-8"
                     >
+                        {/* Info Grid */}
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+                            {/* college and branch */}
+                            {profile.college && (
+                                <div className="bg-white/5 border border-white/10 rounded-xl p-4 flex items-center gap-3">
+                                    <GraduationCap
+                                        className="text-neon-red flex-shrink-0"
+                                        size={20}
+                                    />
+                                    <div>
+                                        <p className="text-xs text-gray-500 uppercase tracking-wider">
+                                            College
+                                        </p>
+                                        <p className="text-white font-bold">
+                                            {profile.college}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+                            {profile.branch && (
+                                <div className="bg-white/5 border border-white/10 rounded-xl p-4 flex items-center gap-3">
+                                    <Book
+                                        className="text-neon-red flex-shrink-0"
+                                        size={20}
+                                    />
+                                    <div>
+                                        <p className="text-xs text-gray-500 uppercase tracking-wider">
+                                            Branch
+                                        </p>
+                                        <p className="text-white font-bold">
+                                            {profile.branch}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+                            {/* year */}
+                            {profile.year && (
+                                <div className="bg-white/5 border border-white/10 rounded-xl p-4 flex items-center gap-3">
+                                    <Calendar
+                                        className="text-neon-red flex-shrink-0"
+                                        size={20}
+                                    />
+                                    <div>
+                                        <p className="text-xs text-gray-500 uppercase tracking-wider">
+                                            Year
+                                        </p>
+                                        <p className="text-white font-bold">
+                                            {profile.year}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                         {/* Bio */}
                         {profile.bio && (
                             <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
@@ -253,47 +326,7 @@ const sortedDomains = [...(profile?.domains || [])].sort((a, b) => {
                             </div>
                         )}
 
-                        {/* Info Grid */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            {profile.birthDate && (
-                                <div className="bg-white/5 border border-white/10 rounded-xl p-4 flex items-center gap-3">
-                                    <Calendar
-                                        className="text-neon-red flex-shrink-0"
-                                        size={20}
-                                    />
-                                    <div>
-                                        <p className="text-xs text-gray-500 uppercase tracking-wider">
-                                            Birth Date
-                                        </p>
-                                        <p className="text-white font-bold">
-                                            {new Date(
-                                                profile.birthDate
-                                            ).toLocaleDateString("en-IN", {
-                                                day: "numeric",
-                                                month: "long",
-                                                year: "numeric",
-                                            })}
-                                        </p>
-                                    </div>
-                                </div>
-                            )}
-                            {profile.position && (
-                                <div className="bg-white/5 border border-white/10 rounded-xl p-4 flex items-center gap-3">
-                                    <Briefcase
-                                        className="text-neon-red flex-shrink-0"
-                                        size={20}
-                                    />
-                                    <div>
-                                        <p className="text-xs text-gray-500 uppercase tracking-wider">
-                                            Position
-                                        </p>
-                                        <p className="text-white font-bold">
-                                            {profile.position}
-                                        </p>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
+
 
                         {/* Domains */}
                         <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
@@ -314,8 +347,8 @@ const sortedDomains = [...(profile?.domains || [])].sort((a, b) => {
 
                                             <span
                                                 className={`px-3 py-1 text-xs font-bold rounded-full uppercase tracking-wider ${domain.position === "LEARNER"
-                                                        ? "bg-blue-500/10 border border-blue-500/20 text-blue-400"
-                                                        : "bg-neon-red/10 border border-neon-red/20 text-neon-red"
+                                                    ? "bg-blue-500/10 border border-blue-500/20 text-blue-400"
+                                                    : "bg-neon-red/10 border border-neon-red/20 text-neon-red"
                                                     }`}
                                             >
                                                 {domain.position.replace(/_/g, " ")}

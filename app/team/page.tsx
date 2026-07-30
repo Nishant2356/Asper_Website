@@ -117,7 +117,7 @@ const TeamCard = ({ member, index }: { member: TeamMember; index: number }) => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: index * 0.05 }}
-            onClick={() => router.push(`/team/${member.id}`)}
+            onClick={() => router.push(`/profile/${member.user.id}`)}
             className="group relative overflow-hidden rounded-2xl bg-white/5 border border-white/10 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_0_30px_rgba(255,0,51,0.3)] cursor-pointer"
         >
             <div className="relative aspect-[3/4] w-full overflow-hidden">
