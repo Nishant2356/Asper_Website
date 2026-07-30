@@ -17,18 +17,28 @@ export async function GET(
                 name: true,
                 email: true,
                 role: true,
-                domain: true,
+
                 bio: true,
                 profilePhoto: true,
                 birthDate: true,
-                position: true,
-                github: true,
-                linkedin: true,
-                instagram: true,
-                twitter: true,
-                createdAt: true,
-            },
-        });
+                college: true,
+                branch: true,
+                otherCollegeName: true,
+                // position: true,
+                domains: {
+                    select: {
+                        id: true,
+                        department: true,
+                        position: true,
+                    },
+                },
+                    github: true,
+                    linkedin: true,
+                    instagram: true,
+                    twitter: true,
+                    createdAt: true,
+                },
+            });
 
         if (!user) {
             return NextResponse.json(
@@ -86,7 +96,7 @@ export async function PATCH(
         ];
 
         // Restricted fields — need approval for non-admins
-        const approvalFields = ["position", "birthDate"];
+        const approvalFields = ["position", "birthDate", "name", "college", "branch", "otherCollegeName"];
 
         const directUpdate: Record<string, any> = {};
         const approvalRequests: Promise<any>[] = [];
@@ -112,8 +122,8 @@ export async function PATCH(
                                 field,
                                 oldValue: currentUser
                                     ? String(
-                                          (currentUser as any)[field] ?? ""
-                                      )
+                                        (currentUser as any)[field] ?? ""
+                                    )
                                     : "",
                                 newValue: String(body[field]),
                                 status: "PENDING",
@@ -136,21 +146,24 @@ export async function PATCH(
         const updatedUser =
             Object.keys(directUpdate).length > 0
                 ? await prisma.user.update({
-                      where: { id: userId },
-                      data: directUpdate,
-                      select: {
-                          id: true,
-                          name: true,
-                          bio: true,
-                          profilePhoto: true,
-                          position: true,
-                          birthDate: true,
-                          github: true,
-                          linkedin: true,
-                          instagram: true,
-                          twitter: true,
-                      },
-                  })
+                    where: { id: userId },
+                    data: directUpdate,
+                    select: {
+                        id: true,
+                        name: true,
+                        bio: true,
+                        profilePhoto: true,
+                        // position: true,
+                        birthDate: true,
+                        github: true,
+                        linkedin: true,
+                        instagram: true,
+                        twitter: true,
+                        college: true,
+                        branch: true,
+                        otherCollegeName: true,
+                    },
+                })
                 : null;
 
         await Promise.all(approvalRequests);

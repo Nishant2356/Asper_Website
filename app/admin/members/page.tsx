@@ -30,9 +30,9 @@ interface Member {
     name: string;
     email: string;
     role: string;
-    domain: string[];
+   
     status: "PENDING" | "APPROVED";
-    position?: string;
+   
     profilePhoto?: string;
     createdAt: string;
     _count: {
@@ -76,6 +76,7 @@ export default function AdminMembersPage() {
             const res = await fetch(
                 `/api/profile/admin?${params.toString()}`
             );
+            
             if (res.ok) {
                 const data = await res.json();
                 setMembers(data);
@@ -274,9 +275,9 @@ export default function AdminMembersPage() {
                                         <th className="text-left p-4 text-xs font-bold text-gray-400 uppercase tracking-wider">
                                             Member
                                         </th>
-                                        <th className="text-left p-4 text-xs font-bold text-gray-400 uppercase tracking-wider hidden md:table-cell">
+                                        {/* <th className="text-left p-4 text-xs font-bold text-gray-400 uppercase tracking-wider hidden md:table-cell">
                                             Domain
-                                        </th>
+                                        </th> */}
                                         <th className="text-left p-4 text-xs font-bold text-gray-400 uppercase tracking-wider hidden lg:table-cell">
                                             Role
                                         </th>
@@ -331,20 +332,20 @@ export default function AdminMembersPage() {
                                                             <p className="text-xs text-gray-500">
                                                                 {member.email}
                                                             </p>
-                                                            {member.position && (
+                                                            {/* {member.position && (
                                                                 <p className="text-xs text-neon-red">
                                                                     {
                                                                         member.position
                                                                     }
                                                                 </p>
-                                                            )}
+                                                            )} */}
                                                         </div>
                                                     </div>
                                                 </td>
 
-                                                <td className="p-4 hidden md:table-cell">
+                                                {/* <td className="p-4 hidden md:table-cell">
                                                     <div className="flex flex-wrap gap-1">
-                                                        {member.domain
+                                                        {member.department
                                                             .slice(0, 2)
                                                             .map((d) => (
                                                                 <span
@@ -357,17 +358,17 @@ export default function AdminMembersPage() {
                                                                     )}
                                                                 </span>
                                                             ))}
-                                                        {member.domain
+                                                        {member.department
                                                             .length > 2 && (
                                                                 <span className="text-xs px-2 py-0.5 bg-white/5 text-gray-400 rounded">
                                                                     +
-                                                                    {member.domain
+                                                                    {member.department
                                                                         .length -
                                                                         2}
                                                                 </span>
                                                             )}
                                                     </div>
-                                                </td>
+                                                </td> */}
 
                                                 <td className="p-4 hidden lg:table-cell">
                                                     <span

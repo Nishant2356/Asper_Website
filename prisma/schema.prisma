@@ -31,7 +31,12 @@ model User {
   email            String                 @unique
   password         String
   role             Role                   @default(MEMBER)
-  domain           Department[]
+
+  college          College                @default(UIT)
+  branch           String?
+  otherCollegeName String?
+
+  domains          UserDomain[]
   createdAt        DateTime               @default(now())
   updatedAt        DateTime               @updatedAt
   resetToken       String?                @unique
@@ -39,17 +44,34 @@ model User {
   projects         Project[]
   createdQuizzes   Quiz[]                 @relation("QuizCreator")
   quizAttempts     QuizAttempt[]
-  status           ApprovalStatus              @default(PENDING)
-  // ─── PROFILE FIELDS ───────────────────────────────
+  status           ApprovalStatus         @default(PENDING)
+
   bio              String?
   profilePhoto     String?
   birthDate        DateTime?
-  position         Position   @default(LEARNER)
   github           String?
   linkedin         String?
   instagram        String?
   twitter          String?
   profileUpdates   ProfileUpdateRequest[]
+  positionRequests PositionRequest[]
+}
+
+enum College {
+  UIT
+  SOIT
+  OTHER
+}
+model UserDomain {
+  id         String      @id @default(cuid())
+
+  userId     String
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  department Department
+  position     Position   @default(LEARNER)   
+
+  @@unique([userId, department])
 }
 
 model ProfileUpdateRequest {
@@ -63,6 +85,21 @@ model ProfileUpdateRequest {
   createdAt  DateTime       @default(now())
   reviewedAt DateTime?
   reviewedBy String?
+}
+model PositionRequest {
+  id          String   @id @default(cuid())
+
+  userId      String
+  user        User @relation(fields: [userId], references: [id])
+
+  department  Department
+  position    Position?
+
+  status      ApprovalStatus @default(PENDING)
+
+  createdAt   DateTime @default(now())
+  reviewedAt  DateTime?
+  reviewedBy  String?
 }
 
 model Quiz {
@@ -140,14 +177,17 @@ enum NotificationStatus {
 }
 
 enum Department {
+  ASPER
   DSA
   WEB_DEVELOPMENT
   IOT
   GAME_DEVELOPMENT_ANIMATION
   DEVOPS_CLOUD
   ML_DATA_SCIENCE
-  MEDIA_GRAPHICS_VIDEO
+  GRAPHICS
   CORPORATE_RELATIONS
+  
+ 
   PHOTOGRAPHY_VIDEO_EDITING
 }
 
@@ -174,16 +214,17 @@ enum ApprovalStatus {
   REJECTED
 }
 enum Position {
+  
   PRESIDENT
   VICE_PRESIDENT
-  OPEN_SOURCE_EXECUTIVE
   CHAIR_MEMBER
-  TREASURER
   SECRETARY
-  HEAD
-  CO_HEAD
-  SOCIAL_MEDIA_MANAGER
+  OPEN_SOURCE_EXECUTIVE
+  TREASURER
   EVENT_MANAGER
+  HEAD
+  SOCIAL_MEDIA_MANAGER
+  CO_HEAD
   CORE_MEMBER
   LEARNER
 }

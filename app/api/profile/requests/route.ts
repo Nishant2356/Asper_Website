@@ -1,10 +1,18 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
 
-export async function GET(req: NextRequest) {
+const userSelect = {
+    id: true,
+    name: true,
+    email: true,
+    profilePhoto: true,
+} as const;
+
+export async function GET() {
     try {
         const session = await auth();
+
         if (!session?.user || session.user.role !== "ADMIN") {
             return NextResponse.json(
                 { error: "Forbidden" },
@@ -12,24 +20,43 @@ export async function GET(req: NextRequest) {
             );
         }
 
-        const requests = await prisma.profileUpdateRequest.findMany({
-            where: { status: "PENDING" },
-            include: {
-                user: {
-                    select: {
-                        id: true,
-                        name: true,
-                        email: true,
-                        profilePhoto: true,
+        const [profileupdate, positionreq] = await Promise.all([
+            prisma.profileUpdateRequest.findMany({
+                where: {
+                    status: "PENDING",
+                },
+                include: {
+                    user: {
+                        select: userSelect,
                     },
                 },
-            },
-            orderBy: { createdAt: "desc" },
-        });
+                orderBy: {
+                    createdAt: "desc",
+                },
+            }),
 
-        return NextResponse.json(requests);
+            prisma.positionRequest.findMany({
+                where: {
+                    status: "PENDING",
+                },
+                include: {
+                    user: {
+                        select: userSelect,
+                    },
+                },
+                orderBy: {
+                    createdAt: "desc",
+                },
+            }),
+        ]);
+
+        return NextResponse.json({
+            profileupdate,
+            positionreq,
+        });
     } catch (error) {
-        console.error("Error fetching requests:", error);
+        console.error("Error fetching pending requests:", error);
+
         return NextResponse.json(
             { error: "Internal server error" },
             { status: 500 }

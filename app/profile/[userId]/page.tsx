@@ -20,13 +20,18 @@ import {
     Briefcase,
     ArrowLeft,
 } from "lucide-react";
+interface UserDomain {
+    id: string;
+    department: string;
+    position: string;
+}
 
 interface UserProfile {
     id: string;
     name: string;
     email: string;
     role: string;
-    domain: string[];
+    domains: UserDomain[];
     bio?: string;
     profilePhoto?: string;
     birthDate?: string;
@@ -70,6 +75,32 @@ export default function ProfilePage({
         }
         fetchProfile();
     }, [userId, router]);
+    const positionOrder: Record<string, number> = {
+    PRESIDENT: 1,
+    VICE_PRESIDENT: 2,
+    CHAIR_MEMBER: 3,
+    SECRETARY: 4,
+    OPEN_SOURCE_EXECUTIVE: 5,
+    TREASURER: 6,
+    EVENT_MANAGER: 7,
+    HEAD: 8,
+    SOCIAL_MEDIA_MANAGER: 9,
+    CO_HEAD: 10,
+    CORE_MEMBER: 11,
+    LEARNER: 12,
+};
+
+const sortedDomains = [...(profile?.domains || [])].sort((a, b) => {
+    const positionDifference =
+        (positionOrder[a.position] ?? 999) -
+        (positionOrder[b.position] ?? 999);
+
+    // Same position wale members ke domains alphabetically dikhenge
+    return (
+        positionDifference ||
+        a.department.localeCompare(b.department)
+    );
+});
 
     if (loading) {
         return (
@@ -119,7 +150,7 @@ export default function ProfilePage({
                                     src={profile.profilePhoto}
                                     alt={profile.name}
                                     fill
-                                    className="object-cover"
+                                    className="object-cover object-top" 
                                 />
                             ) : (
                                 <div className="w-full h-full bg-neon-red/10 flex items-center justify-center text-6xl font-black text-neon-red">
@@ -265,24 +296,41 @@ export default function ProfilePage({
                         </div>
 
                         {/* Domains */}
-                        {profile.domain && profile.domain.length > 0 && (
-                            <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-                                <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4">
-                                    Domains
-                                </h2>
-                                <div className="flex flex-wrap gap-2">
-                                    {profile.domain.map((d) => (
-                                        <span
-                                            key={d}
-                                            className="px-3 py-1 bg-neon-red/10 border border-neon-red/20 text-neon-red text-xs font-bold rounded-full uppercase tracking-wider"
+                        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+                            <h2 className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4">
+                                Domains & Positions
+                            </h2>
+
+                            {sortedDomains?.length > 0 ? (
+                                <div className="space-y-3">
+                                    {sortedDomains.map((domain) => (
+                                        <div
+                                            key={domain.id}
+                                            className="flex items-center justify-between gap-4 bg-black/30 border border-white/10 rounded-xl px-4 py-3"
                                         >
-                                            {d.replace(/_/g, " ")}
-                                        </span>
+                                            <span className="text-sm font-bold text-white">
+                                                {domain.department.replace(/_/g, " ")}
+                                            </span>
+
+                                            <span
+                                                className={`px-3 py-1 text-xs font-bold rounded-full uppercase tracking-wider ${domain.position === "LEARNER"
+                                                        ? "bg-blue-500/10 border border-blue-500/20 text-blue-400"
+                                                        : "bg-neon-red/10 border border-neon-red/20 text-neon-red"
+                                                    }`}
+                                            >
+                                                {domain.position.replace(/_/g, " ")}
+                                            </span>
+                                        </div>
                                     ))}
                                 </div>
-                            </div>
-                        )}
-
+                            ) : (
+                                <div className="text-center py-8 border border-dashed border-white/10 rounded-xl">
+                                    <p className="text-gray-400 text-sm">
+                                        This member has not joined any domain yet.
+                                    </p>
+                                </div>
+                            )}
+                        </div>
                         {/* Member Since */}
                         <p className="text-gray-600 text-sm">
                             Member since{" "}

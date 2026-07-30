@@ -3,27 +3,15 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
 import { hash } from "bcryptjs";
 import { z } from "zod";
+import { Department } from "@prisma/client";
 
 const createProfileSchema = z.object({
     name: z.string().min(2),
     email: z.string().email(),
     password: z.string().min(6),
     role: z.enum(["MEMBER", "ADMIN"]).default("MEMBER"),
-    domain: z.array(
-        z.enum([
-            "DSA",
-            "WEB_DEVELOPMENT",
-            "IOT",
-            "GAME_DEVELOPMENT_ANIMATION",
-            "DEVOPS_CLOUD",
-            "ML_DATA_SCIENCE",
-            "MEDIA_GRAPHICS_VIDEO",
-            "CORPORATE_RELATIONS",
-            "PHOTOGRAPHY_VIDEO_EDITING",
-        ])
-    ),
+
     status: z.enum(["PENDING", "APPROVED"]).default("PENDING"),
-    position: z.string().optional(),
     bio: z.string().optional(),
     profilePhoto: z.string().optional(),
     birthDate: z.string().optional(),
@@ -59,8 +47,8 @@ export async function POST(req: NextRequest) {
             email,
             password,
             role,
-            domain,
-            position,
+            // domain,
+            // position,
             bio,
             status,
             profilePhoto,
@@ -87,8 +75,8 @@ export async function POST(req: NextRequest) {
                 email,
                 password: hashedPassword,
                 role,
-                domain,
-                position,
+                // domain,
+                // position,
                 bio,
                 status,
                 profilePhoto,
@@ -103,8 +91,6 @@ export async function POST(req: NextRequest) {
                 name: true,
                 email: true,
                 role: true,
-                domain: true,
-                position: true,
                 bio: true,
                 profilePhoto: true,
                 createdAt: true,
@@ -146,24 +132,35 @@ export async function GET(req: NextRequest) {
                 AND: [
                     search
                         ? {
-                              OR: [
-                                  {
-                                      name: {
-                                          contains: search,
-                                          mode: "insensitive",
-                                      },
-                                  },
-                                  {
-                                      email: {
-                                          contains: search,
-                                          mode: "insensitive",
-                                      },
-                                  },
-                              ],
-                          }
+                            OR: [
+                                {
+                                    name: {
+                                        contains: search,
+                                        mode: "insensitive",
+                                    },
+                                },
+                                {
+                                    email: {
+                                        contains: search,
+                                        mode: "insensitive",
+                                    },
+                                },
+                            ],
+                        }
                         : {},
+
                     role ? { role: role as any } : {},
-                    domain ? { domain: { has: domain as any } } : {},
+
+                    domain
+                        ? {
+                            domains: {
+                                some: {
+                                    department: domain as Department,
+                                },
+                            },
+                        }
+                        : {},
+
                     status ? { status: status as any } : {},
                 ],
             },
@@ -172,9 +169,7 @@ export async function GET(req: NextRequest) {
                 name: true,
                 email: true,
                 role: true,
-                domain: true,
                 status: true,
-                position: true,
                 bio: true,
                 profilePhoto: true,
                 birthDate: true,
