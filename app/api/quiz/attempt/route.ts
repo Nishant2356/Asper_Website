@@ -1,12 +1,26 @@
+/**
+ * ─── POST /api/quiz/attempt ─────────────────────────────
+ *
+ * Submits and grades a quiz attempt. Uses LLM grading for all question types.
+ *
+ * NOT CACHED (write operation), but INVALIDATES the leaderboard cache
+ * because a new graded attempt affects the rankings.
+ */
+
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
 import { gradeDynamicAnswer } from "@/lib/llm-grader";
-
-const prisma = new PrismaClient();
+import { cacheInvalidate } from "@/lib/cache";
+import { apiLimiter, getClientIp, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
     try {
+        // ─── RATE LIMIT CHECK ────────────────────────────
+        const ip = getClientIp(req);
+        const { success, limit, remaining, reset } = await apiLimiter.limit(ip);
+        if (!success) return rateLimitResponse(reset, limit, remaining);
+
         const session = await auth();
         if (!session || !session.user) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -80,6 +94,10 @@ export async function POST(req: NextRequest) {
                 timeLeft: 0
             },
         });
+
+        // ─── INVALIDATE leaderboard ──────────────────────
+        // A new graded attempt changes the rankings!
+        await cacheInvalidate(`leaderboard:${quizId}`);
 
         return NextResponse.json({ success: true, attemptId: attempt.id, score: totalScore }, { status: 201 });
 

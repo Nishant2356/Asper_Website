@@ -1,12 +1,30 @@
+/**
+ * ─── PATCH /api/profile/requests/[requestId] ────────────
+ *
+ * Admin approves or rejects a profile update request.
+ * If approved, the user's profile is updated in the database.
+ *
+ * INVALIDATES:
+ * - Profile caches (if approved, the user's data changed)
+ * - Notification caches (the pending request list changed)
+ */
+
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
+import { cacheInvalidate } from "@/lib/cache";
+import { apiLimiter, getClientIp, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function PATCH(
     req: NextRequest,
     { params }: { params: Promise<{ requestId: string }> }
 ) {
     try {
+        // ─── RATE LIMIT CHECK ────────────────────────────
+        const ip = getClientIp(req);
+        const { success, limit, remaining, reset } = await apiLimiter.limit(ip);
+        if (!success) return rateLimitResponse(reset, limit, remaining);
+
         const session = await auth();
         if (!session?.user || session.user.role !== "ADMIN") {
             return NextResponse.json(
@@ -56,6 +74,14 @@ export async function PATCH(
                 },
             });
         }
+
+        // ─── INVALIDATE ─────────────────────────────────
+        // If approved, user's profile data changed → invalidate profile caches
+        // Either way, the pending requests list changed
+        await cacheInvalidate(
+            `profile:${request.userId}`,
+            "profiles:*"
+        );
 
         return NextResponse.json({
             success: true,

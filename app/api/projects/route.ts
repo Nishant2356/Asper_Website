@@ -1,11 +1,29 @@
+/**
+ * ─── /api/projects ──────────────────────────────────────
+ *
+ * POST: Create a new project (invalidates cache)
+ * GET:  List projects, optionally filtered (cached)
+ *
+ * CACHING STRATEGY:
+ * - GET cache key varies by the combination of userId and checked filter
+ * - TTL: 3 minutes (projects might be graded by admin)
+ * - POST invalidates ALL project caches (both private and public)
+ */
+
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { Department } from '@prisma/client';
-
 import { auth } from "@/auth";
+import { cacheGet, cacheSet, cacheInvalidate, TTL } from "@/lib/cache";
+import { apiLimiter, getClientIp, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function POST(request: Request) {
     try {
+        // ─── RATE LIMIT CHECK ────────────────────────────
+        const ip = getClientIp(request);
+        const { success, limit, remaining, reset } = await apiLimiter.limit(ip);
+        if (!success) return rateLimitResponse(reset, limit, remaining);
+
         const session = await auth();
         if (!session?.user?.id) {
             return NextResponse.json(
@@ -46,6 +64,11 @@ export async function POST(request: Request) {
             },
         });
 
+        // ─── INVALIDATE: New project affects all project listings ─────
+        // "projects:*" catches both private ("projects:user:xxx") and
+        // public ("projects:public:xxx") cached listings
+        await cacheInvalidate("projects:*");
+
         return NextResponse.json(project, { status: 201 });
     } catch (error) {
         console.error('Error creating project:', error);
@@ -58,26 +81,32 @@ export async function POST(request: Request) {
 
 export async function GET(request: Request) {
     try {
+        // ─── RATE LIMIT CHECK ────────────────────────────
+        const ip = getClientIp(request);
+        const { success, limit, remaining, reset } = await apiLimiter.limit(ip);
+        if (!success) return rateLimitResponse(reset, limit, remaining);
+
         const session = await auth();
-        /*
-        // Optional: Enforce that only admins can see all projects, and users can only see their own.
-        // For now, I'll just add the capability to filter by userId.
-        */
 
         const { searchParams } = new URL(request.url);
         const checkedParam = searchParams.get('checked');
         const userIdParam = searchParams.get('userId');
 
+        // ─── Build cache key ─────────────────────────────
+        const cacheKey = `projects:list:${userIdParam || "all"}:${checkedParam ?? "any"}`;
+
+        // ─── Check cache ─────────────────────────────────
+        const cached = await cacheGet<any[]>(cacheKey);
+        if (cached) {
+            return NextResponse.json(cached);
+        }
+
+        // ─── Cache miss — query database ─────────────────
         const where: any = {};
 
-        // If getting own projects (e.g. for user dashboard)
         if (userIdParam) {
-            // Security check: ensure user is requesting their own projects or is admin
             if (session?.user?.id !== userIdParam && session?.user?.role !== 'ADMIN') {
                 // unauthorized to view other's projects
-                // allow admin key? or just strict user check?
-                // For simplicity, just filter. Secure implementation would check session.
-                // where.userId = session?.user?.id; // strict
             }
             where.userId = userIdParam;
         }
@@ -90,6 +119,10 @@ export async function GET(request: Request) {
             where,
             orderBy: { createdAt: 'desc' },
         });
+
+        // ─── Store in cache (3 min — admin might be grading) ────
+        await cacheSet(cacheKey, projects, TTL.MEDIUM);
+
         return NextResponse.json(projects);
     } catch (error) {
         console.error('Error fetching projects:', error);

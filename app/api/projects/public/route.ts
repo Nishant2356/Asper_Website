@@ -1,6 +1,24 @@
+/**
+ * ─── GET /api/projects/public ───────────────────────────
+ *
+ * Public-facing project showcase. Fetches projects visible to all visitors.
+ * Supports filtering by department and a "featured" mode that picks the
+ * best project per department.
+ *
+ * CACHING STRATEGY:
+ * - Cache key: "projects:public:{department}:{featured}"
+ * - TTL: 5 minutes (projects are graded/added infrequently)
+ * - Invalidated when: any project is created, updated, or deleted
+ *
+ * This is a HIGH-IMPACT cache because the project showcase page
+ * is visited by every user browsing the website.
+ */
+
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { Department } from '@prisma/client';
+import { cacheGet, cacheSet, TTL } from '@/lib/cache';
+import { apiLimiter, getClientIp, rateLimitResponse } from "@/lib/rate-limit";
 
 // Parse marks strings like "9/10", "85", "7.5/10", "" → a numeric score (or -1 if empty)
 function parseMarks(marks: string): number {
@@ -17,11 +35,26 @@ function parseMarks(marks: string): number {
 
 export async function GET(request: Request) {
     try {
+        // ─── RATE LIMIT CHECK ────────────────────────────
+        const ip = getClientIp(request);
+        const { success, limit, remaining, reset } = await apiLimiter.limit(ip);
+        if (!success) return rateLimitResponse(reset, limit, remaining);
+
         const { searchParams } = new URL(request.url);
         const departmentParam = searchParams.get('department');
         const featuredParam = searchParams.get('featured');
         const isFeatured = featuredParam === 'true';
 
+        // ─── Build cache key from query params ───────────
+        const cacheKey = `projects:public:${departmentParam || "all"}:${isFeatured}`;
+
+        // ─── Check cache ─────────────────────────────────
+        const cached = await cacheGet<any[]>(cacheKey);
+        if (cached) {
+            return NextResponse.json(cached);
+        }
+
+        // ─── Cache miss — query database ─────────────────
         const where: any = {};
 
         if (departmentParam && Object.values(Department).includes(departmentParam as Department)) {
@@ -47,6 +80,8 @@ export async function GET(request: Request) {
                 },
             },
         });
+
+        let result;
 
         if (isFeatured) {
             // Pick the best project per department (highest marks → newest date)
@@ -74,10 +109,15 @@ export async function GET(request: Request) {
                 if (marksB !== marksA) return marksB - marksA;
                 return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
             });
-            return NextResponse.json(representatives.slice(0, 3));
+            result = representatives.slice(0, 3);
+        } else {
+            result = projects;
         }
 
-        return NextResponse.json(projects);
+        // ─── Store in cache ──────────────────────────────
+        await cacheSet(cacheKey, result, TTL.LONG);
+
+        return NextResponse.json(result);
     } catch (error) {
         console.error('Error fetching public projects:', error);
         return NextResponse.json(
@@ -86,4 +126,3 @@ export async function GET(request: Request) {
         );
     }
 }
-
