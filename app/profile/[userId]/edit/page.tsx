@@ -6,11 +6,11 @@ import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
-import { Loader2, Save, ArrowLeft, Info } from "lucide-react";
+import { Loader2, Save, ArrowLeft, Info, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { CldUploadWidget } from "next-cloudinary";
 import Image from "next/image";
-import { table } from "console";
+
 
 interface ProfileForm {
     name: string;
@@ -74,6 +74,7 @@ export default function EditProfilePage({
     });
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [removingDomainId, setRemovingDomainId] = useState<string | null>(null);
     const [message, setMessage] = useState<{
         type: "success" | "error";
         text: string;
@@ -223,7 +224,49 @@ export default function EditProfilePage({
 
         };
     };
+    const handleDomainExit = async (row: PositionRow) => {
+        const domainName = row.department.replace(/_/g, " ");
 
+        const warning = isAdmin
+            ? `Remove this user from ${domainName}?`
+            : `Are you sure you want to exit ${domainName}?`;
+
+        if (!confirm(warning)) return;
+
+        setRemovingDomainId(row.id);
+
+        try {
+            const res = await fetch(
+                `/api/profile/${userId}/domains/${row.id}`,
+                {
+                    method: "DELETE",
+                }
+            );
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.error || "Unable to exit domain.");
+            }
+
+            setDeptAndPositions((previous) =>
+                previous.filter((domain) => domain.id !== row.id)
+            );
+
+            setMessage({
+                type: "success",
+                text: data.message,
+            });
+        } catch (error: any) {
+            setMessage({
+                type: "error",
+                text: error.message || "Something went wrong.",
+            });
+        } finally {
+            setRemovingDomainId(null);
+            router.refresh(); // Refresh the page to reflect changes
+        }
+    };
 
     if (loading || status === "loading") {
         return (
@@ -444,7 +487,7 @@ export default function EditProfilePage({
                                 <label className="block text-sm text-gray-400 mb-2">
                                     Year
                                 </label>
-                               <select
+                                <select
                                     value={form.year}
                                     onChange={(e) =>
                                         setForm((prev) => ({
@@ -495,7 +538,7 @@ export default function EditProfilePage({
                             )}
                         </div>
 
-                       
+
                     </div>
 
                     {/* Restricted Fields */}
@@ -536,7 +579,7 @@ export default function EditProfilePage({
                                         <td className="py-2 px-4">
                                             {row.department}
                                         </td>
-                                        <td className="py-2 px-4">
+                                        <td className="py-2 px-4 flex items-center gap-2">
                                             {row.approved ? (
                                                 <span className="text-green-500 text-sm font-bold">
                                                     Approved
@@ -555,6 +598,22 @@ export default function EditProfilePage({
                                                 </button>
                                             )}
 
+                                        
+                                                <button
+                                                    type="button"
+                                                    onClick={() => handleDomainExit(row)}
+                                                    disabled={removingDomainId === row.id}
+                                                    className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500 hover:text-white transition-all disabled:opacity-50"
+                                                >
+                                                    {removingDomainId === row.id ? (
+                                                        <Loader2 size={14} className="animate-spin" />
+                                                    ) : (
+                                                        <Trash2 size={14} className="hidden md:block"/>
+                                                    )}
+
+                                                    {isAdmin ? "Remove" : "Exit"}
+                                                </button>
+                                        
                                         </td>
                                     </tr>
                                 ))}
@@ -696,7 +755,7 @@ export default function EditProfilePage({
 
 
 
-                   
+
 
                     {/* Status Message */}
                     {
