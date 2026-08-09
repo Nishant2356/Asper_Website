@@ -2,9 +2,22 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
+import { forgotPasswordLimiter, getClientIp, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function POST(req: Request) {
     try {
+        // ─── RATE LIMIT CHECK ────────────────────────────
+        // EXTRA STRICT: 3 requests per 15 minutes.
+        // This endpoint sends emails — an attacker could:
+        // 1. Email-bomb a victim's inbox
+        // 2. Drain your SMTP quota
+        // 3. Get your email domain blacklisted
+        const ip = getClientIp(req);
+        const { success, limit, remaining, reset } = await forgotPasswordLimiter.limit(ip);
+        if (!success) {
+            return rateLimitResponse(reset, limit, remaining);
+        }
+
         const { email } = await req.json();
 
         if (!email) {

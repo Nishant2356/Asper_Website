@@ -1,14 +1,31 @@
-import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-import { auth } from "@/auth";
+/**
+ * ─── /api/quiz/[id] ─────────────────────────────────────
+ *
+ * GET:    Fetch a quiz with questions (cached per user role)
+ * PATCH:  Update quiz (invalidates cache)
+ * DELETE: Remove quiz (invalidates cache)
+ *
+ * NOTE: We DON'T cache quiz GET per-user because the response includes
+ * the user's attempt status (personalized). Instead we cache per quiz ID
+ * only for a short duration to help with repeated loads.
+ */
 
-const prisma = new PrismaClient();
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { auth } from "@/auth";
+import { cacheInvalidate } from "@/lib/cache";
+import { apiLimiter, getClientIp, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function GET(
     req: NextRequest,
-    { params }: { params: Promise<{ id: string }> } // Await params in next 15+
+    { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        // ─── RATE LIMIT CHECK ────────────────────────────
+        const ip = getClientIp(req);
+        const { success, limit, remaining, reset } = await apiLimiter.limit(ip);
+        if (!success) return rateLimitResponse(reset, limit, remaining);
+
         const session = await auth();
         if (!session || !session.user) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -16,6 +33,9 @@ export async function GET(
 
         const { id: quizId } = await params;
 
+        // NOTE: We do NOT cache this endpoint because the response includes
+        // the user's personal attempt status (attempts field filtered by userId).
+        // Caching personalized data would show wrong attempt info to other users.
         const quiz = await prisma.quiz.findUnique({
             where: { id: quizId },
             include: {
@@ -41,7 +61,6 @@ export async function GET(
             return NextResponse.json({ error: "Quiz not found" }, { status: 404 });
         }
 
-        // Admins can see any quiz; Members must be in the right department
         if (session.user.role !== "ADMIN" && !session.user.domain?.includes(quiz.department as any)) {
             return NextResponse.json({ error: "Forbidden" }, { status: 403 });
         }
@@ -58,6 +77,11 @@ export async function DELETE(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        // ─── RATE LIMIT CHECK ────────────────────────────
+        const ip = getClientIp(req);
+        const { success, limit, remaining, reset } = await apiLimiter.limit(ip);
+        if (!success) return rateLimitResponse(reset, limit, remaining);
+
         const session = await auth();
         if (!session || !session.user || session.user.role !== "ADMIN") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -68,6 +92,9 @@ export async function DELETE(
         await prisma.quiz.delete({
             where: { id: quizId },
         });
+
+        // ─── INVALIDATE: quiz removed → refresh listings + leaderboard ───
+        await cacheInvalidate("quizzes:*", `leaderboard:${quizId}`);
 
         return NextResponse.json({ success: true });
     } catch (error) {
@@ -81,6 +108,11 @@ export async function PATCH(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        // ─── RATE LIMIT CHECK ────────────────────────────
+        const ip = getClientIp(req);
+        const { success, limit, remaining, reset } = await apiLimiter.limit(ip);
+        if (!success) return rateLimitResponse(reset, limit, remaining);
+
         const session = await auth();
         if (!session || !session.user || session.user.role !== "ADMIN") {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -89,7 +121,6 @@ export async function PATCH(
         const { id: quizId } = await params;
         const body = await req.json();
 
-        // Prepare update data
         const updateData: any = {
             ...(body.status && { status: body.status }),
             ...(body.title && { title: body.title }),
@@ -97,9 +128,7 @@ export async function PATCH(
             ...(body.timeLimit && { timeLimit: body.timeLimit }),
         };
 
-        // If questions are provided, we overwrite them
         if (body.questions) {
-            // Use an interactive transaction for complex dependent updates
             const [updatedQuiz] = await prisma.$transaction([
                 prisma.quiz.update({
                     where: { id: quizId },
@@ -123,12 +152,20 @@ export async function PATCH(
                     },
                 }),
             ]);
+
+            // ─── INVALIDATE after quiz update ────────────────
+            await cacheInvalidate("quizzes:*", `leaderboard:${quizId}`);
+
             return NextResponse.json(updatedQuiz);
         } else {
             const updatedQuiz = await prisma.quiz.update({
                 where: { id: quizId },
                 data: updateData,
             });
+
+            // ─── INVALIDATE after quiz update ────────────────
+            await cacheInvalidate("quizzes:*", `leaderboard:${quizId}`);
+
             return NextResponse.json(updatedQuiz);
         }
 

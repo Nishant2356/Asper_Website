@@ -1,7 +1,19 @@
+/**
+ * ─── POST /api/register ─────────────────────────────────
+ *
+ * Registers a new user and creates a notification for admins.
+ *
+ * NOT CACHED (write-only), but INVALIDATES:
+ * - "profiles:*" because the team page should show the new user
+ * - "notifications:*" because a new notification was created
+ */
+
 import { NextResponse } from "next/server";
 import { hash } from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { z, ZodError } from "zod";
+import { cacheInvalidate } from "@/lib/cache";
+import { registerLimiter, getClientIp, rateLimitResponse } from "@/lib/rate-limit";
 
 const userSchema = z.object({
     name: z.string().min(2),
@@ -27,6 +39,15 @@ const userSchema = z.object({
 
 export async function POST(req: Request) {
     try {
+        // ─── RATE LIMIT CHECK ────────────────────────────
+        // Registration is rate-limited to 3 requests/minute per IP.
+        // Prevents spam account creation bots.
+        const ip = getClientIp(req);
+        const { success, limit, remaining, reset } = await registerLimiter.limit(ip);
+        if (!success) {
+            return rateLimitResponse(reset, limit, remaining);
+        }
+
         const body = await req.json();
 
         const { name, email, password, domain } = userSchema.parse(body);
@@ -88,6 +109,11 @@ export async function POST(req: Request) {
         });
 
         const { password: _, ...userWithoutPassword } = newUser;
+
+        // ─── INVALIDATE CACHES ───────────────────────────
+        // New user → team page listing is stale
+        // New notification → admin dashboard badge is stale
+        await cacheInvalidate("profiles:*", "notifications:*");
 
         return NextResponse.json(
             {

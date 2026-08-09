@@ -74,7 +74,7 @@ const slides = [
         id: 10,
         domain: "Photography & Video Editing",
         icon: Camera,
-        image: "/assets/photography_cinematics.png", // Will need to be added by user later
+        image: "/assets/photography_cinematics.png",
         description: "Capturing moments and crafting compelling visual narratives.",
     },
 ];

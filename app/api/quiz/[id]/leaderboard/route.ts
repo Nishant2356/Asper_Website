@@ -1,14 +1,37 @@
-import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-import { auth } from "@/auth";
+/**
+ * ─── GET /api/quiz/[id]/leaderboard ─────────────────────
+ *
+ * Fetches quiz leaderboard: all graded attempts ranked by score.
+ * This is a popular page — students check it frequently after
+ * submitting quizzes.
+ *
+ * CACHING STRATEGY:
+ * - Cache key: "leaderboard:{quizId}"
+ * - TTL: 1 minute (leaderboard updates when someone submits)
+ * - Invalidated when: a quiz attempt is submitted/graded
+ *
+ * WHY ONLY 1 MINUTE TTL?
+ * Leaderboards are time-sensitive. After a student submits a quiz,
+ * they expect to see their rank appear quickly. 1 minute is a good
+ * balance between freshness and reducing DB load.
+ */
 
-const prisma = new PrismaClient();
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { auth } from "@/auth";
+import { cacheGet, cacheSet } from "@/lib/cache";
+import { apiLimiter, getClientIp, rateLimitResponse } from "@/lib/rate-limit";
 
 export async function GET(
     req: NextRequest,
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        // ─── RATE LIMIT CHECK ────────────────────────────
+        const ip = getClientIp(req);
+        const { success, limit, remaining, reset } = await apiLimiter.limit(ip);
+        if (!success) return rateLimitResponse(reset, limit, remaining);
+
         const session = await auth();
         if (!session || !session.user) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -16,7 +39,14 @@ export async function GET(
 
         const { id: quizId } = await params;
 
-        // Fetch the quiz to ensure it exists and the user has access to it
+        // ─── Check cache ─────────────────────────────────
+        const cacheKey = `leaderboard:${quizId}`;
+        const cached = await cacheGet<any>(cacheKey);
+        if (cached) {
+            return NextResponse.json(cached);
+        }
+
+        // ─── Cache miss — query database ─────────────────
         const quiz = await prisma.quiz.findUnique({
             where: { id: quizId },
             select: {
@@ -37,7 +67,6 @@ export async function GET(
 
         const totalMarks = quiz.questions.reduce((sum, q) => sum + q.marks, 0);
 
-        // Fetch all attempts for this quiz that have a score
         const attempts = await prisma.quizAttempt.findMany({
             where: {
                 quizId,
@@ -47,12 +76,11 @@ export async function GET(
                 user: { select: { name: true } }
             },
             orderBy: [
-                { score: 'desc' }, // Highest score first
-                { submittedAt: 'asc' } // Earliest submission first in case of a tie
+                { score: 'desc' },
+                { submittedAt: 'asc' }
             ]
         });
 
-        // Format to LeaderboardEntry
         const leaderboard = attempts.map((attempt, index) => ({
             id: attempt.id,
             userId: attempt.userId,
@@ -62,7 +90,15 @@ export async function GET(
             rank: index + 1
         }));
 
-        return NextResponse.json({ quiz: { id: quiz.id, title: quiz.title, department: quiz.department, totalMarks }, leaderboard });
+        const result = {
+            quiz: { id: quiz.id, title: quiz.title, department: quiz.department, totalMarks },
+            leaderboard
+        };
+
+        // ─── Cache for 1 minute ──────────────────────────
+        await cacheSet(cacheKey, result, 60);
+
+        return NextResponse.json(result);
     } catch (error) {
         console.error("Error fetching leaderboard:", error);
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

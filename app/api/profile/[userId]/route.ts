@@ -1,6 +1,21 @@
+/**
+ * ─── /api/profile/[userId] ──────────────────────────────
+ *
+ * GET:   Fetch a single user's profile (cached)
+ * PATCH: Update profile fields (invalidates cache)
+ * DELETE: Remove a user (invalidates cache)
+ *
+ * CACHING STRATEGY:
+ * - GET is cached with key "profile:{userId}", TTL 5 minutes
+ * - PATCH/DELETE invalidate both the individual key AND all list caches
+ *   because changing one profile affects the team page listing too.
+ */
+
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
+import { cacheGet, cacheSet, cacheInvalidate, TTL } from "@/lib/cache";
+import { apiLimiter, getClientIp, rateLimitResponse } from "@/lib/rate-limit";
 
 // ─── GET: Fetch a user's profile ─────────────────────
 export async function GET(
@@ -8,8 +23,21 @@ export async function GET(
     { params }: { params: Promise<{ userId: string }> }
 ) {
     try {
+        // ─── RATE LIMIT CHECK ────────────────────────────
+        const ip = getClientIp(req);
+        const { success, limit, remaining, reset } = await apiLimiter.limit(ip);
+        if (!success) return rateLimitResponse(reset, limit, remaining);
+
         const { userId } = await params;
 
+        // ─── Check cache first ───────────────────────────
+        const cacheKey = `profile:${userId}`;
+        const cached = await cacheGet<any>(cacheKey);
+        if (cached) {
+            return NextResponse.json(cached);
+        }
+
+        // ─── Cache miss — hit PostgreSQL ─────────────────
         const user = await prisma.user.findUnique({
             where: { id: userId },
             select: {
@@ -47,6 +75,9 @@ export async function GET(
                 { status: 404 }
             );
         }
+
+        // ─── Store in cache ──────────────────────────────
+        await cacheSet(cacheKey, user, TTL.LONG);
 
         return NextResponse.json(user);
     } catch (error) {
@@ -224,6 +255,15 @@ export async function PATCH(
 
         await Promise.all(approvalRequests);
 
+        // ─── INVALIDATE CACHE ────────────────────────────
+        // When a profile is updated, we need to:
+        // 1. Delete the individual profile cache
+        // 2. Delete ALL profile listing caches (team page could show stale data)
+        //
+        // "profiles:*" uses a wildcard to match ALL keys that start with "profiles:"
+        // This catches "profiles:all:all", "profiles:ADMIN:all", etc.
+        await cacheInvalidate(`profile:${userId}`, "profiles:*");
+
         return NextResponse.json({
             success: true,
             user: updatedUser,
@@ -263,6 +303,10 @@ export async function DELETE(
         await prisma.user.delete({
             where: { id: userId },
         });
+
+        // ─── INVALIDATE CACHE ────────────────────────────
+        // User deleted — remove their individual cache AND refresh all listings
+        await cacheInvalidate(`profile:${userId}`, "profiles:*");
 
         return NextResponse.json({
             message: "User deleted successfully",

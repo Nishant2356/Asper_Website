@@ -1,6 +1,19 @@
+/**
+ * ─── /api/notifications/[id] ────────────────────────────
+ *
+ * PATCH:  Mark notification as read/actioned (invalidates cache)
+ * DELETE: Remove notification (invalidates cache)
+ *
+ * Both mutations invalidate ALL notification caches because:
+ * - Marking as read changes the unread count badge
+ * - Deleting changes the notification list
+ */
+
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
+import { cacheInvalidate } from "@/lib/cache";
+import { apiLimiter, getClientIp, rateLimitResponse } from "@/lib/rate-limit";
 
 // ─── PATCH: Mark notification as read/actioned ────────
 export async function PATCH(
@@ -8,6 +21,11 @@ export async function PATCH(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        // ─── RATE LIMIT CHECK ────────────────────────────
+        const ip = getClientIp(req);
+        const { success, limit, remaining, reset } = await apiLimiter.limit(ip);
+        if (!success) return rateLimitResponse(reset, limit, remaining);
+
         const session = await auth();
         if (!session?.user || session.user.role !== "ADMIN") {
             return NextResponse.json(
@@ -34,6 +52,10 @@ export async function PATCH(
             },
         });
 
+        // ─── INVALIDATE notification caches ──────────────
+        // Both the list and the unread count need refreshing
+        await cacheInvalidate("notifications:*");
+
         return NextResponse.json(notification);
     } catch (error) {
         console.error("Error updating notification:", error);
@@ -50,6 +72,11 @@ export async function DELETE(
     { params }: { params: Promise<{ id: string }> }
 ) {
     try {
+        // ─── RATE LIMIT CHECK ────────────────────────────
+        const ip = getClientIp(req);
+        const { success, limit, remaining, reset } = await apiLimiter.limit(ip);
+        if (!success) return rateLimitResponse(reset, limit, remaining);
+
         const session = await auth();
         if (!session?.user || session.user.role !== "ADMIN") {
             return NextResponse.json(
@@ -63,6 +90,9 @@ export async function DELETE(
         await prisma.notification.delete({
             where: { id },
         });
+
+        // ─── INVALIDATE notification caches ──────────────
+        await cacheInvalidate("notifications:*");
 
         return NextResponse.json({ message: "Notification deleted" });
     } catch (error) {

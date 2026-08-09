@@ -53,7 +53,7 @@ export async function gradeDynamicAnswer(
                     content: prompt,
                 },
             ],
-            model: "meta-llama/llama-4-scout-17b-16e-instruct", // Using the robust 8B model for fast, standard queries
+            model: "openai/gpt-oss-120b", // Using the robust 8B model for fast, standard queries
             temperature: 0.2, // Low temperature for more deterministic grading
             response_format: { type: "json_object" },
         });
