@@ -555,159 +555,163 @@ export default function EditProfilePage({
                             )}
                         </div>
                         {/* create  a  table which have three columna position department and activity */}
-                        <table className="w-full text-left border-collapse">
-                            <thead>
-                                <tr className="border-b border-white/10">
-                                    <th className="py-2 px-4 text-gray-400 text-sm">
-                                        Position
-                                    </th>
-                                    <th className="py-2 px-4 text-gray-400 text-sm">
-                                        Department
-                                    </th>
-                                    <th className="py-2 px-4 text-gray-400 text-sm">
-                                        Activity
-                                    </th>
-                                </tr>
-                            </thead>
+                        <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+                            <table className="w-full min-w-[680px] text-left border-collapse">
+                                <thead>
+                                    <tr className="border-b border-white/10">
+                                        <th className="px-3 py-3 text-sm text-gray-400 sm:px-4">
+                                            Position
+                                        </th>
+                                        <th className="px-3 py-3 text-sm text-gray-400 sm:px-4">
+                                            Department
+                                        </th>
+                                        <th className="px-3 py-3 text-sm text-gray-400 sm:px-4">
+                                            Activity
+                                        </th>
+                                    </tr>
+                                </thead>
 
-                            <tbody>
-                                {deptAndPositions.map((row) => (
-                                    <tr key={row.id} className="border-b border-white/10">
-                                        <td className="py-2 px-4">
-                                            {row.position}
-                                        </td>
-                                        <td className="py-2 px-4">
-                                            {row.department}
-                                        </td>
-                                        <td className="py-2 px-4 flex items-center gap-2">
-                                            {row.approved ? (
-                                                <span className="text-green-500 text-sm font-bold">
-                                                    Approved
-                                                </span>
-                                            ) : row.pending ? (
-                                                <span className="text-yellow-500 text-sm font-bold">
-                                                    Pending Approval
-                                                </span>
-                                            ) : (
-                                                <button
-                                                    type="button"
-                                                    // onClick={() => applyForPosition(row)}
-                                                    className="px-4 py-2 bg-neon-red hover:bg-red-600 text-white rounded-lg text-sm font-bold transition-colors"
-                                                >
-                                                    Apply
-                                                </button>
-                                            )}
-
-                                        
-                                                <button
-                                                    type="button"
-                                                    onClick={() => handleDomainExit(row)}
-                                                    disabled={removingDomainId === row.id}
-                                                    className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500 hover:text-white transition-all disabled:opacity-50"
-                                                >
-                                                    {removingDomainId === row.id ? (
-                                                        <Loader2 size={14} className="animate-spin" />
+                                <tbody>
+                                    {deptAndPositions.map((row) => (
+                                        <tr key={row.id} className="border-b border-white/10">
+                                            <td className="px-3 py-3 sm:px-4">
+                                                {row.position}
+                                            </td>
+                                            <td className="px-3 py-3 sm:px-4">
+                                                {row.department}
+                                            </td>
+                                            <td className="px-3 py-3 sm:px-4">
+                                                <div className="flex flex-wrap items-center gap-2">
+                                                    {row.approved ? (
+                                                        <span className="text-green-500 text-sm font-bold">
+                                                            Approved
+                                                        </span>
+                                                    ) : row.pending ? (
+                                                        <span className="text-yellow-500 text-sm font-bold">
+                                                            Pending Approval
+                                                        </span>
                                                     ) : (
-                                                        <Trash2 size={14} className="hidden md:block"/>
+                                                        <button
+                                                            type="button"
+                                                            // onClick={() => applyForPosition(row)}
+                                                            className="px-4 py-2 bg-neon-red hover:bg-red-600 text-white rounded-lg text-sm font-bold transition-colors"
+                                                        >
+                                                            Apply
+                                                        </button>
                                                     )}
 
-                                                    {isAdmin ? "Remove" : "Exit"}
-                                                </button>
-                                        
+
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleDomainExit(row)}
+                                                        disabled={removingDomainId === row.id}
+                                                        className="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-bold bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500 hover:text-white transition-all disabled:opacity-50"
+                                                    >
+                                                        {removingDomainId === row.id ? (
+                                                            <Loader2 size={14} className="animate-spin" />
+                                                        ) : (
+                                                            <Trash2 size={14} className="hidden md:block" />
+                                                        )}
+
+                                                        {isAdmin ? "Remove" : "Exit"}
+                                                    </button>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    ))}
+
+
+
+
+                                    {/* add new row button */}
+
+                                    <tr className="border-b border-white/10">
+                                        <td className="px-3 py-3 sm:px-4">
+                                            <select
+                                                value={newPosition.position}
+                                                onChange={(e) => setNewPosition({ ...newPosition, position: e.target.value })}
+                                                className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-red/50 transition-colors"
+                                            >
+                                                <option value="" className="bg-black">
+                                                    Select Position
+                                                </option>
+                                                <option value="LEARNER" className="bg-black">
+                                                    Learner
+                                                </option>
+                                                <option value="PRESIDENT" className="bg-black">President</option>
+                                                <option value="VICE_PRESIDENT" className="bg-black">Vice President</option>
+                                                <option value="SECRETARY" className="bg-black">Secretary</option>
+                                                <option value="TREASURER" className="bg-black">Treasurer</option>
+                                                <option value="CHAIR_MEMBER" className="bg-black">Chair Member</option>
+
+                                                <option value="OPEN_SOURCE_EXECUTIVE" className="bg-black">
+                                                    Open Source Executive
+                                                </option>
+                                                <option value="SOCIAL_MEDIA_MANAGER" className="bg-black">
+                                                    Social Media Manager
+                                                </option>
+                                                <option value="EVENT_MANAGER" className="bg-black">
+                                                    Event Manager
+                                                </option>
+
+                                                <option value="HEAD" className="bg-black">Head</option>
+                                                <option value="CO_HEAD" className="bg-black">Co-Head</option>
+
+                                                <option value="CORE_MEMBER" className="bg-black">
+                                                    Core Member
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <td className="px-3 py-3 sm:px-4">
+                                            <select
+                                                value={newPosition.department}
+                                                onChange={(e) => setNewPosition({ ...newPosition, department: e.target.value })}
+                                                className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-red/50 transition-colors"
+                                            >
+                                                <option value="Null" className="bg-black">
+                                                    Select Department
+                                                </option>
+                                                <option value="ASPER" className="bg-black">Asper</option>
+                                                <option value="CORPORATE_RELATIONS" className="bg-black">CR</option>
+                                                <option value="WEB_DEVELOPMENT" className="bg-black">Web Development</option>
+                                                <option value="DSA" className="bg-black">DSA</option>
+                                                <option value="ML_DATA_SCIENCE" className="bg-black">ML & Data Science</option>
+                                                <option value="GRAPHICS" className="bg-black">Graphics</option>
+                                                <option value="DEVOPS_CLOUD" className="bg-black">DevOps & Cloud</option>
+
+                                                <option value="PHOTOGRAPHY_VIDEO_EDITING" className="bg-black">
+                                                    Photography & Videography
+                                                </option>
+                                                <option value="IOT" className="bg-black">
+                                                    IOT & Embedded Systems
+                                                </option>
+                                                <option value="GAME_DEVELOPMENT_ANIMATION" className="bg-black">
+                                                    Game Development
+                                                </option>
+                                            </select>
+
+                                        </td>
+                                        <td className="px-3 py-3 sm:px-4 flex items-center gap-2">
+                                            {/* delete button */}
+
+                                            {/* apply button */}
+                                            <button
+                                                onClick={() => applyForPosition()}
+
+
+                                                type="button"
+                                                className="ml-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
+                                            >
+                                                Apply
+                                            </button>
+
                                         </td>
                                     </tr>
-                                ))}
 
-
-
-
-                                {/* add new row button */}
-
-                                <tr className="border-b border-white/10">
-                                    <td className="py-2 px-4">
-                                        <select
-                                            value={newPosition.position}
-                                            onChange={(e) => setNewPosition({ ...newPosition, position: e.target.value })}
-                                            className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-red/50 transition-colors"
-                                        >
-                                            <option value="" className="bg-black">
-                                                Select Position
-                                            </option>
-                                            <option value="LEARNER" className="bg-black">
-                                                Learner
-                                            </option>
-                                            <option value="PRESIDENT" className="bg-black">President</option>
-                                            <option value="VICE_PRESIDENT" className="bg-black">Vice President</option>
-                                            <option value="SECRETARY" className="bg-black">Secretary</option>
-                                            <option value="TREASURER" className="bg-black">Treasurer</option>
-                                            <option value="CHAIR_MEMBER" className="bg-black">Chair Member</option>
-
-                                            <option value="OPEN_SOURCE_EXECUTIVE" className="bg-black">
-                                                Open Source Executive
-                                            </option>
-                                            <option value="SOCIAL_MEDIA_MANAGER" className="bg-black">
-                                                Social Media Manager
-                                            </option>
-                                            <option value="EVENT_MANAGER" className="bg-black">
-                                                Event Manager
-                                            </option>
-
-                                            <option value="HEAD" className="bg-black">Head</option>
-                                            <option value="CO_HEAD" className="bg-black">Co-Head</option>
-
-                                            <option value="CORE_MEMBER" className="bg-black">
-                                                Core Member
-                                            </option>
-                                        </select>
-                                    </td>
-                                    <td className="py-2 px-4">
-                                        <select
-                                            value={newPosition.department}
-                                            onChange={(e) => setNewPosition({ ...newPosition, department: e.target.value })}
-                                            className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-neon-red/50 transition-colors"
-                                        >
-                                            <option value="Null" className="bg-black">
-                                                Select Department
-                                            </option>
-                                            <option value="ASPER" className="bg-black">Asper</option>
-                                            <option value="CORPORATE_RELATIONS" className="bg-black">CR</option>
-                                            <option value="WEB_DEVELOPMENT" className="bg-black">Web Development</option>
-                                            <option value="DSA" className="bg-black">DSA</option>
-                                            <option value="ML_DATA_SCIENCE" className="bg-black">ML & Data Science</option>
-                                            <option value="GRAPHICS" className="bg-black">Graphics</option>
-                                            <option value="DEVOPS_CLOUD" className="bg-black">DevOps & Cloud</option>
-
-                                            <option value="PHOTOGRAPHY_VIDEO_EDITING" className="bg-black">
-                                                Photography & Videography
-                                            </option>
-                                            <option value="IOT" className="bg-black">
-                                                IOT & Embedded Systems
-                                            </option>
-                                            <option value="GAME_DEVELOPMENT_ANIMATION" className="bg-black">
-                                                Game Development
-                                            </option>
-                                        </select>
-
-                                    </td>
-                                    <td className="py-2 px-4 flex items-center gap-2">
-                                        {/* delete button */}
-
-                                        {/* apply button */}
-                                        <button
-                                            onClick={() => applyForPosition()}
-
-
-                                            type="button"
-                                            className="ml-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
-                                        >
-                                            Apply
-                                        </button>
-
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
 
                     </div>
 

@@ -89,12 +89,12 @@ export async function PATCH(
                 );
             }
 
-            if (!editableProfileFields.includes(request.field)) {
-                return NextResponse.json(
-                    { error: "This profile field cannot be updated" },
-                    { status: 400 }
-                );
-            }
+            // if (!editableProfileFields.includes(request.field)) {
+            //     return NextResponse.json(
+            //         { error: "This profile field cannot be updated" },
+            //         { status: 400 }
+            //     );
+            // }
 
             await prisma.$transaction(async (tx) => {
                 await tx.profileUpdateRequest.update({

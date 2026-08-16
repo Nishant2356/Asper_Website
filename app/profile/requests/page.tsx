@@ -103,6 +103,7 @@ export default function ProfileRequestsPage() {
 
             if (!res.ok) {
                 const data = await res.json();
+                console.log(data.error)
                 throw new Error(data.error || "Action failed");
             }
 
