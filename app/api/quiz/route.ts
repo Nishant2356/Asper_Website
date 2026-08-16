@@ -20,26 +20,16 @@ import { auth } from "@/auth";
 import { z } from "zod";
 import { cacheGet, cacheSet, cacheInvalidate, TTL } from "@/lib/cache";
 import { apiLimiter, getClientIp, rateLimitResponse } from "@/lib/rate-limit";
-
+import { Department, QuestionType, QuizStatus } from "@prisma/client";
 const quizSchema = z.object({
     title: z.string(),
     description: z.string().optional(),
-    department: z.enum([
-        "DSA",
-        "WEB_DEVELOPMENT",
-        "IOT",
-        "GAME_DEVELOPMENT_ANIMATION",
-        "DEVOPS_CLOUD",
-        "ML_DATA_SCIENCE",
-        "MEDIA_GRAPHICS_VIDEO",
-        "CORPORATE_RELATIONS",
-        "PHOTOGRAPHY_VIDEO_EDITING",
-    ]),
-    status: z.enum(["DRAFT", "ACTIVE", "INACTIVE"]).default("DRAFT"),
+    department: z.nativeEnum(Department),
+    status: z.nativeEnum(QuizStatus).default("DRAFT"),
     timeLimit: z.number().int().optional(),
     questions: z.array(
         z.object({
-            type: z.enum(["MCQ", "DYNAMIC", "TRUE_FALSE"]),
+            type: z.nativeEnum(QuestionType),
             text: z.string(),
             options: z.array(z.string()).optional(),
             correctAnswer: z.string().optional(),
