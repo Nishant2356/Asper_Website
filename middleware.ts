@@ -17,11 +17,9 @@ export default auth((req) => {
 
     // ─── LOGIN RATE LIMITING ─────────────────────────────────
     if (nextUrl.pathname === "/login" || isNextAuthCallback) {
-        let ip = req.ip ?? "127.0.0.1";
-        if (ip === "127.0.0.1") {
-            const forwarded = req.headers.get("x-forwarded-for");
-            if (forwarded) ip = forwarded.split(",")[0].trim();
-        }
+        const forwarded = req.headers.get("x-forwarded-for");
+        const realIp = req.headers.get("x-real-ip");
+        const ip = forwarded ? forwarded.split(",")[0].trim() : (realIp ?? "127.0.0.1");
 
         // We can't await inside the sync auth callback directly unless we structure it carefully.
         // Wait, NextAuth's auth() wrapper in middleware returns a Promise-returning function,
