@@ -14,6 +14,11 @@ async function getUser(email: string) {
     try {
         const user = await prisma.user.findUnique({
             where: { email },
+            include: {
+                domains: {
+                    select: { department: true },
+                },
+            },
         });
         return user;
     } catch (error) {
@@ -56,7 +61,15 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
 
                     const passwordsMatch = await compare(password, user.password);
 
-                    if (passwordsMatch) return user;
+                    if (passwordsMatch) {
+                        return {
+                            id: user.id,
+                            name: user.name,
+                            email: user.email,
+                            role: user.role,
+                            domain: user.domains.map((item) => item.department),
+                        };
+                    }
                 }
 
                 console.log("Invalid credentials");
@@ -64,6 +77,6 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
             },
         }),
     ],
-    
+
 });
 
