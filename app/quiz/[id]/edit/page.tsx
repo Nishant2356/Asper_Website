@@ -8,7 +8,7 @@ import Link from "next/link";
 import { DEPARTMENTS } from "@/app/data/departments";
 
 type QuestionType = "MCQ" | "DYNAMIC" | "TRUE_FALSE";
-type Department = "DSA" | "WEB_DEVELOPMENT" | "IOT" | "GAME_DEVELOPMENT_ANIMATION" | "DEVOPS_CLOUD" | "ML_DATA_SCIENCE" | "MEDIA_GRAPHICS_VIDEO" | "CORPORATE_RELATIONS" | "PHOTOGRAPHY_VIDEO_EDITING";
+type Department = "DSA" | "WEB_DEVELOPMENT" | "IOT" | "GAME_DEVELOPMENT_ANIMATION" | "DEVOPS_CLOUD" | "ML_DATA_SCIENCE" | "GRAPHICS" | "CORPORATE_RELATIONS" | "PHOTOGRAPHY_VIDEO_EDITING";
 
 interface QuestionInput {
     id?: string;
