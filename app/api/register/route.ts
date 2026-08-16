@@ -19,19 +19,22 @@ const userSchema = z.object({
     name: z.string().min(2),
     email: z.string().email(),
     password: z.string().min(6),
-    domain: z.array(
-        z.enum([
-            "DSA",
-            "WEB_DEVELOPMENT",
-            "IOT",
-            "GAME_DEVELOPMENT_ANIMATION",
-            "DEVOPS_CLOUD",
-            "ML_DATA_SCIENCE",
-            "MEDIA_GRAPHICS_VIDEO",
-            "CORPORATE_RELATIONS",
-            "PHOTOGRAPHY_VIDEO_EDITING",
-        ])
-    ),
+
+    domain: z
+        .array(
+            z.enum([
+                "DSA",
+                "WEB_DEVELOPMENT",
+                "IOT",
+                "GAME_DEVELOPMENT_ANIMATION",
+                "DEVOPS_CLOUD",
+                "ML_DATA_SCIENCE",
+                "GRAPHICS",
+                "CORPORATE_RELATIONS",
+                "PHOTOGRAPHY_VIDEO_EDITING",
+            ])
+        )
+        .min(1, "Select at least one domain."),
 });
 
 export async function POST(req: Request) {
@@ -46,15 +49,18 @@ export async function POST(req: Request) {
         }
 
         const body = await req.json();
+
         const { name, email, password, domain } = userSchema.parse(body);
 
+        const normalizedEmail = email.trim().toLowerCase();
+
         const existingUser = await prisma.user.findUnique({
-            where: { email },
+            where: { email: normalizedEmail },
         });
 
         if (existingUser) {
             return NextResponse.json(
-                { message: "User with this email already exists" },
+                { message: "User with this email already exists." },
                 { status: 409 }
             );
         }
@@ -63,25 +69,41 @@ export async function POST(req: Request) {
 
         const newUser = await prisma.user.create({
             data: {
-                name,
-                email,
+                name: name.trim(),
+                email: normalizedEmail,
                 password: hashedPassword,
-                domain,
                 role: "MEMBER",
+                status: "PENDING",
+
+                // Selected har domain ke liye UserDomain create hoga.
+                domains: {
+                    create: domain.map((department) => ({
+                        department,
+                        position: "LEARNER",
+                    })),
+                },
+            },
+
+            include: {
+                domains: {
+                    select: {
+                        department: true,
+                        position: true,
+                    },
+                },
             },
         });
 
-        // ─── CREATE NOTIFICATION FOR ADMIN ────────────
         await prisma.notification.create({
             data: {
                 type: "NEW_USER",
                 title: "New Member Registration",
-                message: `${name} (${email}) has registered and is waiting for approval.`,
+                message: `${name} (${normalizedEmail}) has registered and is waiting for approval.`,
                 data: JSON.stringify({
                     userId: newUser.id,
                     name: newUser.name,
                     email: newUser.email,
-                    domain: newUser.domain,
+                    domains: newUser.domains,
                 }),
             },
         });
@@ -94,19 +116,27 @@ export async function POST(req: Request) {
         await cacheInvalidate("profiles:*", "notifications:*");
 
         return NextResponse.json(
-            { user: userWithoutPassword, message: "User created successfully" },
+            {
+                user: userWithoutPassword,
+                message: "User created successfully.",
+            },
             { status: 201 }
         );
     } catch (error) {
         if (error instanceof ZodError) {
             return NextResponse.json(
-                { message: "Invalid input", errors: (error as any).errors },
+                {
+                    message: "Invalid input.",
+                    errors: error.issues,
+                },
                 { status: 400 }
             );
         }
-        console.error("Registration Error:", error);
+
+        console.error("Registration error:", error);
+
         return NextResponse.json(
-            { message: "Something went wrong" },
+            { message: "Something went wrong." },
             { status: 500 }
         );
     }

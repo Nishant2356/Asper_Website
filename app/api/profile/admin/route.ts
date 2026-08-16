@@ -19,28 +19,18 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
 import { hash } from "bcryptjs";
 import { z } from "zod";
+import { Department } from "@prisma/client";
+import { apiLimiter, getClientIp, rateLimitResponse  } from "@/lib/rate-limit"
 import { cacheGet, cacheSet, cacheInvalidate, TTL } from "@/lib/cache";
-import { apiLimiter, getClientIp, rateLimitResponse } from "@/lib/rate-limit";
+
 
 const createProfileSchema = z.object({
     name: z.string().min(2),
     email: z.string().email(),
     password: z.string().min(6),
     role: z.enum(["MEMBER", "ADMIN"]).default("MEMBER"),
-    domain: z.array(
-        z.enum([
-            "DSA",
-            "WEB_DEVELOPMENT",
-            "IOT",
-            "GAME_DEVELOPMENT_ANIMATION",
-            "DEVOPS_CLOUD",
-            "ML_DATA_SCIENCE",
-            "MEDIA_GRAPHICS_VIDEO",
-            "CORPORATE_RELATIONS",
-            "PHOTOGRAPHY_VIDEO_EDITING",
-        ])
-    ),
-    position: z.string().optional(),
+
+    status: z.enum(["PENDING", "APPROVED"]).default("PENDING"),
     bio: z.string().optional(),
     profilePhoto: z.string().optional(),
     birthDate: z.string().optional(),
@@ -81,9 +71,10 @@ export async function POST(req: NextRequest) {
             email,
             password,
             role,
-            domain,
-            position,
+            // domain,
+            // position,
             bio,
+            status,
             profilePhoto,
             birthDate,
             github,
@@ -108,9 +99,10 @@ export async function POST(req: NextRequest) {
                 email,
                 password: hashedPassword,
                 role,
-                domain,
-                position,
+                // domain,
+                // position,
                 bio,
+                status,
                 profilePhoto,
                 birthDate: birthDate ? new Date(birthDate) : undefined,
                 github,
@@ -123,8 +115,6 @@ export async function POST(req: NextRequest) {
                 name: true,
                 email: true,
                 role: true,
-                domain: true,
-                position: true,
                 bio: true,
                 profilePhoto: true,
                 createdAt: true,
@@ -167,6 +157,7 @@ export async function GET(req: NextRequest) {
         const search = searchParams.get("search") || "";
         const role = searchParams.get("role");
         const domain = searchParams.get("domain");
+        const status = searchParams.get("status");
 
         // ─── Build cache key ─────────────────────────────
         // We include search params so "search=john" gets a different cache
@@ -185,24 +176,36 @@ export async function GET(req: NextRequest) {
                 AND: [
                     search
                         ? {
-                              OR: [
-                                  {
-                                      name: {
-                                          contains: search,
-                                          mode: "insensitive",
-                                      },
-                                  },
-                                  {
-                                      email: {
-                                          contains: search,
-                                          mode: "insensitive",
-                                      },
-                                  },
-                              ],
-                          }
+                            OR: [
+                                {
+                                    name: {
+                                        contains: search,
+                                        mode: "insensitive",
+                                    },
+                                },
+                                {
+                                    email: {
+                                        contains: search,
+                                        mode: "insensitive",
+                                    },
+                                },
+                            ],
+                        }
                         : {},
+
                     role ? { role: role as any } : {},
-                    domain ? { domain: { has: domain as any } } : {},
+
+                    domain
+                        ? {
+                            domains: {
+                                some: {
+                                    department: domain as Department,
+                                },
+                            },
+                        }
+                        : {},
+
+                    status ? { status: status as any } : {},
                 ],
             },
             select: {
@@ -210,8 +213,7 @@ export async function GET(req: NextRequest) {
                 name: true,
                 email: true,
                 role: true,
-                domain: true,
-                position: true,
+                status: true,
                 bio: true,
                 profilePhoto: true,
                 birthDate: true,

@@ -45,11 +45,22 @@ export async function GET(
                 name: true,
                 email: true,
                 role: true,
-                domain: true,
+
                 bio: true,
                 profilePhoto: true,
                 birthDate: true,
-                position: true,
+                college: true,
+                branch: true,
+                year: true,
+                otherCollegeName: true,
+                // position: true,
+                domains: {
+                    select: {
+                        id: true,
+                        department: true,
+                        position: true,
+                    },
+                },
                 github: true,
                 linkedin: true,
                 instagram: true,
@@ -117,7 +128,7 @@ export async function PATCH(
         ];
 
         // Restricted fields — need approval for non-admins
-        const approvalFields = ["position", "birthDate"];
+        const approvalFields = ["position", "birthDate", "name", "college", "branch", "year", "otherCollegeName"];
 
         const directUpdate: Record<string, any> = {};
         const approvalRequests: Promise<any>[] = [];
@@ -135,53 +146,111 @@ export async function PATCH(
                         where: { id: userId },
                         select: { [field]: true },
                     });
+                    // check previouse request is panding or not
+                    const existingRequest = await prisma.profileUpdateRequest.findFirst({
+                        where: {
+                            userId,
+                            field,
+                            status: "PENDING",
+                        },
+                    });
 
-                    approvalRequests.push(
-                        prisma.profileUpdateRequest.create({
-                            data: {
-                                userId,
-                                field,
-                                oldValue: currentUser
-                                    ? String(
-                                          (currentUser as any)[field] ?? ""
-                                      )
-                                    : "",
-                                newValue: String(body[field]),
-                                status: "PENDING",
+                    if (existingRequest) {
+                        return NextResponse.json(
+                            {
+                                error: `You already have a pending request for ${field}.`,
+                                message: "Please wait for admin approval before submitting another request."
                             },
-                        })
-                    );
+                            { status: 400 }
+                        );
+                    }
+
+                    // If the field is different from the current value, create a request for admin approval
+                    if (
+                        currentUser &&
+                        String(currentUser[field]) !== String(body[field])
+                    ) {
+                        approvalRequests.push(
+                            prisma.profileUpdateRequest.create({
+                                data: {
+                                    userId,
+                                    field,
+                                    oldValue: currentUser
+                                        ? String(
+                                            (currentUser as any)[field] ?? ""
+                                        )
+                                        : "",
+                                    newValue: String(body[field]),
+                                    status: "PENDING",
+                                },
+                            })
+                        );
+                    }
                 }
             }
         } else {
             for (const field of approvalFields) {
-                if (body[field] !== undefined) {
-                    directUpdate[field] =
-                        field === "birthDate"
-                            ? new Date(body[field])
-                            : body[field];
+                if (body[field] === undefined) continue;
+
+                if (field === "birthDate") {
+                    if (!body.birthDate) {
+                        directUpdate.birthDate = null;
+                    } else {
+                        const date = new Date(body.birthDate);
+
+                        if (!isNaN(date.getTime())) {
+                            directUpdate.birthDate = date;
+                        }
+                    }
+                } else {
+                    directUpdate[field] = body[field];
                 }
             }
         }
+        // birth date validation
+        if (directUpdate.birthDate) {
+            const birthDate = new Date(directUpdate.birthDate);
+            const today = new Date();
+            const age = today.getFullYear() - birthDate.getFullYear();
+            if (age < 0 || age > 150) {
+                return NextResponse.json(
+                    { error: "Invalid birth date" },
+                    { status: 400 }
+                );
+            }
+            directUpdate.birthDate = new Date(body.birthDate);
+        }
+        // birth date not undifined
+        if (directUpdate.birthDate === null) {
+            return NextResponse.json(
+                { error: "Birth date cannot be empty" },
+                { status: 400 }
+            );
+        }   
+
 
         const updatedUser =
             Object.keys(directUpdate).length > 0
                 ? await prisma.user.update({
-                      where: { id: userId },
-                      data: directUpdate,
-                      select: {
-                          id: true,
-                          name: true,
-                          bio: true,
-                          profilePhoto: true,
-                          position: true,
-                          birthDate: true,
-                          github: true,
-                          linkedin: true,
-                          instagram: true,
-                          twitter: true,
-                      },
-                  })
+                    where: { id: userId },
+                    data: directUpdate,
+                    select: {
+                        id: true,
+                        name: true,
+                        bio: true,
+                        profilePhoto: true,
+                        // position: true,
+                        birthDate: true,
+                        github: true,
+                        linkedin: true,
+                        instagram: true,
+                        twitter: true,
+                        college: true,
+                        branch: true,
+                        year: true,
+                        otherCollegeName: true,
+                    },
+                })
                 : null;
 
         await Promise.all(approvalRequests);
@@ -212,6 +281,8 @@ export async function PATCH(
         );
     }
 }
+// edit team status
+
 
 // ─── DELETE: Admin only ───────────────────────────────
 export async function DELETE(
