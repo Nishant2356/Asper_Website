@@ -57,10 +57,10 @@ export async function GET(req: NextRequest) {
                 id: true,
                 name: true,
                 role: true,
-                domain: true,
+               
                 bio: true,
                 profilePhoto: true,
-                position: true,
+                
                 github: true,
                 linkedin: true,
                 instagram: true,
